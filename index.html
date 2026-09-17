@@ -101,6 +101,8 @@ ul.rules li.warn::before{content:"✕";color:var(--danger);}
 .cf-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--line);}
 .cf-row .k{color:var(--muted);} .cf-row .v{font-weight:600;text-align:right;}
 .gate-note{background:var(--ink);color:#fff;font-family:'Poppins',sans-serif;font-weight:600;font-size:12.5px;text-align:center;padding:10px;border-radius:8px;margin-top:12px;letter-spacing:0.02em;}
+.selfie-frame{width:100%;max-width:320px;aspect-ratio:3/4;margin:14px auto;border-radius:14px;overflow:hidden;background:#111;position:relative;}
+.selfie-frame video, .selfie-frame img{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);}
 .warm-msg{text-align:center;margin-top:20px;padding-top:18px;border-top:1px dashed var(--line);}
 .warm-msg-logo{width:120px;margin:0 auto 12px;display:block;}
 .warm-msg-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:16px;color:var(--green-dark);margin:0 0 8px;}
@@ -160,6 +162,10 @@ const UI = {
     assessInstr:"Instructions", assessBullets:["You must score at least <b>80%</b> to pass.","If you fail 2 attempts, you'll need to resit the full induction.","20 questions, one at a time."],
     startAssess:"Start assessment", downloadContacts:"Download quick contact card (PNG)", downloadCert:"Download certificate (PNG)",
     shareCert:"Share certificate", certAutoSaved:"Your certificate has been saved to your device.",
+    selfieTitle:"Verification Photo", selfieDesc:"Please take a quick selfie. This photo is used to verify your identity against your Induction Certificate when you meet Project HSSE on arrival at site.",
+    selfieConsent:"By continuing, you consent to this photo being captured and included on your induction certificate for identity verification purposes only.",
+    selfieCapture:"Take photo", selfieRetake:"Retake", selfieContinue:"Continue", selfieSkip:"Skip (camera unavailable)",
+    selfieCameraError:"Couldn't access your camera. Please check camera permissions, or skip this step if your device doesn't have a working camera.",
     failTitle:"Not cleared yet", failDesc:(s,t,p)=>`You have not completed the course assessment percentage requirement — please try again. `,
     attemptsLeft:(n)=>`You have ${n} attempt${n>1?'s':''} left before a full resit is required.`,
     attemptsSoFar:(s,t,n)=>`Score: ${s} / ${t}. This was attempt ${n}.`,
@@ -193,6 +199,10 @@ const UI = {
     assessInstr:"Instruksi", assessBullets:["Anda harus mencapai nilai minimal <b>80%</b> untuk lulus.","Jika gagal 2 kali percobaan, Anda harus mengulang seluruh induksi.","20 pertanyaan, satu per satu."],
     startAssess:"Mulai asesmen", downloadContacts:"Unduh kartu kontak darurat (PNG)", downloadCert:"Unduh sertifikat (PNG)",
     shareCert:"Bagikan sertifikat", certAutoSaved:"Sertifikat Anda telah disimpan ke perangkat.",
+    selfieTitle:"Foto Verifikasi", selfieDesc:"Mohon ambil swafoto singkat. Foto ini digunakan untuk memverifikasi identitas Anda terhadap Sertifikat Induksi Anda saat bertemu Project HSSE di site.",
+    selfieConsent:"Dengan melanjutkan, Anda menyetujui pengambilan foto ini dan penyertaannya pada sertifikat induksi Anda semata-mata untuk tujuan verifikasi identitas.",
+    selfieCapture:"Ambil foto", selfieRetake:"Ambil ulang", selfieContinue:"Lanjutkan", selfieSkip:"Lewati (kamera tidak tersedia)",
+    selfieCameraError:"Tidak dapat mengakses kamera Anda. Mohon periksa izin kamera, atau lewati langkah ini jika perangkat Anda tidak memiliki kamera yang berfungsi.",
     failTitle:"Belum lulus", failDesc:(s,t,p)=>`Anda belum memenuhi persyaratan persentase kelulusan asesmen — silakan coba lagi. `,
     attemptsLeft:(n)=>`Anda memiliki ${n} kesempatan lagi sebelum harus mengulang seluruh induksi.`,
     attemptsSoFar:(s,t,n)=>`Nilai: ${s} / ${t}. Ini adalah percobaan ke-${n}.`,
@@ -626,7 +636,10 @@ const ADMIN_PASSWORD = "0808"; // change this before deploying — visible in pa
 const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzDGDLArUkRxBaCPxWPDumF9WfWJ_L3B9vKMy4gt2gRVGdIr-WNJtEzmFu5CDDJWe6ZYQ/exec"; // paste your deployed Google Apps Script Web App URL here to also push each pass to a Google Sheet
 
 /* ============ STATE / FLOW ============ */
-const state = { lang:"en", pos:0, visitor:{name:"",company:"",host:"",hostName:"",hostPhone:"",idnum:"",purpose:"",certify:false,healthCert:""}, secAnswers:{}, qIndex:0, qAnswers:{}, score:0, attempts:0, lsrConfirmed:{}, startTime:0, recorded:false, certAutoDownloaded:false };
+const GITHUB_URL = "https://iggifernandes.github.io/EcoOils-Project-Site-Induction-Sei-Mangkei/";
+const ON_GITHUB_PAGES = location.hostname.includes('github.io');
+const START_PARAM = new URLSearchParams(location.search).get('start') === '1';
+const state = { lang:"en", pos: START_PARAM ? 1 : 0, visitor:{name:"",company:"",host:"",hostName:"",hostPhone:"",idnum:"",purpose:"",certify:false,healthCert:""}, secAnswers:{}, qIndex:0, qAnswers:{}, score:0, attempts:0, lsrConfirmed:{}, startTime: START_PARAM ? Date.now() : 0, recorded:false, certAutoDownloaded:false, selfieDataUrl:null, selfieConsent:false };
 let certNumber = "";
 let isAdminMode = (location.hash === '#admin');
 let adminAuthed = false;
@@ -634,7 +647,7 @@ let autoRestartTimer = null;
 
 const flow = [{type:'welcome'},{type:'details'}];
 sections.forEach((s,i)=>{ flow.push({type:'content', idx:i}); if(s.check) flow.push({type:'check', idx:i}); });
-flow.push({type:'assessment-intro'}); flow.push({type:'quiz'}); flow.push({type:'result'});
+flow.push({type:'assessment-intro'}); flow.push({type:'quiz'}); flow.push({type:'selfie'}); flow.push({type:'result'});
 
 function genCertNumber(){
   const d=new Date(); const ymd=d.getFullYear().toString().slice(2)+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
@@ -745,6 +758,7 @@ function render(){
   else if(f.type==='check') host.innerHTML = viewCheck(sections[f.idx], L, lang, f.idx);
   else if(f.type==='assessment-intro') host.innerHTML = viewAssessIntro(L);
   else if(f.type==='quiz') host.innerHTML = viewQuiz(L,lang);
+  else if(f.type==='selfie') host.innerHTML = viewSelfie(L,lang);
   else if(f.type==='result') host.innerHTML = viewResult(L,lang);
   bind();
 }
@@ -760,8 +774,11 @@ function viewAdminPanel(L){
 }
 
 function viewWelcome(L){
+  const startEl = ON_GITHUB_PAGES
+    ? `<button class="btn btn-primary" id="startBtn">${L.start}</button>`
+    : `<a href="${GITHUB_URL}?start=1" target="_top" class="btn btn-primary" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">${L.start}</a>`;
   return `<div class="panel"><div class="eyebrow">Sei Mangkei · Rev 00</div><h2>${L.welcomeTitle}</h2><p class="desc">${L.welcomeDesc}</p></div>
-  <div class="foot"><button class="btn btn-primary" id="startBtn">${L.start}</button></div>`;
+  <div class="foot">${startEl}</div>`;
 }
 function viewDetails(L,lang){
   const v = state.visitor;
@@ -809,6 +826,26 @@ function viewQuiz(L,lang){
     ${item.opts.map((o,idx)=>{let cls='opt'; if(answered){cls+=' disabled'; if(idx===item.correct) cls+=' correct'; else if(idx===state.qAnswers[i]) cls+=' wrong';} return `<button class="${cls}" data-idx="${idx}" ${answered?'disabled':''}>${o[lang]}</button>`;}).join('')}
     <div class="score-dots">${dots}</div></div>
     <div class="foot"><button class="btn btn-ghost" id="backQBtn">${L.back}</button><button class="btn btn-primary" id="nextQBtn" ${answered?'':'disabled'}>${i===finalQuestions.length-1?L.seeResult:L.nextQuestion}</button></div>`;
+}
+function viewSelfie(L,lang){
+  const captured = state.selfieDataUrl;
+  const consented = state.selfieConsent;
+  return `<div class="panel"><div class="eyebrow">${L.selfieTitle}</div><h2>${L.selfieTitle}</h2>
+    <p class="desc">${L.selfieDesc}</p>
+    <label class="confirm-gate" style="border-color:var(--gold);"><input type="checkbox" id="selfieConsentCheck" ${consented?'checked':''}>${L.selfieConsent}</label>
+    <div class="selfie-frame" style="display:${consented?'block':'none'};">
+      <video id="selfieVideo" autoplay playsinline style="display:${captured?'none':'block'};"></video>
+      <img id="selfiePreview" src="${captured||''}" style="display:${captured?'block':'none'};">
+      <canvas id="selfieCanvas" style="display:none;"></canvas>
+    </div>
+    <p class="required-note" id="selfieError" style="display:none;">${L.selfieCameraError}</p>
+    <div style="display:${consented?'flex':'none'};gap:10px;margin-top:6px;">
+      <button type="button" class="dl-btn" id="selfieCaptureBtn" style="display:${captured?'none':'block'};flex:1;">📷 ${L.selfieCapture}</button>
+      <button type="button" class="dl-btn" id="selfieRetakeBtn" style="display:${captured?'block':'none'};flex:1;">${L.selfieRetake}</button>
+    </div>
+    <button type="button" class="dl-btn" id="selfieSkipBtn" style="display:none;color:var(--danger);border-color:#F2C2AC;">${L.selfieSkip}</button>
+    </div>
+    <div class="foot"><button class="btn btn-primary" id="selfieContinueBtn" ${captured?'':'disabled'}>${L.selfieContinue}</button></div>`;
 }
 function viewResult(L,lang){
   const passed = state.score >= PASS_MARK;
@@ -945,6 +982,18 @@ async function genCertificateCanvas(){
   const logo = await loadLogoImg();
   const logoW = 240, logoH = logoW*(logo.height/logo.width);
   ctx.drawImage(logo, (cw-logoW)/2, 58, logoW, logoH);
+
+  if(state.selfieDataUrl){
+    const selfieImg = await new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.src=state.selfieDataUrl; });
+    const photoR = 54, photoCx = cw-margin-30-photoR, photoCy = 58+photoR;
+    ctx.save();
+    ctx.beginPath(); ctx.arc(photoCx, photoCy, photoR, 0, Math.PI*2); ctx.clip();
+    const side = Math.min(selfieImg.width, selfieImg.height);
+    const sx=(selfieImg.width-side)/2, sy=(selfieImg.height-side)/2;
+    ctx.drawImage(selfieImg, sx, sy, side, side, photoCx-photoR, photoCy-photoR, photoR*2, photoR*2);
+    ctx.restore();
+    ctx.beginPath(); ctx.arc(photoCx, photoCy, photoR, 0, Math.PI*2); ctx.lineWidth=3; ctx.strokeStyle="#F5C518"; ctx.stroke();
+  }
 
   let y = 58+logoH+46;
   ctx.textAlign="center";
@@ -1120,7 +1169,66 @@ function bind(){
     const nextQBtn = document.getElementById('nextQBtn');
     if(nextQBtn) nextQBtn.onclick = ()=>{
       if(state.qIndex < finalQuestions.length-1){ state.qIndex++; render(); }
-      else { if(state.score < PASS_MARK){ state.attempts++; } else { certNumber = genCertNumber(); recordSubmission(); } state.pos++; render(); }
+      else {
+        if(state.score < PASS_MARK){ state.attempts++; state.pos = flow.findIndex(x=>x.type==='result'); }
+        else { state.pos = flow.findIndex(x=>x.type==='selfie'); }
+        render();
+      }
+    };
+  }
+
+  if(f.type==='selfie'){
+    const videoEl = document.getElementById('selfieVideo');
+    const previewEl = document.getElementById('selfiePreview');
+    const canvasEl = document.getElementById('selfieCanvas');
+    const captureBtn = document.getElementById('selfieCaptureBtn');
+    const retakeBtn = document.getElementById('selfieRetakeBtn');
+    const continueBtn = document.getElementById('selfieContinueBtn');
+    const skipBtn = document.getElementById('selfieSkipBtn');
+    const errorEl = document.getElementById('selfieError');
+    const consentCheck = document.getElementById('selfieConsentCheck');
+    let stream = null;
+
+    function stopStream(){ if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; } }
+
+    function startCamera(){
+      if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+        if(errorEl) errorEl.style.display='block';
+        if(skipBtn) skipBtn.style.display='block';
+        return;
+      }
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio:false }).then(s=>{
+        stream = s;
+        if(videoEl) videoEl.srcObject = s;
+      }).catch(()=>{
+        if(errorEl) errorEl.style.display='block';
+        if(skipBtn) skipBtn.style.display='block';
+      });
+    }
+    // Camera access is only requested after the consent checkbox is explicitly ticked — never before.
+    if(state.selfieConsent && !state.selfieDataUrl) startCamera();
+
+    if(consentCheck) consentCheck.onchange = ()=>{
+      state.selfieConsent = consentCheck.checked;
+      render();
+    };
+    if(captureBtn) captureBtn.onclick = ()=>{
+      if(!videoEl || !videoEl.videoWidth) return;
+      canvasEl.width = videoEl.videoWidth; canvasEl.height = videoEl.videoHeight;
+      const ctx = canvasEl.getContext('2d');
+      ctx.translate(canvasEl.width,0); ctx.scale(-1,1); // un-mirror so the saved photo reads correctly
+      ctx.drawImage(videoEl, 0, 0, canvasEl.width, canvasEl.height);
+      state.selfieDataUrl = canvasEl.toDataURL('image/jpeg', 0.9);
+      stopStream();
+      render();
+    };
+    if(retakeBtn) retakeBtn.onclick = ()=>{ state.selfieDataUrl = null; render(); };
+    if(skipBtn) skipBtn.onclick = ()=>{ state.selfieDataUrl = null; continueBtn.disabled = false; skipBtn.disabled = true; skipBtn.textContent = '✓'; };
+    if(continueBtn) continueBtn.onclick = ()=>{
+      stopStream();
+      certNumber = genCertNumber(); recordSubmission();
+      state.pos = flow.findIndex(x=>x.type==='result');
+      render();
     };
   }
 
@@ -1128,7 +1236,7 @@ function bind(){
     const resitBtn = document.getElementById('resitBtn');
     if(resitBtn) resitBtn.onclick = ()=>{
       if(autoRestartTimer){ clearTimeout(autoRestartTimer); autoRestartTimer=null; }
-      state.qIndex=0; state.score=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={};
+      state.qIndex=0; state.score=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={}; state.selfieDataUrl=null; state.selfieConsent=false;
       state.pos = flow.findIndex(x=>x.type==='content');
       render();
     };
@@ -1149,7 +1257,7 @@ function bind(){
     const restartBtn = document.getElementById('restartBtn');
     if(restartBtn) restartBtn.onclick = ()=>{
       state.pos=0; state.qIndex=0; state.score=0; state.attempts=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={};
-      state.visitor={name:"",company:"",host:"",hostName:"",hostPhone:"",idnum:"",purpose:"",certify:false,healthCert:""}; certNumber=""; state.startTime=0; state.recorded=false; state.certAutoDownloaded=false;
+      state.visitor={name:"",company:"",host:"",hostName:"",hostPhone:"",idnum:"",purpose:"",certify:false,healthCert:""}; certNumber=""; state.startTime=0; state.recorded=false; state.certAutoDownloaded=false; state.selfieDataUrl=null; state.selfieConsent=false;
       render();
     };
   }
