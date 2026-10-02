@@ -168,8 +168,9 @@ const UI = {
     assessInstr:"Instructions", assessBullets:["You must score at least <b>80%</b> to pass.","If you fail 2 attempts, you'll need to resit the full induction.","20 questions, one at a time."],
     startAssess:"Start assessment", downloadContacts:"Download quick contact card (PNG)", downloadCert:"Download certificate (PNG)",
     shareCert:"Share certificate", certAutoSaved:"Your certificate has been saved to your device.",
+    upSending:"Sending a copy of your certificate to Project HSSE…", upOk:"Certificate copy sent to Project HSSE ✓", upFail:"Upload pending — keep your screenshot and show it to your Host.",
     selfieTitle:"Verification Photo", selfieDesc:"Please take a quick selfie. This photo is used to verify your identity against your Induction Certificate when you meet Project HSSE on arrival at site.",
-    selfieConsent:"By continuing, you consent to this photo being captured and included on your induction certificate for identity verification purposes only.",
+    selfieConsent:"By continuing, you consent to this photo being captured and included on your induction certificate for identity verification purposes only. A copy of your certificate is stored securely by Project HSSE as the induction record.",
     selfieCapture:"Take photo", selfieRetake:"Retake", selfieContinue:"Continue", selfieRetry:"Try again",
     selfieCameraError:"Couldn't access your camera. A selfie is required to complete this induction — please check your camera permissions and try again.",
     failTitle:"Not cleared yet", failDesc:(s,t,p)=>`You have not completed the course assessment percentage requirement — please try again. `,
@@ -205,8 +206,9 @@ const UI = {
     assessInstr:"Instruksi", assessBullets:["Anda harus mencapai nilai minimal <b>80%</b> untuk lulus.","Jika gagal 2 kali percobaan, Anda harus mengulang seluruh induksi.","20 pertanyaan, satu per satu."],
     startAssess:"Mulai asesmen", downloadContacts:"Unduh kartu kontak darurat (PNG)", downloadCert:"Unduh sertifikat (PNG)",
     shareCert:"Bagikan sertifikat", certAutoSaved:"Sertifikat Anda telah disimpan ke perangkat.",
+    upSending:"Mengirim salinan sertifikat Anda ke Project HSSE…", upOk:"Salinan sertifikat terkirim ke Project HSSE ✓", upFail:"Pengunggahan tertunda — simpan screenshot Anda dan tunjukkan kepada Host Anda.",
     selfieTitle:"Foto Verifikasi", selfieDesc:"Mohon ambil swafoto singkat. Foto ini digunakan untuk memverifikasi identitas Anda terhadap Sertifikat Induksi Anda saat bertemu Project HSSE di site.",
-    selfieConsent:"Dengan melanjutkan, Anda menyetujui pengambilan foto ini dan penyertaannya pada sertifikat induksi Anda semata-mata untuk tujuan verifikasi identitas.",
+    selfieConsent:"Dengan melanjutkan, Anda menyetujui pengambilan foto ini dan penyertaannya pada sertifikat induksi Anda semata-mata untuk tujuan verifikasi identitas. Salinan sertifikat Anda disimpan dengan aman oleh Project HSSE sebagai catatan induksi.",
     selfieCapture:"Ambil foto", selfieRetake:"Ambil ulang", selfieContinue:"Lanjutkan", selfieRetry:"Coba lagi",
     selfieCameraError:"Tidak dapat mengakses kamera Anda. Swafoto wajib untuk menyelesaikan induksi ini — mohon periksa izin kamera Anda dan coba lagi.",
     failTitle:"Belum lulus", failDesc:(s,t,p)=>`Anda belum memenuhi persyaratan persentase kelulusan asesmen — silakan coba lagi. `,
@@ -894,7 +896,7 @@ const SAFETY_NOTICE_EN = "This certificate is NOT permission to commence work. O
 const SAFETY_NOTICE_ID = "Sertifikat ini BUKAN izin untuk memulai pekerjaan. Setibanya di site, Anda wajib bertemu langsung dengan Site HSSE untuk briefing keselamatan singkat — mencakup titik kumpul dan kondisi site terkini — sebelum melanjutkan. Anda hanya dapat memulai pekerjaan setelah Site HSSE menerbitkan stiker induksi Anda.";
 const MAX_ATTEMPTS = 2;
 const ADMIN_PASSWORD = "0808"; // change this before deploying — visible in page source, so treat as a light deterrent only
-const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzDGDLArUkRxBaCPxWPDumF9WfWJ_L3B9vKMy4gt2gRVGdIr-WNJtEzmFu5CDDJWe6ZYQ/exec"; // paste your deployed Google Apps Script Web App URL here to also push each pass to a Google Sheet
+const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyJE6m1Cz_D7oJgowwQ2czyYUp_0-pr0Mu44x09ITs4OzZkG7iK1fSTdYW0MopUSzwbwg/exec"; // paste your deployed Google Apps Script Web App URL here to also push each pass to a Google Sheet
 
 /* ============ STATE / FLOW ============ */
 const GITHUB_URL = "https://iggifernandes.github.io/EcoOils-Project-Site-Induction-Sei-Mangkei/";
@@ -928,7 +930,6 @@ async function recordSubmission(){
   const record = {
     certNumber, name:v.name, company:v.company, idnum:v.idnum, host:v.host, hostName:v.hostName, hostPhone:v.hostPhone, purpose:v.purpose,
     certify:v.certify, healthCert:v.healthCert,
-    paperIds: finalQuestions.map(q=>q.id).join('|'),
     score:state.score, totalQuestions:finalQuestions.length,
     percentage: Math.round((state.score/finalQuestions.length)*100),
     passed: state.score >= PASS_MARK,
@@ -947,13 +948,58 @@ async function recordSubmission(){
   }catch(e){ console.error('Storage error (record still shown on this device):', e); }
   try{
     if(GOOGLE_SHEET_WEBHOOK_URL){
-      fetch(GOOGLE_SHEET_WEBHOOK_URL, {
-        method:'POST', mode:'no-cors',
-        headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body: JSON.stringify(record)
-      });
+      let certImage = '';
+      try{ certImage = await certToDataUrl(); }catch(e){ console.error('Certificate image failed:', e); }
+      sendRecordToSheet(certImage ? Object.assign({}, record, {certImage}) : record);   // not awaited: never blocks the candidate
     }
   }catch(e){ console.error('Google Sheet webhook error:', e); }
+}
+
+/* ============ CONFIRMED UPLOAD (sheet row + certificate copy to Drive) ============ */
+const UPLOAD_PENDING_KEY = 'mhi_pending_v1';
+async function certToDataUrl(){
+  const canvas = await genCertificateCanvas();
+  for(const q of [0.85, 0.7, 0.55]){ const u = canvas.toDataURL('image/jpeg', q); if(u.length < 3500000) return u; }
+  return '';
+}
+function setUploadStatus(st){
+  state.uploadStatus = st;
+  const el = document.getElementById('uploadStatus'); if(!el) return;
+  const L = UI[state.lang];
+  el.textContent = st==='ok' ? L.upOk : (st==='fail' ? L.upFail : L.upSending);
+  el.style.color = st==='fail' ? 'var(--danger)' : 'var(--green-dark)';
+}
+async function postOnce(payload){
+  const ctrl = new AbortController(); const t = setTimeout(()=>ctrl.abort(), 45000);
+  try{
+    const res = await fetch(GOOGLE_SHEET_WEBHOOK_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload), signal: ctrl.signal });
+    const j = await res.json();
+    return !!(j && j.ok);
+  }catch(e){ return false; }
+  finally{ clearTimeout(t); }
+}
+async function sendRecordToSheet(payload){
+  setUploadStatus('pending');
+  const waits = [0, 5000, 15000, 40000];        // first try + 3 retries for weak signal
+  for(const w of waits){
+    if(w) await new Promise(r=>setTimeout(r, w));
+    if(await postOnce(payload)){ setUploadStatus('ok'); return; }
+  }
+  setUploadStatus('fail');
+  queuePending(payload);
+}
+function queuePending(payload){
+  try{
+    const list = JSON.parse(localStorage.getItem(UPLOAD_PENDING_KEY)||'[]').filter(p=>p.certNumber!==payload.certNumber);
+    list.push(payload); localStorage.setItem(UPLOAD_PENDING_KEY, JSON.stringify(list.slice(-3)));
+  }catch(e){}
+}
+async function flushPending(){                   // runs when the page is opened again on the same phone
+  if(!GOOGLE_SHEET_WEBHOOK_URL) return;
+  let list=[]; try{ list = JSON.parse(localStorage.getItem(UPLOAD_PENDING_KEY)||'[]'); }catch(e){ return; }
+  if(!list.length) return;
+  const left=[]; for(const p of list){ if(!(await postOnce(p))) left.push(p); }
+  try{ if(left.length) localStorage.setItem(UPLOAD_PENDING_KEY, JSON.stringify(left)); else localStorage.removeItem(UPLOAD_PENDING_KEY); }catch(e){}
 }
 function recordsToCSV(records){
   const headers = ["Certificate No","Name","Company","ID/Passport","Host/Contractor","Host Contact Name","Host Contact Phone","Purpose","Details Certified","Health Cert Submitted","Score","Total Questions","Percentage","Passed","Attempts Taken","Start Time","Completion Time","Duration"];
@@ -1143,6 +1189,7 @@ function viewResult(L,lang){
     <button class="dl-btn" id="dlCertBtn">⬇ ${L.downloadCert}</button>
     <button class="dl-btn" id="shareCertBtn">↗ ${L.shareCert}</button>
     <p class="required-note" id="certSavedNote" style="color:var(--green-dark);display:none;">${L.certAutoSaved}</p>
+    ${GOOGLE_SHEET_WEBHOOK_URL ? `<p class="required-note" id="uploadStatus" style="color:${state.uploadStatus==='fail'?'var(--danger)':'var(--green-dark)'};">${state.uploadStatus==='ok'?L.upOk:(state.uploadStatus==='fail'?L.upFail:L.upSending)}</p>` : ''}
     <div class="warm-msg">
       <img src="data:image/png;base64,${LOGO_B64}" alt="EcoOils Mentari" class="warm-msg-logo">
       <p class="warm-msg-title">${L.warmTitle}</p>
@@ -1550,7 +1597,7 @@ function bind(){
     }
     const restartBtn = document.getElementById('restartBtn');
     if(restartBtn) restartBtn.onclick = ()=>{
-      state.paperBuilt=false; state.seenIds=[]; state.pos=0; state.qIndex=0; state.score=0; state.attempts=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={};
+      state.paperBuilt=false; state.seenIds=[]; state.uploadStatus=''; state.pos=0; state.qIndex=0; state.score=0; state.attempts=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={};
       state.visitor={name:"",company:"",host:"",hostName:"",hostPhone:"",idnum:"",purpose:"",certify:false,healthCert:""}; certNumber=""; state.startTime=0; state.recorded=false; state.certAutoDownloaded=false; state.selfieDataUrl=null; state.selfieConsent=false;
       render();
     };
@@ -1558,6 +1605,7 @@ function bind(){
 }
 
 render();
+flushPending();
 </script>
 </body>
 </html>
