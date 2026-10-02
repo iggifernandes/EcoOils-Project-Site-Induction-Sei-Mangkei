@@ -63,6 +63,8 @@ ul.rules li.warn::before{content:"✕";color:var(--danger);}
 .lsr-rewatch-icon{width:32px;height:32px;display:block;border-radius:50%;overflow:hidden;}
 .lsr-rewatch-icon svg,.lsr-rewatch-icon img{width:32px;height:32px;stroke:var(--green);}
 .lsr-rewatch-link span:last-child{font-size:11px;font-weight:600;color:var(--green-dark);text-align:center;}
+.lesson-box{background:#FFF8DB;border:1px solid #F0DC8A;border-left:5px solid var(--gold-dark);border-radius:9px;padding:11px 12px;font-size:12.5px;color:#5C4A00;margin-top:12px;line-height:1.45;}
+.lesson-box b{display:block;font-family:'Poppins',sans-serif;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:#8A6D00;margin-bottom:3px;}
 .zt-box{background:var(--danger-light);border:1px solid #F2C2AC;border-radius:9px;padding:11px 12px;font-size:12.5px;color:#7A2A0F;font-weight:600;margin-top:12px;line-height:1.4;}
 .video-links{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
 .video-links a{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;text-decoration:none;color:var(--ink);font-size:12.5px;font-weight:600;background:var(--card);}
@@ -161,7 +163,7 @@ const UI = {
     adminExportBtn:"Export CSV",
     durationF:"Time taken",
     fName:"Full name", fCompany:"Vendor / company name", fId:"ID / passport number", fHost:"Host / contractor you're visiting", fHostName:"Host contact name (person you're visiting)", fHostPhone:"Host contact phone number", phoneInvalid:"Enter a valid phone number (7–15 digits, with or without a country code, e.g. +628123456789 or 08123456789).", fPurpose:"Purpose of visit", selectOpt:"Select...",
-    welcomeTitle:"Before you enter site", welcomeDesc:"This induction covers the EcoOils Mentari Project HSSE content and the 9 Life Saving Rules. Each section has a quick check on its own screen, and it ends with a graded assessment — 80% required to pass.",
+    welcomeTitle:"Before you enter site", welcomeDesc:"This induction covers the EcoOils Mentari Project HSSE content and the 9 Life Saving Rules. Each section has a quick check on its own screen, and it ends with a graded assessment — 80% required to pass. This induction takes approximately 30 minutes — please watch the videos and familiarize yourself with the Life Saving Rules.",
     assessTitle:"HSSE Induction Assessment", assessDesc:"This assessment covers the induction content you just read.",
     assessInstr:"Instructions", assessBullets:["You must score at least <b>80%</b> to pass.","If you fail 2 attempts, you'll need to resit the full induction.","20 questions, one at a time."],
     startAssess:"Start assessment", downloadContacts:"Download quick contact card (PNG)", downloadCert:"Download certificate (PNG)",
@@ -198,7 +200,7 @@ const UI = {
     adminExportBtn:"Ekspor CSV",
     durationF:"Waktu yang digunakan",
     fName:"Nama lengkap", fCompany:"Nama vendor / perusahaan", fId:"Nomor ID / paspor", fHost:"Host / kontraktor yang dikunjungi", fHostName:"Nama kontak host (orang yang dikunjungi)", fHostPhone:"Nomor telepon kontak host", phoneInvalid:"Masukkan nomor telepon yang valid (7–15 digit, dengan atau tanpa kode negara, mis. +628123456789 atau 08123456789).", fPurpose:"Tujuan kunjungan", selectOpt:"Pilih...",
-    welcomeTitle:"Sebelum Anda masuk site", welcomeDesc:"Induksi ini mencakup materi HSSE Proyek Mentari EcoOils dan 9 Life Saving Rules. Setiap bagian memiliki cek cepat di layar terpisah, dan diakhiri dengan asesmen bernilai — minimal 80% untuk lulus.",
+    welcomeTitle:"Sebelum Anda masuk site", welcomeDesc:"Induksi ini mencakup materi HSSE Proyek Mentari EcoOils dan 9 Life Saving Rules. Setiap bagian memiliki cek cepat di layar terpisah, dan diakhiri dengan asesmen bernilai — minimal 80% untuk lulus. Induksi ini memerlukan waktu sekitar 30 menit — mohon tonton videonya dan pahami Life Saving Rules.",
     assessTitle:"Asesmen Induksi HSSE", assessDesc:"Asesmen ini mencakup materi induksi yang baru saja Anda baca.",
     assessInstr:"Instruksi", assessBullets:["Anda harus mencapai nilai minimal <b>80%</b> untuk lulus.","Jika gagal 2 kali percobaan, Anda harus mengulang seluruh induksi.","20 pertanyaan, satu per satu."],
     startAssess:"Mulai asesmen", downloadContacts:"Unduh kartu kontak darurat (PNG)", downloadCert:"Unduh sertifikat (PNG)",
@@ -611,8 +613,63 @@ sections.push(
 }
 );
 
+/* ============ LESSONS FROM OUR SITE — added to existing slides + one new slide ============ */
+function addToSection(tagEn, fn){
+  const sec = sections.find(x=>x.tag.en===tagEn); if(!sec) return;
+  const orig = sec.bodyFn; sec.bodyFn = (lang)=>fn(orig(lang), lang);
+}
+const lessonBox = (lang, txt)=> `<div class="lesson-box"><b>${lang==='en'?'Lesson from our site':'Pelajaran dari site kami'}</b>${txt[lang]}</div>`;
+function addLesson(tagEn, txt, beforeZT){
+  addToSection(tagEn, (h,lang)=> (beforeZT && h.includes('<div class="zt-box">'))
+    ? h.replace('<div class="zt-box">', lessonBox(lang,txt)+'<div class="zt-box">')
+    : h + lessonBox(lang,txt));
+}
+addToSection("Emergency Evacuation", (h,lang)=> h.replace('</ol>',
+  `<li><b>${lang==='en'?'In case of emergency:':'Dalam keadaan darurat:'}</b> ${lang==='en'?'stay calm and move to the designated muster station':'tetap tenang dan menuju titik kumpul (muster station) yang ditentukan'}</li>
+   <li><b>${lang==='en'?'Feeling unwell:':'Merasa tidak sehat:'}</b> ${lang==='en'?'inform your supervisor and HSSE immediately':'segera beritahu supervisor dan HSSE Anda'}</li></ol>`));
+
+addLesson("Permit to Work", {
+  en:"A permit that isn't at the work front doesn't exist. Never start — or sign — a permit for work already underway. A permit covers only its stated area, never the next zone.",
+  id:"Izin yang tidak ada di lokasi kerja dianggap tidak ada. Jangan pernah memulai — atau menandatangani — izin untuk pekerjaan yang sudah berjalan. Izin hanya berlaku untuk area yang tertera, bukan zona di sebelahnya."});
+addLesson("Stop Work Policy", {
+  en:"Stop Work means STOP. No “almost done”, no negotiating. Anyone can call it, and everyone must obey.",
+  id:"Stop Work berarti BERHENTI. Tidak ada “sebentar lagi selesai”, tidak ada tawar-menawar. Siapa pun dapat menyerukannya, dan semua orang wajib mematuhinya."});
+addLesson("Life Saving Rule 3/9", {
+  en:"Stop the vehicle fully before using a phone. Use a flagman when reversing or manoeuvring. Lower the dump bed before moving.",
+  id:"Hentikan kendaraan sepenuhnya sebelum menggunakan telepon. Gunakan flagman saat mundur atau bermanuver. Turunkan bak dump truck sebelum bergerak."}, true);
+addLesson("Life Saving Rule 4/9", {
+  en:"Never energize equipment without a permit and lockout. Report any shock or tingle from metal fittings immediately.",
+  id:"Jangan pernah mengaktifkan (energize) peralatan tanpa izin kerja dan lockout. Segera laporkan setiap sengatan atau rasa kesemutan dari bagian logam."}, true);
+addLesson("Life Saving Rule 5/9", {
+  en:"Clear combustibles, including rubbish and plastic, 10 m before hot work. The fire watcher stays for the whole job.",
+  id:"Singkirkan material mudah terbakar, termasuk sampah dan plastik, sejauh 10 m sebelum pekerjaan panas. Fire watcher tetap di tempat selama seluruh pekerjaan."}, true);
+addLesson("Life Saving Rule 7/9", {
+  en:"Never stand under, or climb onto, a suspended load. No lift supervisor or full rigging crew means no lift. Use only certified rigging — no improvising.",
+  id:"Jangan pernah berdiri di bawah, atau naik ke atas, beban yang tergantung. Tanpa supervisor pengangkatan atau kru rigging lengkap, tidak ada pengangkatan. Gunakan hanya rigging bersertifikat — jangan berimprovisasi."}, true);
+addLesson("Life Saving Rule 9/9", {
+  en:"A harness protects only when hooked to an approved anchor — re-check it when the plan changes. Secure tools with rated lanyards, never cable ties. Take up only what you'll use now, and barricade below.",
+  id:"Harness hanya melindungi jika terkait pada titik jangkar yang disetujui — periksa ulang saat rencana berubah. Amankan alat dengan tool lanyard bersertifikat, bukan cable tie. Bawa naik hanya yang akan langsung digunakan, dan pasang barikade di bawahnya."}, true);
+addLesson("Mobile Equipment & Traffic", {
+  en:"Check overhead clearance (cables, beams) before moving tall loads or trucks.",
+  id:"Periksa ketinggian bebas di atas (kabel, balok) sebelum menggerakkan muatan tinggi atau truk."});
+addLesson("Access Control & Site Zones", {
+  en:"Vendors go straight from the gate to induction — never straight to the work area.",
+  id:"Vendor langsung dari gerbang menuju induksi — jangan pernah langsung ke area kerja."});
+
+sections.push({
+  tag:{en:"Lessons from Our Site",id:"Pelajaran dari Site Kami"}, title:{en:"Lessons from Our Site",id:"Pelajaran dari Site Kami"},
+  bodyFn:(lang)=>`<p class="desc">${lang==='en'?'Short lessons from real events on this project.':'Pelajaran singkat dari kejadian nyata di proyek ini.'}</p>` + iconGrid([
+    {type:'info',en:"<b>Heat:</b> take shade and water breaks. Never pour cold water over your head after heat exposure. Report dizziness.",id:"<b>Panas:</b> manfaatkan tempat teduh dan istirahat minum. Jangan menyiram kepala dengan air dingin setelah terpapar panas. Laporkan jika pusing."},
+    {type:'neg',en:"<b>Covers:</b> open holes and manholes need secured, load-rated covers — never plywood.",id:"<b>Penutup:</b> lubang dan manhole terbuka harus ditutup dengan penutup yang kuat dan berkapasitas beban — bukan triplek."},
+    {type:'info',en:"<b>Weather:</b> secure temporary structures and unfinished work before strong wind or storms.",id:"<b>Cuaca:</b> amankan struktur sementara dan pekerjaan yang belum selesai sebelum angin kencang atau badai."},
+    {type:'pos',en:"<b>Damage:</b> report damage immediately — hiding it blocks the fix.",id:"<b>Kerusakan:</b> segera laporkan kerusakan — menyembunyikannya menghambat perbaikan."}
+  ],lang),
+  check:null
+});
+
+
 /* ============ FINAL ASSESSMENT (substantial, 20 Qs) ============ */
-const finalQuestions = [
+const legacyQ = [
  { q:{en:"What is the site speed limit?",id:"Berapa batas kecepatan di site?"}, opts:[{en:"10 km/hr",id:"10 km/jam"},{en:"15 km/hr",id:"15 km/jam"},{en:"20 km/hr",id:"20 km/jam"},{en:"30 km/hr",id:"30 km/jam"}], correct:1},
  { q:{en:"Which of these is NOT one of EcoOils' Rules of Engagement?",id:"Mana yang BUKAN Aturan Keterlibatan EcoOils?"}, opts:[{en:"Comply",id:"Patuh"},{en:"Intervene",id:"Intervensi"},{en:"Respect",id:"Hormati"},{en:"Improvise",id:"Improvisasi"}], correct:3},
  { q:{en:"Are visitors allowed to post their own site photos on social media?",id:"Apakah pengunjung boleh mengunggah foto site sendiri ke media sosial?"}, opts:[{en:"Yes, anytime",id:"Ya, kapan saja"},{en:"No, never",id:"Tidak, tidak pernah"},{en:"Only on weekends",id:"Hanya akhir pekan"},{en:"Only with a filter",id:"Hanya dengan filter"}], correct:1},
@@ -634,7 +691,205 @@ const finalQuestions = [
  { q:{en:"EcoOils Sei Mangkei is constructing its ___ SBEO plant in Indonesia.",id:"EcoOils Sei Mangkei membangun pabrik SBEO ke-___ di Indonesia."}, opts:[{en:"1st",id:"1"},{en:"2nd",id:"2"},{en:"3rd",id:"3"},{en:"4th",id:"4"}], correct:2},
  { q:{en:"What is the general police emergency number for Sei Mangkei?",id:"Berapa nomor darurat polisi umum Sei Mangkei?"}, opts:[{en:"100",id:"100"},{en:"110",id:"110"},{en:"112",id:"112"},{en:"119",id:"119"}], correct:1}
 ];
-const PASS_MARK = 16; // 80% of 20
+/* ============ QUESTION BANK (60) ============
+   10 MANDATORY slots (each has an A and B version; a candidate sees A first, B on a retry)
+   + 40-question random POOL. Each paper = 10 mandatory + 10 random (20 total), shuffled together.
+   Random picks: 6 guaranteed (one each from Bypassing, Driving, Energy Isolation, Hot Work, Line of Fire,
+   Work Authorisation) + 4 fully random. A candidate never sees the same random question twice.
+   Correct answer is listed FIRST in mkc(); options are shuffled at paper-build time. */
+const O_ = (en,id)=>({en,id});
+function mkc(id, topic, group, qEn, qId, correct, wrongs){
+  return { id, topic, group:group||null, q:{en:qEn,id:qId}, opts:[correct,...wrongs].map(x=>O_(x[0],x[1])), correct:0, fixed:false };
+}
+function mkf(id, topic, group, qEn, qId, opts, correct){   // fixed order (numbers, True/False)
+  return { id, topic, group:group||null, q:{en:qEn,id:qId}, opts:opts.map(x=>O_(x[0],x[1])), correct, fixed:true };
+}
+function fromLegacy(i, id, topic, group, fixed){
+  const L = legacyQ[i]; return { id, topic, group:group||null, q:L.q, opts:L.opts, correct:L.correct, fixed:!!fixed };
+}
+
+/* ---- lesson-learned questions (L01 is mandatory slot 4A; L02–L17 are in the pool) ---- */
+const L01 = mkc('L01','ptw-valid',null,"A Permit to Work is only valid when it is…","Izin Kerja (PTW) hanya sah jika…",
+  ["Physically at the work site, released and verified before work starts","Berada secara fisik di lokasi kerja, sudah dirilis dan diverifikasi sebelum pekerjaan dimulai"],
+  [["Being signed in the office","Sedang ditandatangani di kantor"],["Verbally agreed","Disetujui secara lisan"],["Signed after work has started","Ditandatangani setelah pekerjaan dimulai"]]);
+const L02 = mkc('L02','ptw-scope',null,"A Permit to Work covers…","Izin Kerja mencakup…",
+  ["Only its defined, documented area","Hanya area yang ditetapkan dan terdokumentasi"],
+  [["Adjacent zones, if the work is continuous","Zona di sebelahnya, jika pekerjaan berkelanjutan"],["The whole site","Seluruh site"],["Any crew member's work","Pekerjaan anggota tim mana pun"]]);
+const L03 = mkc('L03','stopwork',null,"When someone calls Stop Work, what do you do?","Ketika seseorang menyerukan Stop Work, apa yang Anda lakukan?",
+  ["Stop immediately, with no negotiating","Berhenti segera, tanpa negosiasi"],
+  [["Finish the current task first","Menyelesaikan tugas saat ini dulu"],["Continue if you are almost done","Lanjut jika hampir selesai"],["Check permit status, then continue","Cek status izin, lalu lanjut"]]);
+const L04 = mkc('L04','lift-crew',null,"A critical lift cannot meet its minimum crew or supervisor requirement. What happens?","Pengangkatan kritis tidak dapat memenuhi syarat minimum kru atau supervisor. Apa yang terjadi?",
+  ["The lift does not go ahead","Pengangkatan tidak dilakukan"],
+  [["The lift goes ahead if it is urgent","Pengangkatan tetap dilakukan jika mendesak"],["A single rigger covers everything","Satu rigger menangani semuanya"],["The lift goes ahead with extra caution","Pengangkatan dilakukan dengan ekstra hati-hati"]]);
+const L05 = mkc('L05','lift-rigging',null,"Which rigging is acceptable for a lift?","Rigging mana yang dapat diterima untuk pengangkatan?",
+  ["Only rigging certified for the load","Hanya rigging yang bersertifikat untuk beban tersebut"],
+  [["An excavator bucket, if careful","Bucket ekskavator, jika hati-hati"],["Wire rope in place of a webbing sling","Wire rope sebagai pengganti webbing sling"],["Any hook that looks strong","Hook apa pun yang terlihat kuat"]]);
+const L06 = mkc('L06','height-tie',null,"A full body harness protects you only when…","Full body harness hanya melindungi Anda jika…",
+  ["It is hooked to an approved anchor point","Terkait pada titik jangkar yang disetujui"],
+  [["It is worn","Dikenakan"],["It is new","Masih baru"],["It is adjusted tight","Disetel kencang"]]);
+const L07 = mkc('L07','dropped-tools',null,"Tools used at height must be secured with…","Alat yang digunakan di ketinggian harus diamankan dengan…",
+  ["Rated tool lanyards on rated attachment points","Tool lanyard bersertifikat pada titik pengait yang bersertifikat"],
+  [["Cable ties","Cable tie"],["Tape","Lakban"],["Pocket clips","Klip saku"]]);
+const L08 = mkf('L08','hotwork-clear','hotwork',"Before hot work, combustibles (including rubbish and plastic) must be cleared to at least…","Sebelum pekerjaan panas, material mudah terbakar (termasuk sampah dan plastik) harus disingkirkan minimal…",
+  [["1 m","1 m"],["3 m","3 m"],["5 m","5 m"],["10 m","10 m"]],3);
+const L09 = mkc('L09','hotwork-watcher','hotwork',"The fire watcher must monitor the hot work area…","Fire watcher harus memantau area pekerjaan panas…",
+  ["Throughout the whole activity","Selama seluruh aktivitas"],
+  [["Only at start-up","Hanya saat awal pekerjaan"],["Only at the end","Hanya di akhir"],["Only if asked","Hanya jika diminta"]]);
+const L10 = mkc('L10','loto-energize','energy',"Before energizing a distribution board, you need…","Sebelum mengaktifkan (energize) panel distribusi, Anda memerlukan…",
+  ["A permit and lockout (LOTO)","Izin kerja dan lockout (LOTO)"],
+  [["A verbal OK from the supervisor","Persetujuan lisan dari supervisor"],["Nothing, if you are only testing","Tidak ada, jika hanya menguji"],["Only a competent colleague nearby","Hanya rekan kompeten di dekat Anda"]]);
+const L11 = mkc('L11','phone','driving',"While driving on site, you need to take a phone call. You should…","Saat mengemudi di site, Anda perlu menerima telepon. Anda harus…",
+  ["Stop the vehicle fully before answering","Menghentikan kendaraan sepenuhnya sebelum menjawab"],
+  [["Use the speaker","Menggunakan speaker"],["Keep it brief","Singkat saja"],["Take it only on a familiar route","Hanya di rute yang dikenal"]]);
+const L12 = mkc('L12','dumpbed','driving',"The dump bed of a truck must be…","Bak dump truck harus…",
+  ["Fully lowered before moving, every time","Diturunkan sepenuhnya sebelum bergerak, setiap kali"],
+  [["Raised for visibility","Diangkat agar terlihat"],["Half raised","Setengah diangkat"],["Lowered only near cables","Diturunkan hanya di dekat kabel"]]);
+const L13 = mkc('L13','heat',null,"Which is NOT a safe way to cool down after heat exposure?","Mana yang BUKAN cara aman untuk mendinginkan tubuh setelah terpapar panas?",
+  ["Pouring cold water over your head","Menyiram kepala dengan air dingin"],
+  [["Resting in the shade","Beristirahat di tempat teduh"],["Drinking water","Minum air"],["Taking a scheduled break","Mengambil istirahat terjadwal"]]);
+const L14 = mkc('L14','covers',null,"Open drainage or manholes near walkways must be covered with…","Drainase atau manhole terbuka di dekat jalur pejalan kaki harus ditutup dengan…",
+  ["Secured, load-rated covers","Penutup yang terpasang kuat dan berkapasitas beban"],
+  [["Plywood","Triplek"],["A loose board","Papan lepas"],["A sack or cloth","Karung atau kain"]]);
+const L15 = mkc('L15','weather',null,"Before strong wind or a storm, temporary structures and unfinished work should be…","Sebelum angin kencang atau badai, struktur sementara dan pekerjaan yang belum selesai harus…",
+  ["Secured and inspected","Diamankan dan diperiksa"],
+  [["Left as they are","Dibiarkan"],["Checked only if built long ago","Diperiksa hanya jika dibangun lama"],["Ignored if barricaded","Diabaikan jika diberi barikade"]]);
+const L16 = mkc('L16','vendor',null,"Vendor personnel arriving at the gate must go…","Personel vendor yang tiba di gerbang harus pergi…",
+  ["Directly to induction","Langsung ke induksi"],
+  [["Straight to the work area with an escort","Langsung ke area kerja dengan pendamping"],["To the canteen first","Ke kantin dulu"],["To their own supervisor","Ke supervisor mereka sendiri"]]);
+const L17 = mkc('L17','report-damage',null,"If you damage equipment or property, you should…","Jika Anda merusak peralatan atau properti, Anda harus…",
+  ["Report it immediately","Segera melaporkannya"],
+  [["Cover it up and fix it later","Menutupinya dan memperbaikinya nanti"],["Wait for the next inspection","Menunggu inspeksi berikutnya"],["Tell only a colleague","Memberi tahu rekan saja"]]);
+
+/* ---- second question per Life Saving Rule ---- */
+const R_COUNT = mkf('R01','lsr-names',null,"How many Life Saving Rules are there?","Ada berapa Life Saving Rules?",[["5","5"],["7","7"],["9","9"],["12","12"]],2);
+const R_BYPASS = mkc('R02','bypass','bypass',"Bypassing Safety Controls: guards, interlocks and alarms exist to…","Melewati Kontrol Keselamatan: pengaman, interlock, dan alarm ada untuk…",
+  ["Prevent or limit a fatality or major accident","Mencegah atau membatasi fatalitas atau kecelakaan besar"],
+  [["Speed up the work","Mempercepat pekerjaan"],["Reduce paperwork","Mengurangi administrasi"],["Satisfy audit requirements","Memenuhi persyaratan audit"]]);
+const R_CONF = mkc('R03','confined-steps',null,"Confined Space: what must you do before entering?","Ruang Terbatas: apa yang harus dilakukan sebelum masuk?",
+  ["Obtain a PTW, test and monitor the atmosphere, and verify it is safe","Memperoleh PTW, menguji dan memantau atmosfer, serta memastikan aman"],
+  [["Enter briefly to check conditions","Masuk sebentar untuk memeriksa kondisi"],["Ask a colleague to look inside","Meminta rekan melihat ke dalam"],["Hold your breath and check for smell","Menahan napas dan memeriksa bau"]]);
+const R_DRIVE = mkc('R04','phone','driving',"Driving: as a passenger, what must you do if the driver uses a phone while driving?","Mengemudi: sebagai penumpang, apa yang harus dilakukan jika pengemudi menggunakan telepon saat mengemudi?",
+  ["Intervene","Menegur"],
+  [["Say nothing","Diam saja"],["Use your own phone too","Ikut menggunakan telepon"],["Record a video","Merekam video"]]);
+const R_ENERGY = mkc('R05','stored-energy','energy',"Energy Isolation: stored energy must be…","Isolasi Energi: energi tersimpan harus…",
+  ["Dissipated before work starts","Dilepaskan sebelum pekerjaan dimulai"],
+  [["Ignored if the valve is closed","Diabaikan jika katup tertutup"],["Left to release during the work","Dibiarkan lepas selama pekerjaan"],["Checked only after the work","Diperiksa hanya setelah pekerjaan"]]);
+const R_HOT = mkc('R06','hotwork-equip','hotwork',"Hot Work: before starting, what must you confirm about fire/explosion protection equipment?","Pekerjaan Panas: sebelum mulai, apa yang harus dipastikan tentang peralatan proteksi kebakaran/ledakan?",
+  ["It is functional","Berfungsi"],
+  [["It is stored in the office","Disimpan di kantor"],["It is optional for short jobs","Opsional untuk pekerjaan singkat"],["It is painted red","Dicat merah"]]);
+const R_LOF = mkc('R07','lof','lof',"Line of Fire: which action protects you?","Line of Fire: tindakan mana yang melindungi Anda?",
+  ["Continually monitor your surroundings and keep out of the line of fire","Terus memantau sekeliling dan berada di luar line of fire"],
+  [["Stand behind equipment where the operator can't see you","Berdiri di belakang alat yang tidak terlihat oleh operator"],["Focus only on your own task","Fokus hanya pada tugas sendiri"],["Assume operators can see you","Menganggap operator pasti melihat Anda"]]);
+const R_LIFT = mkc('R08','lift-people',null,"Safe Mechanical Lifting: if a lift involves lifting people, what must you verify?","Pengangkatan Mekanis Aman: jika pengangkatan melibatkan orang, apa yang harus diverifikasi?",
+  ["The equipment is certified for lifting people","Peralatan bersertifikat untuk mengangkat orang"],
+  [["The load is light","Beban ringan"],["A colleague has done it before","Rekan pernah melakukannya"],["The weather is dry","Cuaca kering"]]);
+const R_WA = mkc('R09','wa-change','workauth',"Work Authorisation: if the work or situation changes, what must happen?","Otorisasi Kerja: jika pekerjaan atau situasi berubah, apa yang harus dilakukan?",
+  ["Get a new permit","Ambil izin baru"],
+  [["Continue under the old permit","Lanjut dengan izin lama"],["Get a verbal OK from a colleague","Persetujuan lisan dari rekan"],["Nothing, if the crew is the same","Tidak ada, jika tim sama"]]);
+const R_HEIGHT = mkc('R10','height-tie',null,"Working at Height: fall protection must be secured to…","Bekerja di Ketinggian: alat pelindung jatuh harus dipasang pada…",
+  ["An approved anchor point","Titik jangkar yang disetujui"],
+  [["Any nearby pipe","Pipa terdekat mana pun"],["A scaffold handrail","Handrail perancah"],["A colleague's belt","Sabuk rekan"]]);
+
+/* ---- other topics taught in the induction ---- */
+const N_NAMES = mkc('N01','lsr-names',null,"Which of these is NOT one of the 9 Life Saving Rules?","Mana yang BUKAN salah satu dari 9 Life Saving Rules?",
+  ["Manual Handling","Penanganan Manual"],
+  [["Hot Work","Pekerjaan Panas"],["Confined Space","Ruang Terbatas"],["Driving","Mengemudi"]]);
+const N_CONF = mkc('N02','confined-hazard',null,"A confined space such as a tank or pipe can contain…","Ruang terbatas seperti tangki atau pipa dapat mengandung…",
+  ["Explosive gas or a toxic or asphyxiating atmosphere","Gas mudah meledak atau atmosfer beracun atau mencekik"],
+  [["Only fresh air","Hanya udara segar"],["Only water","Hanya air"],["Nothing, if it looks empty","Tidak ada, jika terlihat kosong"]]);
+const N_MACH = mkc('N03','machinery',null,"Before operating machinery or equipment on site, you must be…","Sebelum mengoperasikan mesin atau alat di site, Anda harus…",
+  ["Trained and authorized","Terlatih dan berwenang"],
+  [["Familiar with similar machines","Familiar dengan mesin serupa"],["Asked by a colleague to help","Diminta rekan untuk membantu"],["Experienced in other jobs","Berpengalaman di pekerjaan lain"]]);
+const N_WASTE = mkc('N04','waste',null,"Where should waste be disposed of on site?","Di mana limbah harus dibuang di dalam site?",
+  ["In the designated waste bins","Pada tempat sampah yang telah ditentukan"],
+  [["Anywhere convenient","Di mana saja yang mudah"],["Left for someone else to clear","Dibiarkan untuk dibersihkan orang lain"],["Taken home","Dibawa pulang"]]);
+
+/* ---- 10 mandatory slots: a = first attempt, b = alternate on retry ---- */
+const MANDATORY = [
+ { a:R_COUNT, b:mkc('M01b','lsr-names',null,"Which of these is one of the 9 Life Saving Rules?","Mana yang termasuk salah satu dari 9 Life Saving Rules?",
+     ["Line of Fire","Line of Fire"],[["Manual Handling","Penanganan Manual"],["Waste Management","Pengelolaan Limbah"],["Tool Safety","Keselamatan Alat"]]) },
+ { a:fromLegacy(6,'Q07','emergency'), b:mkc('M02b','emergency',null,"In an emergency, where do you go after leaving the area?","Dalam keadaan darurat, ke mana Anda pergi setelah meninggalkan area?",
+     ["The designated safe zone, to check in for a head count","Zona aman yang ditentukan, untuk lapor dan dihitung jumlahnya"],
+     [["The nearest canteen","Kantin terdekat"],["Your vehicle","Kendaraan Anda"],["Back to your work area","Kembali ke area kerja Anda"]]) },
+ { a:fromLegacy(3,'Q04','stopwork',null,true), b:mkc('M03b','stopwork',null,"Who has the Stop Work Obligation?","Siapa yang memiliki Kewajiban Stop Work?",
+     ["Anyone who sees an unsafe situation","Siapa pun yang melihat situasi tidak aman"],
+     [["Only supervisors","Hanya supervisor"],["Only HSSE personnel","Hanya personel HSSE"],["Only the permit holder","Hanya pemegang izin"]]) },
+ { a:L01, b:mkc('M04b','ptw-valid',null,"What does “No PTW, No Work” mean?","Apa arti “Tanpa PTW, Tidak Ada Pekerjaan”?",
+     ["Work cannot start until a valid PTW is in place","Pekerjaan tidak boleh dimulai sebelum PTW yang berlaku tersedia"],
+     [["Work may start while the permit is being signed","Pekerjaan boleh dimulai saat izin sedang ditandatangani"],["A permit is needed only for night work","Izin hanya diperlukan untuk kerja malam"],["A permit is optional if a JHA exists","Izin opsional jika sudah ada JHA"]]) },
+ { a:fromLegacy(7,'Q08','ppe'), b:mkc('M05b','ppe',null,"Which of these is mandatory PPE in all project site areas (except rest shelters)?","Mana yang merupakan APD wajib di seluruh area site proyek (kecuali tempat istirahat)?",
+     ["Steel-toe safety shoes or boots","Sepatu atau boots keselamatan steel-toe"],
+     [["Baseball cap","Topi baseball"],["Sunglasses","Kacamata hitam"],["Canvas sneakers","Sepatu kets kanvas"]]) },
+ { a:fromLegacy(0,'Q01','speed',null,true), b:mkc('M06b','smoking',null,"Where is smoking permitted on site?","Di mana merokok diizinkan di site?",
+     ["Only in designated areas","Hanya di area yang ditentukan"],
+     [["Anywhere outdoors","Di mana saja di luar ruangan"],["Only near the canteen","Hanya di dekat kantin"],["Anywhere away from workers","Di mana saja yang jauh dari pekerja"]]) },
+ { a:fromLegacy(5,'Q06','warnings',null,true), b:mkc('M07b','warnings',null,"Under Zero Tolerance, a serious violation can lead to…","Di bawah Toleransi Nol, pelanggaran serius dapat berakibat…",
+     ["An immediate site ban, bypassing the warning system","Larangan masuk site langsung, tanpa melalui sistem peringatan"],
+     [["A verbal reminder","Teguran lisan"],["A single punch hole only","Hanya satu lubang pada kartu"],["A third warning only","Hanya peringatan ketiga"]]) },
+ { a:fromLegacy(16,'Q17','height-tie'), b:mkf('M08b','height-limit',null,"Above what height does work require fall prevention or protection measures?","Di atas ketinggian berapa pekerjaan memerlukan langkah pencegahan atau perlindungan jatuh?",
+     [["1.0 metre","1,0 meter"],["1.8 metres","1,8 meter"],["3.0 metres","3,0 meter"],["No height limit applies","Tidak ada batas ketinggian yang berlaku"]],1) },
+ { a:R_CONF, b:fromLegacy(9,'Q10','confined-confirm') },
+ { a:fromLegacy(14,'Q15','lift-barriers'), b:mkc('M10b','lift-position',null,"Where must you never position yourself around lifting operations?","Di mana Anda tidak boleh berada saat ada operasi pengangkatan?",
+     ["Close to or under suspended loads","Dekat dengan atau di bawah beban yang tergantung"],
+     [["Behind a barrier","Di belakang barikade"],["In the designated viewing area","Di area pandang yang ditentukan"],["At the muster point","Di titik kumpul"]]) }
+];
+
+/* ---- 40-question random pool ---- */
+const POOL = [
+  fromLegacy(1,'Q02','roe'), fromLegacy(2,'Q03','photos'), fromLegacy(4,'Q05','ptw-applies'),
+  fromLegacy(8,'Q09','bypass','bypass'), fromLegacy(10,'Q11','seatbelt','driving'), fromLegacy(11,'Q12','energy-hazards','energy'),
+  fromLegacy(12,'Q13','hotwork-def','hotwork'), fromLegacy(13,'Q14','lof','lof'), fromLegacy(15,'Q16','wa-valid','workauth'),
+  fromLegacy(17,'Q18','electrical'), fromLegacy(18,'Q19','plant',null,true), fromLegacy(19,'Q20','police',null,true),
+  R_BYPASS, R_DRIVE, R_ENERGY, R_HOT, R_LOF, R_LIFT, R_WA, R_HEIGHT,
+  L02,L03,L04,L05,L06,L07,L08,L09,L10,L11,L12,L13,L14,L15,L16,L17,
+  N_NAMES, N_CONF, N_MACH, N_WASTE
+];
+
+/* ---- per-candidate memory of questions already shown (this session + this device) ---- */
+function seenKey(){ const id=(state.visitor.idnum||'anon').toLowerCase().replace(/[^a-z0-9]/g,''); return 'mhi_seen_v1:'+(id||'anon'); }
+function loadSeen(){
+  const s = new Set(state.seenIds||[]);
+  try{ const raw=localStorage.getItem(seenKey()); if(raw) JSON.parse(raw).forEach(x=>s.add(x)); }catch(e){}
+  return s;
+}
+function saveSeen(set){
+  state.seenIds = Array.from(set);
+  try{ localStorage.setItem(seenKey(), JSON.stringify(state.seenIds)); }catch(e){}
+}
+function shuffleArr(a){ const r=a.slice(); for(let i=r.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [r[i],r[j]]=[r[j],r[i]]; } return r; }
+function randOf(a){ return a[Math.floor(Math.random()*a.length)]; }
+function prepareQ(q){
+  let opts = q.opts.map((o,i)=>({o,i}));
+  if(!q.fixed) opts = shuffleArr(opts);
+  return { id:q.id, q:q.q, opts:opts.map(x=>x.o), correct:opts.findIndex(x=>x.i===q.correct) };
+}
+const PAPER_SIZE = 20, PASS_PCT = 0.8, GUARANTEED_GROUPS = ['bypass','driving','energy','hotwork','lof','workauth'];
+function buildPaper(){
+  const seen = loadSeen(), usedIds = new Set(), usedTopics = new Set(), paper = [];
+  MANDATORY.forEach(slot=>{
+    const unseen = [slot.a, slot.b].filter(q=>!seen.has(q.id));
+    const pick = unseen.length ? unseen[0] : randOf([slot.a, slot.b]);
+    paper.push(pick); usedIds.add(pick.id); usedTopics.add(pick.topic);
+  });
+  const pickFrom = (cands)=>{
+    let c = cands.filter(q=>!usedIds.has(q.id) && !usedTopics.has(q.topic) && !seen.has(q.id));
+    if(!c.length) c = cands.filter(q=>!usedIds.has(q.id) && !usedTopics.has(q.topic));   // pool exhausted: allow a repeat only as a last resort
+    if(!c.length) return null;
+    const p = randOf(c); paper.push(p); usedIds.add(p.id); usedTopics.add(p.topic); return p;
+  };
+  GUARANTEED_GROUPS.forEach(g=> pickFrom(POOL.filter(q=>q.group===g)));
+  // the 4 fully random picks come only from questions outside the six guaranteed rule groups, so a retry still has a fresh question for every rule
+  const freeQs = POOL.filter(q=>!q.group);
+  while(paper.length < PAPER_SIZE){ if(!pickFrom(freeQs)) break; }
+  while(paper.length < PAPER_SIZE){ if(!pickFrom(POOL)) break; }
+  while(paper.length < PAPER_SIZE){ const rest = POOL.filter(q=>!usedIds.has(q.id)); if(!rest.length) break; const p=randOf(rest); paper.push(p); usedIds.add(p.id); }
+  paper.forEach(q=>seen.add(q.id)); saveSeen(seen);
+  finalQuestions = shuffleArr(paper).map(prepareQ);
+  PASS_MARK = Math.ceil(finalQuestions.length * PASS_PCT);
+}
+let finalQuestions = [];   // rebuilt by buildPaper() each time a candidate starts an assessment attempt
+let PASS_MARK = 16;        // recalculated as 80% of the questions shown
+
 const SAFETY_NOTICE_EN = "This certificate is NOT permission to commence work. On arrival at site, you must meet Site HSSE in person for a short safety briefing — covering muster points and current site conditions — before proceeding. You may only commence work once Site HSSE has issued your induction sticker.";
 const SAFETY_NOTICE_ID = "Sertifikat ini BUKAN izin untuk memulai pekerjaan. Setibanya di site, Anda wajib bertemu langsung dengan Site HSSE untuk briefing keselamatan singkat — mencakup titik kumpul dan kondisi site terkini — sebelum melanjutkan. Anda hanya dapat memulai pekerjaan setelah Site HSSE menerbitkan stiker induksi Anda.";
 const MAX_ATTEMPTS = 2;
@@ -645,7 +900,7 @@ const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzDGDL
 const GITHUB_URL = "https://iggifernandes.github.io/EcoOils-Project-Site-Induction-Sei-Mangkei/";
 const ON_GITHUB_PAGES = location.hostname.includes('github.io');
 const START_PARAM = new URLSearchParams(location.search).get('start') === '1';
-const state = { lang:"en", pos: START_PARAM ? 1 : 0, visitor:{name:"",company:"",host:"",hostName:"",hostPhone:"",idnum:"",purpose:"",certify:false,healthCert:""}, secAnswers:{}, qIndex:0, qAnswers:{}, score:0, attempts:0, lsrConfirmed:{}, startTime: START_PARAM ? Date.now() : 0, recorded:false, certAutoDownloaded:false, selfieDataUrl:null, selfieConsent:false };
+const state = { lang:"en", pos: START_PARAM ? 1 : 0, visitor:{name:"",company:"",host:"",hostName:"",hostPhone:"",idnum:"",purpose:"",certify:false,healthCert:""}, secAnswers:{}, qIndex:0, qAnswers:{}, score:0, attempts:0, lsrConfirmed:{}, paperBuilt:false, seenIds:[], startTime: START_PARAM ? Date.now() : 0, recorded:false, certAutoDownloaded:false, selfieDataUrl:null, selfieConsent:false };
 let certNumber = "";
 let isAdminMode = (location.hash === '#admin');
 let adminAuthed = false;
@@ -673,6 +928,7 @@ async function recordSubmission(){
   const record = {
     certNumber, name:v.name, company:v.company, idnum:v.idnum, host:v.host, hostName:v.hostName, hostPhone:v.hostPhone, purpose:v.purpose,
     certify:v.certify, healthCert:v.healthCert,
+    paperIds: finalQuestions.map(q=>q.id).join('|'),
     score:state.score, totalQuestions:finalQuestions.length,
     percentage: Math.round((state.score/finalQuestions.length)*100),
     passed: state.score >= PASS_MARK,
@@ -1187,7 +1443,7 @@ function bind(){
 
   if(f.type==='assessment-intro'){
     const startQuizBtn = document.getElementById('startQuizBtn');
-    if(startQuizBtn) startQuizBtn.onclick = ()=>{ state.pos++; state.qIndex=0; render(); };
+    if(startQuizBtn) startQuizBtn.onclick = ()=>{ if(!state.paperBuilt){ buildPaper(); state.paperBuilt = true; } state.pos++; state.qIndex=0; render(); };
   }
 
   if(f.type==='quiz'){
@@ -1274,7 +1530,7 @@ function bind(){
     const resitBtn = document.getElementById('resitBtn');
     if(resitBtn) resitBtn.onclick = ()=>{
       if(autoRestartTimer){ clearTimeout(autoRestartTimer); autoRestartTimer=null; }
-      state.qIndex=0; state.score=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={}; state.selfieDataUrl=null; state.selfieConsent=false;
+      state.qIndex=0; state.score=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={}; state.selfieDataUrl=null; state.selfieConsent=false; state.paperBuilt=false;
       state.pos = flow.findIndex(x=>x.type==='content');
       render();
     };
@@ -1294,7 +1550,7 @@ function bind(){
     }
     const restartBtn = document.getElementById('restartBtn');
     if(restartBtn) restartBtn.onclick = ()=>{
-      state.pos=0; state.qIndex=0; state.score=0; state.attempts=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={};
+      state.paperBuilt=false; state.seenIds=[]; state.pos=0; state.qIndex=0; state.score=0; state.attempts=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={};
       state.visitor={name:"",company:"",host:"",hostName:"",hostPhone:"",idnum:"",purpose:"",certify:false,healthCert:""}; certNumber=""; state.startTime=0; state.recorded=false; state.certAutoDownloaded=false; state.selfieDataUrl=null; state.selfieConsent=false;
       render();
     };
