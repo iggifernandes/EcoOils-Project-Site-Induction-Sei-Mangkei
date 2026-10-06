@@ -13,7 +13,7 @@
   --muted:#6B7280; --radius:14px;
 }
 *{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
+html,body{margin:0;padding:0;overscroll-behavior-y:contain;}
 body{background:#EFF2EC;color:var(--ink);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding-bottom:40px;}
 @media (prefers-reduced-motion: reduce){*{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}}
 .topbar{width:100%;background:var(--bg);padding:14px 20px 14px;border-bottom:5px solid var(--gold);position:relative;}
@@ -183,7 +183,7 @@ const UI = {
     certNo:"Certificate No.", nameF:"Name", companyF:"Vendor / company", hostF:"Host / contractor", purposeF:"Purpose", idF:"ID / Passport No.", attemptsF:"Attempts taken", issuedF:"Issued",
     showGate:"Induction completion record only. Not proof of employment, engagement or authorization to work. Name, company and ID are declared by the candidate and must be verified at the gate.", newVisitor:"New visitor", stampLine1:"INDUCTION", stampLine2:"COMPLETE",
     watchEn:"IOGP 'Rule in a Minute' — English (YouTube)", watchId:"IOGP 'Rule in a Minute' — Bahasa Indonesia (YouTube)",
-    videoTitle:"Life Saving Rules — Induction Video", videoDesc:"Watch the video below in your preferred language before continuing to the 9 Life Saving Rules."
+    videoTitle:"Life Saving Rules — Induction Video", videoDesc:"The 9 Life Saving Rules are covered one by one on the next pages. Each page has its own video — please watch it, then confirm and continue."
   },
   id:{ subTitle:"Induksi dan Asesmen Site", footer:"Mencakup Induksi HSSE Proyek Mentari EcoOils dan Life Saving Rules (Sei Mangkei, Rev 00). Nilai kelulusan 80% diperlukan pada asesmen akhir. Dua kali gagal mengharuskan mengulang seluruh induksi, sesuai kebijakan site.",
     start:"Mulai induksi", continueBtn:"Lanjutkan", back:"Kembali", nextSection:"Bagian berikutnya", nextQuestion:"Pertanyaan berikutnya", seeResult:"Lihat hasil",
@@ -221,7 +221,7 @@ const UI = {
     certNo:"No. Sertifikat", nameF:"Nama", companyF:"Vendor / perusahaan", hostF:"Host / kontraktor", purposeF:"Tujuan", idF:"No. ID / Paspor", attemptsF:"Jumlah percobaan", issuedF:"Diterbitkan",
     showGate:"Hanya catatan penyelesaian induksi. Bukan bukti pekerjaan, penugasan, atau izin untuk bekerja. Nama, perusahaan, dan ID dideklarasikan oleh kandidat dan harus diverifikasi di gerbang.", newVisitor:"Pengunjung baru", stampLine1:"INDUKSI", stampLine2:"SELESAI",
     watchEn:"Video IOGP 'Rule in a Minute' — Bahasa Inggris (YouTube)", watchId:"Video IOGP 'Rule in a Minute' — Bahasa Indonesia (YouTube)",
-    videoTitle:"Video Induksi — Life Saving Rules", videoDesc:"Tonton video di bawah ini dalam bahasa pilihan Anda sebelum melanjutkan ke 9 Life Saving Rules."
+    videoTitle:"Video Induksi — Life Saving Rules", videoDesc:"9 Life Saving Rules dibahas satu per satu pada halaman berikutnya. Setiap halaman memiliki videonya sendiri — mohon tonton, lalu konfirmasi dan lanjutkan."
   }
 };
 
@@ -436,8 +436,6 @@ const sections = [
 ];
 
 /* ---- 9 Life Saving Rules, each its own section ---- */
-const LSR_YT_EN = "https://www.youtube.com/watch?v=lRw3aGtBe64&list=PLt0-qTVCvEp1Dxe7j7SDbbiLrYIkUqYov";
-const LSR_YT_ID = "https://www.youtube.com/watch?v=WT4-cuWQGa0&list=PLt0-qTVCvEp0wImVteL-Uiu1Bi7fpQPbb";
 const LSR_VIDEO_LINKS = {
   bypass:     { en:"https://youtu.be/wmm_u7l8acE", id:"https://youtu.be/YzlStSNQsiQ" },
   confined:   { en:"https://youtu.be/LhMtWiRCnCg", id:"https://youtu.be/9aYZqqKIAq0" },
@@ -510,10 +508,6 @@ sections.push({
   title:{en:"Life Saving Rules — Induction Video",id:"Video Induksi — Life Saving Rules"},
   bodyFn:(lang)=>`<img src="data:image/png;base64,${LSR_DIAMOND_B64}" alt="9 Life Saving Rules" style="display:block;width:100%;max-width:360px;margin:0 auto 16px;">
     <p class="desc">${UI[lang].videoDesc}</p>
-    <div class="video-links">
-      <a href="${LSR_YT_EN}" target="_blank" rel="noopener">${icon('bell')}${UI[lang].watchEn}</a>
-      <a href="${LSR_YT_ID}" target="_blank" rel="noopener">${icon('bell')}${UI[lang].watchId}</a>
-    </div>
     <h3>${lang==='en'?'The 9 Life Saving Rules':'9 Life Saving Rules'}</h3>
     <div class="lsr-icon-grid">${lsrData.map(r=>`<div class="lsr-icon-tile">${lsrIcon(r.key)}<span>${r.name[lang]}</span></div>`).join('')}</div>`,
   check:null
@@ -535,7 +529,8 @@ lsrData.forEach((r,idx)=>{
       <div class="lsr-rewatch-links">
         <a href="${LSR_VIDEO_LINKS[r.key].en}" target="_blank" rel="noopener" class="lsr-rewatch-link"><span class="lsr-rewatch-icon">${lsrIcon(r.key)}</span><span>English</span></a>
         <a href="${LSR_VIDEO_LINKS[r.key].id}" target="_blank" rel="noopener" class="lsr-rewatch-link"><span class="lsr-rewatch-icon">${lsrIcon(r.key)}</span><span>Bahasa Indonesia</span></a>
-      </div>`;
+      </div>
+      <p class="required-note" style="color:var(--green-dark);margin-top:8px;">${lang==='en'?'The video opens in a new tab or app. Your progress is saved — come back to this page when it ends.':'Video akan terbuka di tab atau aplikasi baru. Kemajuan Anda tersimpan — kembali ke halaman ini setelah video selesai.'}</p>`;
       h += `<button type="button" class="dl-btn" data-lsrcard="${r.key}">⬇ ${UI[lang].downloadLsrCard}</button>`;
       h += `<label class="confirm-gate"><input type="checkbox" id="confirmGateInput">${lang==='en'
         ? `I have watched the video and understood the requirements of the <b>${r.name.en}</b> rule`
@@ -983,25 +978,29 @@ async function postOnce(payload){
 }
 async function sendRecordToSheet(payload){
   setUploadStatus('pending');
+  queuePending(payload);                       // kept until the server confirms, so a refresh mid-upload cannot lose it
   const waits = [0, 5000, 15000, 40000];        // first try + 3 retries for weak signal
   for(const w of waits){
     if(w) await new Promise(r=>setTimeout(r, w));
-    if(await postOnce(payload)){ setUploadStatus('ok'); return; }
+    if(await postOnce(payload)){ dequeuePending(payload.certNumber); setUploadStatus('ok'); return; }
   }
   setUploadStatus('fail');
-  queuePending(payload);
+}
+function dequeuePending(cn){
+  try{ const list = JSON.parse(localStorage.getItem(UPLOAD_PENDING_KEY)||'[]').filter(p=>p.certNumber!==cn);
+    if(list.length) localStorage.setItem(UPLOAD_PENDING_KEY, JSON.stringify(list)); else localStorage.removeItem(UPLOAD_PENDING_KEY); }catch(e){}
 }
 function queuePending(payload){
   try{
     const list = JSON.parse(localStorage.getItem(UPLOAD_PENDING_KEY)||'[]').filter(p=>p.certNumber!==payload.certNumber);
-    list.push(payload); localStorage.setItem(UPLOAD_PENDING_KEY, JSON.stringify(list.slice(-3)));
+    list.push(payload); localStorage.setItem(UPLOAD_PENDING_KEY, JSON.stringify(list.slice(-2)));
   }catch(e){}
 }
 async function flushPending(){                   // runs when the page is opened again on the same phone
   if(!GOOGLE_SHEET_WEBHOOK_URL) return;
   let list=[]; try{ list = JSON.parse(localStorage.getItem(UPLOAD_PENDING_KEY)||'[]'); }catch(e){ return; }
   if(!list.length) return;
-  const left=[]; for(const p of list){ if(!(await postOnce(p))) left.push(p); }
+  const left=[]; for(const p of list){ if(await postOnce(p)){ if(p.certNumber===certNumber) setUploadStatus('ok'); } else { left.push(p); if(p.certNumber===certNumber) setUploadStatus('fail'); } }
   try{ if(left.length) localStorage.setItem(UPLOAD_PENDING_KEY, JSON.stringify(left)); else localStorage.removeItem(UPLOAD_PENDING_KEY); }catch(e){}
 }
 function recordsToCSV(records){
@@ -1057,6 +1056,12 @@ function render(){
   applyStaticUI(); setProgress();
   const L = UI[state.lang], lang = state.lang;
   const host = document.getElementById('cardHost');
+  if(resumeOffer && !isAdminMode){
+    host.innerHTML = viewResumeOffer(resumeOffer);
+    document.getElementById('resumeContinueBtn').onclick = ()=>{ applySnap(resumeOffer); resumeOffer = null; render(); };
+    document.getElementById('resumeNewBtn').onclick = ()=>{ try{ localStorage.removeItem(LOCAL_SAVE_KEY); }catch(e){} resumeOffer = null; render(); };
+    return;
+  }
   if(isAdminMode){
     host.innerHTML = adminAuthed ? viewAdminPanel(L) : viewAdminLogin(L);
     bind();
@@ -1072,6 +1077,7 @@ function render(){
   else if(f.type==='selfie') host.innerHTML = viewSelfie(L,lang);
   else if(f.type==='result') host.innerHTML = viewResult(L,lang);
   bind();
+  saveProgress();
 }
 function viewAdminLogin(L){
   return `<div class="panel"><div class="eyebrow">Admin</div><h2>${L.adminLoginTitle}</h2><p class="desc">${L.adminLoginDesc}</p>
@@ -1706,6 +1712,52 @@ function bind(){
   }
 }
 
+/* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-06', SAVE_MAX_AGE = 6*3600*1000;
+const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
+let resumeOffer = null;
+function saveProgress(){
+  if(isAdminMode || resumeOffer) return;
+  const snap = (withSelfie)=>JSON.stringify({ build:BUILD_ID, t:Date.now(), certNumber, PASS_MARK, finalQuestions,
+    state:Object.assign({}, state, withSelfie ? {} : {selfieDataUrl:null}) });
+  try{ sessionStorage.setItem(SAVE_KEY, snap(true)); }
+  catch(e){ try{ sessionStorage.setItem(SAVE_KEY, snap(false)); }catch(e2){} }   // storage full: keep progress, drop the photo
+  // second copy on this phone, for when the browser (or an in-app browser) drops the tab while a video is open
+  try{
+    const f = flow[state.pos];
+    if(f && f.type==='result'){ localStorage.removeItem(LOCAL_SAVE_KEY); }          // finished: nothing left to resume
+    else if(state.pos >= 2){ try{ localStorage.setItem(LOCAL_SAVE_KEY, snap(true)); }catch(e){ localStorage.setItem(LOCAL_SAVE_KEY, snap(false)); } }
+  }catch(e){}
+}
+function applySnap(snap){
+  Object.assign(state, snap.state);
+  certNumber = snap.certNumber || ''; finalQuestions = snap.finalQuestions || []; PASS_MARK = snap.PASS_MARK || PASS_MARK;
+}
+function validSnap(snap){ return !!(snap && snap.build===BUILD_ID && snap.state && snap.state.pos < flow.length); }
+function maskName(n){ n = String(n||'').trim(); return n ? n.charAt(0)+'•••' : '—'; }
+function viewResumeOffer(snap){
+  const v = snap.state.visitor || {}; const id = String(v.idnum||''); const idm = id.length>2 ? ' · ••••'+id.slice(-2) : '';
+  return `<div class="panel"><div class="eyebrow">EcoOils — Mentari Project</div><h2>Continue your induction? / Lanjutkan induksi Anda?</h2>
+    <p class="desc"><b>${maskName(v.name)}${idm}</b><br>An induction is in progress on this phone. / Ada induksi yang sedang berjalan di ponsel ini.</p></div>
+    <div class="foot"><button class="btn btn-ghost" id="resumeNewBtn">Start new / Mulai baru</button><button class="btn btn-primary" id="resumeContinueBtn">Continue / Lanjutkan</button></div>`;
+}
+function loadProgress(){
+  if(isAdminMode) return;
+  try{                                                   // 1) same tab reloaded: restore silently
+    const raw = sessionStorage.getItem(SAVE_KEY);
+    if(raw){ const snap = JSON.parse(raw); if(validSnap(snap) && Date.now()-snap.t <= SAVE_MAX_AGE){ applySnap(snap); return; } sessionStorage.removeItem(SAVE_KEY); }
+  }catch(e){ try{ sessionStorage.removeItem(SAVE_KEY); }catch(e2){} }
+  try{                                                   // 2) tab was dropped (e.g. after a YouTube app): offer to continue
+    const raw = localStorage.getItem(LOCAL_SAVE_KEY);
+    if(raw){ const snap = JSON.parse(raw); if(validSnap(snap) && snap.state.pos >= 2 && Date.now()-snap.t <= LOCAL_MAX_AGE){ resumeOffer = snap; return; } localStorage.removeItem(LOCAL_SAVE_KEY); }
+  }catch(e){ try{ localStorage.removeItem(LOCAL_SAVE_KEY); }catch(e2){} }
+}
+// typed answers on the details form are saved as they are typed, and again when the page is hidden or closed
+document.addEventListener('input', saveProgress); document.addEventListener('change', saveProgress);
+window.addEventListener('pagehide', saveProgress);
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') saveProgress(); });
+
+loadProgress();
 render();
 flushPending();
 </script>
