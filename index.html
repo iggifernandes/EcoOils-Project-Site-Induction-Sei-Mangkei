@@ -63,6 +63,10 @@ ul.rules li.warn::before{content:"✕";color:var(--danger);}
 .lsr-rewatch-icon{width:32px;height:32px;display:block;border-radius:50%;overflow:hidden;}
 .lsr-rewatch-icon svg,.lsr-rewatch-icon img{width:32px;height:32px;stroke:var(--green);}
 .lsr-rewatch-link span:last-child{font-size:11px;font-weight:600;color:var(--green-dark);text-align:center;}
+.iogp-box{background:#EEF5FC;border:1px solid #C9DDF2;border-left:5px solid #0B5CAD;border-radius:9px;padding:12px 13px;margin:12px 0;}
+.iogp-tag{font-family:'Poppins',sans-serif;font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:#0B5CAD;margin-bottom:4px;}
+.iogp-rule{font-family:'Poppins',sans-serif;font-weight:700;font-size:14.5px;color:#0B5CAD;line-height:1.35;margin-bottom:6px;}
+.iogp-box ul{margin:0;padding-left:20px;}.iogp-box li{margin:5px 0;font-size:13.5px;line-height:1.45;}.iogp-box ul ul{margin:3px 0 4px;list-style:'– ';padding-left:18px;}
 .lesson-box{background:#FFF8DB;border:1px solid #F0DC8A;border-left:5px solid var(--gold-dark);border-radius:9px;padding:11px 12px;font-size:12.5px;color:#5C4A00;margin-top:12px;line-height:1.45;}
 .lesson-box b{display:block;font-family:'Poppins',sans-serif;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:#8A6D00;margin-bottom:3px;}
 .zt-box{background:var(--danger-light);border:1px solid #F2C2AC;border-radius:9px;padding:11px 12px;font-size:12.5px;color:#7A2A0F;font-weight:600;margin-top:12px;line-height:1.4;}
@@ -166,7 +170,7 @@ const UI = {
     welcomeTitle:"Before you enter site", welcomeDesc:"This induction covers the EcoOils Mentari Project HSSE content and the 9 Life Saving Rules. Each section has a quick check on its own screen, and it ends with a graded assessment — 80% required to pass. This induction takes approximately 30 minutes — please watch the videos and familiarize yourself with the Life Saving Rules.",
     assessTitle:"HSSE Induction Assessment", assessDesc:"This assessment covers the induction content you just read.",
     assessInstr:"Instructions", assessBullets:["You must score at least <b>80%</b> to pass.","If you fail 2 attempts, you'll need to resit the full induction.","20 questions, one at a time."],
-    startAssess:"Start assessment", downloadContacts:"Download emergency contact card (PNG)", downloadLsrCard:"Download pocket card (PNG)", downloadCert:"Download certificate (PNG)",
+    startAssess:"Start assessment", downloadContacts:"Download emergency contact card (PNG)", downloadCert:"Download certificate (PNG)",
     shareCert:"Share certificate", certAutoSaved:"Your certificate has been saved to your device.",
     upSending:"Sending a copy of your certificate to Project HSSE…", upOk:"Certificate copy sent to Project HSSE ✓", upFail:"Upload pending — keep your downloaded certificate and show it to your Host.",
     selfieTitle:"Verification Photo", selfieDesc:"Please take a quick selfie. This photo is used to verify your identity against your Induction Certificate when you meet Project HSSE on arrival at site.",
@@ -204,7 +208,7 @@ const UI = {
     welcomeTitle:"Sebelum Anda masuk site", welcomeDesc:"Induksi ini mencakup materi HSSE Proyek Mentari EcoOils dan 9 Life Saving Rules. Setiap bagian memiliki cek cepat di layar terpisah, dan diakhiri dengan asesmen bernilai — minimal 80% untuk lulus. Induksi ini memerlukan waktu sekitar 30 menit — mohon tonton videonya dan pahami Life Saving Rules.",
     assessTitle:"Asesmen Induksi HSSE", assessDesc:"Asesmen ini mencakup materi induksi yang baru saja Anda baca.",
     assessInstr:"Instruksi", assessBullets:["Anda harus mencapai nilai minimal <b>80%</b> untuk lulus.","Jika gagal 2 kali percobaan, Anda harus mengulang seluruh induksi.","20 pertanyaan, satu per satu."],
-    startAssess:"Mulai asesmen", downloadContacts:"Unduh kartu kontak darurat (PNG)", downloadLsrCard:"Unduh kartu saku (PNG)", downloadCert:"Unduh sertifikat (PNG)",
+    startAssess:"Mulai asesmen", downloadContacts:"Unduh kartu kontak darurat (PNG)", downloadCert:"Unduh sertifikat (PNG)",
     shareCert:"Bagikan sertifikat", certAutoSaved:"Sertifikat Anda telah disimpan ke perangkat.",
     upSending:"Mengirim salinan sertifikat Anda ke Project HSSE…", upOk:"Salinan sertifikat terkirim ke Project HSSE ✓", upFail:"Pengunggahan tertunda — simpan sertifikat yang telah diunduh dan tunjukkan kepada Host Anda.",
     selfieTitle:"Foto Verifikasi", selfieDesc:"Mohon ambil swafoto singkat. Foto ini digunakan untuk memverifikasi identitas Anda terhadap Sertifikat Induksi Anda saat bertemu Project HSSE di site.",
@@ -448,10 +452,10 @@ const LSR_VIDEO_LINKS = {
   height:     { en:"https://youtu.be/Z02IoTmRsBI", id:"https://youtu.be/QoGYPUQgTbQ" }
 };
 const lsrData = [
-{ key:"bypass", name:{en:"Bypassing Safety Controls",id:"Melewati Kontrol Keselamatan"},
+{ key:"bypass", name:{en:"Bypassing Safety Controls",id:"Mengesampingkan Kontrol Keselamatan"},
   intro:{en:"Safety-critical equipment (fire/explosion protection, guards, interlocks, alarms) and procedures exist to prevent or limit a fatality or major accident.",
     id:"Peralatan keselamatan kritikal (proteksi kebakaran/ledakan, pengaman, interlock, alarm) dan prosedur terkait ada untuk mencegah atau membatasi fatalitas atau kecelakaan besar."},
-  you:[{en:"Obtain authorization from the supervisor or issuing authority before overriding or disabling a critical device, system or alarm.",id:"Dapatkan otorisasi dari supervisor atau pihak berwenang sebelum melewati atau menonaktifkan perangkat/sistem/alarm kritikal."}],
+  you:[{en:"Obtain authorization from the supervisor or issuing authority before overriding or disabling a critical device, system or alarm.",id:"Dapatkan otorisasi dari supervisor atau pihak berwenang sebelum mengesampingkan atau menonaktifkan perangkat/sistem/alarm kritikal."}],
   sup:[{en:"Identify the critical device/system/alarm for the work activity.",id:"Identifikasi perangkat/sistem/alarm kritikal untuk aktivitas kerja."},{en:"Confirm authorization is obtained from the right level.",id:"Pastikan otorisasi diperoleh dari tingkat yang tepat."}]
 },
 { key:"confined", name:{en:"Confined Space",id:"Ruang Terbatas"},
@@ -460,10 +464,10 @@ const lsrData = [
   you:[{en:"Before entering a confined space, you must obtain authorization (PTW), test and monitor the atmosphere, and verify the space is safe for entry before proceeding.",id:"Sebelum memasuki ruang terbatas, Anda harus memperoleh otorisasi (PTW), menguji dan memantau atmosfer, serta memastikan ruang tersebut aman untuk dimasuki sebelum melanjutkan."},{en:"Confirm with the Safety Watch that you can enter.",id:"Pastikan dengan Safety Watch bahwa Anda boleh masuk."},{en:"Follow the requirements of the work permit.",id:"Ikuti persyaratan izin kerja."}],
   sup:[{en:"Confirm permit requirements are in place.",id:"Pastikan persyaratan izin terpenuhi."},{en:"Confirm a qualified safety watch is always present.",id:"Pastikan safety watch yang kompeten selalu hadir."},{en:"Confirm gas testing is carried out per the permit.",id:"Pastikan uji gas dilakukan sesuai izin."},{en:"Confirm it is safe to start.",id:"Pastikan aman untuk memulai."}]
 },
-{ key:"driving", name:{en:"Driving",id:"Mengemudi"},
+{ key:"driving", name:{en:"Driving",id:"Berkendara"},
   intro:{en:"Drivers and passengers share responsibility for each other's safety, including wearing seatbelts. Fitness for duty means not being under the influence of drugs or alcohol.",
     id:"Pengemudi dan penumpang bertanggung jawab atas keselamatan satu sama lain, termasuk mengenakan sabuk pengaman. Fit for duty berarti tidak berada di bawah pengaruh obat-obatan atau alkohol."},
-  you:[{en:"Always use a 3-point seatbelt and keep it fastened while the vehicle is moving.",id:"Selalu gunakan sabuk pengaman 3 titik dan tetap terpasang saat kendaraan bergerak."},{en:"Confirm everyone is wearing a seatbelt before driving.",id:"Pastikan semua penumpang memakai sabuk pengaman sebelum berkendara."},{en:"(Driver) Never use a phone, radio or text message while driving.",id:"(Pengemudi) Jangan pernah gunakan telepon, radio, atau SMS saat mengemudi."},{en:"(Passenger) Intervene if the driver uses a phone while driving.",id:"(Penumpang) Tegur jika pengemudi menggunakan telepon saat mengemudi."}],
+  you:[{en:"Always use a 3-point seatbelt and keep it fastened while the vehicle is moving.",id:"Selalu gunakan sabuk pengaman 3 titik dan tetap terpasang saat kendaraan bergerak."},{en:"Confirm everyone is wearing a seatbelt before driving.",id:"Pastikan semua penumpang memakai sabuk pengaman sebelum berkendara."},{en:"(Driver) Never use a phone, radio or text message while driving.",id:"(Pengemudi) Jangan pernah gunakan telepon, radio, atau SMS saat berkendara."},{en:"(Passenger) Intervene if the driver uses a phone while driving.",id:"(Penumpang) Tegur jika pengemudi menggunakan telepon saat berkendara."}],
   sup:[]
 },
 { key:"energy", name:{en:"Energy Isolation",id:"Isolasi Energi"},
@@ -478,13 +482,13 @@ const lsrData = [
   you:[{en:"Identify ignition sources (welding, grinding, torching, engines).",id:"Identifikasi sumber penyalaan (pengelasan, gerinda, pemotongan, mesin)."},{en:"Recognize hazardous areas requiring special precautions.",id:"Kenali area berbahaya yang memerlukan tindakan khusus."},{en:"Follow procedures correctly — failure could cause a fatality.",id:"Ikuti prosedur dengan benar — kegagalan dapat berakibat fatal."},{en:"Confirm fire/explosion protection equipment is functional.",id:"Pastikan peralatan proteksi kebakaran/ledakan berfungsi."}],
   sup:[{en:"Verify safety controls are in place and effective.",id:"Verifikasi kontrol keselamatan telah efektif."},{en:"Confirm the task can be performed exactly as planned.",id:"Pastikan pekerjaan dapat dilakukan sesuai rencana."},{en:"Authorize starting, resuming or handing over the work.",id:"Berikan otorisasi untuk memulai/melanjutkan/serah-terima."}]
 },
-{ key:"lineoffire", name:{en:"Line of Fire",id:"Line of Fire"},
+{ key:"lineoffire", name:{en:"Line of Fire",id:"Jalur Bahaya"},
   intro:{en:"This rule raises awareness of struck-by and caught-in-between hazards, which aren't always obvious and can appear as a task progresses.",
     id:"Aturan ini meningkatkan kesadaran terhadap bahaya tertabrak/tertimpa dan terjepit, yang tidak selalu terlihat jelas dan dapat muncul seiring berjalannya pekerjaan."},
-  you:[{en:"Continually monitor your surroundings and position yourself out of the line of fire.",id:"Terus pantau sekeliling dan posisikan diri di luar line of fire."},{en:"Ensure you're visible to drivers and equipment operators.",id:"Pastikan Anda terlihat oleh pengemudi dan operator alat."},{en:"Recognize when you create a line of fire hazard for yourself or others.",id:"Kenali saat Anda menciptakan bahaya line of fire bagi diri sendiri atau orang lain."}],
-  sup:[{en:"Confirm struck-by/caught-in-between hazards are identified and mitigated.",id:"Pastikan bahaya tertabrak/terjepit telah diidentifikasi dan dimitigasi."},{en:"Ensure the team's positioning avoids all identified lines of fire.",id:"Pastikan posisi tim menghindari semua line of fire yang teridentifikasi."}]
+  you:[{en:"Continually monitor your surroundings and position yourself out of the line of fire.",id:"Terus pantau sekeliling dan posisikan diri di luar jalur bahaya."},{en:"Ensure you're visible to drivers and equipment operators.",id:"Pastikan Anda terlihat oleh pengemudi dan operator alat."},{en:"Recognize when you create a line of fire hazard for yourself or others.",id:"Kenali saat tindakan Anda menempatkan diri sendiri atau orang lain di jalur bahaya."}],
+  sup:[{en:"Confirm struck-by/caught-in-between hazards are identified and mitigated.",id:"Pastikan bahaya tertabrak/terjepit telah diidentifikasi dan dimitigasi."},{en:"Ensure the team's positioning avoids all identified lines of fire.",id:"Pastikan posisi tim menghindari semua jalur bahaya yang teridentifikasi."}]
 },
-{ key:"lifting", name:{en:"Safe Mechanical Lifting",id:"Pengangkatan Mekanis Aman"},
+{ key:"lifting", name:{en:"Safe Mechanical Lifting",id:"Pengangkatan Mekanik yang Aman"},
   intro:{en:"Lifting operations must be planned and performed by competent personnel using certified equipment, with access controlled by barriers and exclusion zones.",
     id:"Operasi pengangkatan harus direncanakan dan dilakukan oleh personel kompeten menggunakan peralatan bersertifikat, dengan akses dikendalikan melalui barikade dan zona eksklusi."},
   you:[{en:"Confirm the lift is performed by competent personnel with certified equipment.",id:"Pastikan pengangkatan dilakukan oleh personel kompeten dengan peralatan bersertifikat."},{en:"Control access using barriers and exclusion zones.",id:"Kendalikan akses menggunakan barikade dan zona eksklusi."},{en:"Verify equipment is certified for lifting people, if applicable.",id:"Verifikasi peralatan bersertifikat untuk mengangkat orang, bila berlaku."}],
@@ -498,8 +502,8 @@ const lsrData = [
 },
 { key:"height", name:{en:"Working at Height",id:"Bekerja di Ketinggian"},
   intro:{en:"Work at height outside a protected area requires approved fall protection secured to an approved anchor point. Floor openings need physical barriers.",
-    id:"Bekerja di ketinggian di luar area terlindung memerlukan alat pelindung jatuh yang disetujui dan terpasang pada titik jangkar yang disetujui. Bukaan lantai memerlukan barikade fisik."},
-  you:[{en:"Have authorization to work at height outside a protective environment.",id:"Miliki otorisasi untuk bekerja di ketinggian di luar lingkungan terlindung."},{en:"Know what fall protection equipment to use and how to use it.",id:"Ketahui alat pelindung jatuh yang digunakan dan cara menggunakannya."},{en:"Check equipment before use.",id:"Periksa peralatan sebelum digunakan."},{en:"Always tie off when at height outside a protective environment.",id:"Selalu mengaitkan (tie off) saat berada di ketinggian di luar lingkungan terlindung."}],
+    id:"Bekerja di ketinggian di luar area yang terproteksi memerlukan alat pelindung jatuh yang disetujui dan terpasang pada titik jangkar yang ditetapkan. Bukaan lantai memerlukan barikade fisik."},
+  you:[{en:"Have authorization to work at height outside a protected area.",id:"Miliki otorisasi untuk bekerja di ketinggian di luar area yang terproteksi."},{en:"Know what fall protection equipment to use and how to use it.",id:"Ketahui alat pelindung jatuh yang digunakan dan cara menggunakannya."},{en:"Check equipment before use.",id:"Periksa peralatan sebelum digunakan."},{en:"Always tie off when at height outside a protected area.",id:"Selalu mengaitkan (tie off) saat berada di ketinggian di luar area yang terproteksi."}],
   sup:[{en:"Confirm it's safe to start work at height.",id:"Pastikan aman untuk memulai pekerjaan di ketinggian."}]
 }
 ];
@@ -520,6 +524,7 @@ lsrData.forEach((r,idx)=>{
     bodyFn:(lang)=>{
       let h = `<div class="lsr-page-icon">${lsrIcon(r.key)}</div>`;
       h += `<p class="desc">${r.intro[lang]}</p>`;
+      h += iogpBlock(r.key, lang);
       h += `<h3>${lang==='en'?'You must':'Anda wajib'}</h3>` + ul(r.you.map(x=>({en:x.en,id:x.id})),lang);
       if(r.sup.length) h += `<h3>${lang==='en'?'If you are the supervisor / Permit Holder, you must':'Jika Anda supervisor / Pemegang Izin, Anda wajib'}</h3>` + ul(r.sup.map(x=>({en:x.en,id:x.id})),lang);
       h += `<div class="zt-box">${lang==='en'?"EcoOils Zero Tolerance: choosing to break a Life Saving Rule means choosing not to work for EcoOils.":"Toleransi Nol EcoOils: memilih melanggar Life Saving Rule berarti memilih untuk tidak bekerja di EcoOils."}</div>`;
@@ -531,7 +536,7 @@ lsrData.forEach((r,idx)=>{
         <a href="${LSR_VIDEO_LINKS[r.key].id}" target="_blank" rel="noopener" class="lsr-rewatch-link"><span class="lsr-rewatch-icon">${lsrIcon(r.key)}</span><span>Bahasa Indonesia</span></a>
       </div>
       <p class="required-note" style="color:var(--green-dark);margin-top:8px;">${lang==='en'?'The video opens in a new tab or app. Your progress is saved — come back to this page when it ends.':'Video akan terbuka di tab atau aplikasi baru. Kemajuan Anda tersimpan — kembali ke halaman ini setelah video selesai.'}</p>`;
-      h += `<button type="button" class="dl-btn" data-lsrcard="${r.key}">⬇ ${UI[lang].downloadLsrCard}</button>`;
+      h += `<p class="required-note" id="lsrCardNote" style="color:var(--green-dark);margin-top:10px;">${lsrCardNoteText(r.key, lang)}</p>`;
       h += `<label class="confirm-gate"><input type="checkbox" id="confirmGateInput">${lang==='en'
         ? `I have watched the video and understood the requirements of the <b>${r.name.en}</b> rule`
         : `Saya telah menonton video dan memahami persyaratan aturan <b>${r.name.id}</b>`}</label>`;
@@ -617,9 +622,7 @@ function addToSection(tagEn, fn){
   const orig = sec.bodyFn; sec.bodyFn = (lang)=>fn(orig(lang), lang);
 }
 const lessonBox = (lang, txt)=> `<div class="lesson-box"><b>${lang==='en'?'Lesson from our site':'Pelajaran dari site kami'}</b>${txt[lang]}</div>`;
-const LSR_LESSONS = {};
 function addLesson(tagEn, txt, beforeZT){
-  const m = /^Life Saving Rule (\d)\/9$/.exec(tagEn); if(m) LSR_LESSONS[lsrData[+m[1]-1].key] = txt;
   addToSection(tagEn, (h,lang)=> (beforeZT && h.includes('<div class="zt-box">'))
     ? h.replace('<div class="zt-box">', lessonBox(lang,txt)+'<div class="zt-box">')
     : h + lessonBox(lang,txt));
@@ -648,7 +651,7 @@ addLesson("Life Saving Rule 7/9", {
   id:"Jangan pernah berdiri di bawah, atau naik ke atas, beban yang tergantung. Tanpa supervisor pengangkatan atau kru rigging lengkap, tidak ada pengangkatan. Gunakan hanya rigging bersertifikat — jangan berimprovisasi."}, true);
 addLesson("Life Saving Rule 9/9", {
   en:"A harness protects only when hooked to an approved anchor — re-check it when the plan changes. Secure tools with rated lanyards, never cable ties. Take up only what you'll use now, and barricade below.",
-  id:"Harness hanya melindungi jika terkait pada titik jangkar yang disetujui — periksa ulang saat rencana berubah. Amankan alat dengan tool lanyard bersertifikat, bukan cable tie. Bawa naik hanya yang akan langsung digunakan, dan pasang barikade di bawahnya."}, true);
+  id:"Harness hanya melindungi jika terkait pada titik jangkar yang ditetapkan — periksa ulang saat rencana berubah. Amankan alat dengan tool lanyard bersertifikat, bukan cable tie. Bawa naik hanya yang akan langsung digunakan, dan pasang barikade di bawahnya."}, true);
 addLesson("Mobile Equipment & Traffic", {
   en:"Check overhead clearance (cables, beams) before moving tall loads or trucks.",
   id:"Periksa ketinggian bebas di atas (kabel, balok) sebelum menggerakkan muatan tinggi atau truk."});
@@ -678,15 +681,15 @@ const legacyQ = [
  { q:{en:"How many warnings lead to a standard site ban?",id:"Berapa peringatan hingga larangan masuk site?"}, opts:[{en:"1",id:"1"},{en:"2",id:"2"},{en:"3",id:"3"},{en:"5",id:"5"}], correct:2},
  { q:{en:"In any emergency, what should you do first?",id:"Dalam keadaan darurat, apa yang harus dilakukan pertama?"}, opts:[{en:"Keep working until told to stop",id:"Terus bekerja sampai diberi tahu berhenti"},{en:"Make the place safe and leave promptly and safely",id:"Amankan area lalu tinggalkan dengan segera dan aman"},{en:"Take photos for the report",id:"Ambil foto untuk laporan"},{en:"Wait for a text message",id:"Menunggu pesan teks"}], correct:1},
  { q:{en:"Which is NOT part of the mandatory PPE list?",id:"Mana yang BUKAN bagian dari APD wajib?"}, opts:[{en:"Helmet with chin strap",id:"Helm dengan tali dagu"},{en:"Hi-vis vest",id:"Rompi hi-vis"},{en:"Sandals",id:"Sandal"},{en:"Safety glasses",id:"Kacamata keselamatan"}], correct:2},
- { q:{en:"Bypassing Safety Controls: before overriding a critical alarm you must...",id:"Melewati Kontrol Keselamatan: sebelum melewati alarm kritikal Anda harus..."}, opts:[{en:"Just do it if you're in a hurry",id:"Langsung lakukan jika terburu-buru"},{en:"Obtain authorization from the supervisor or issuing authority",id:"Mendapatkan otorisasi dari supervisor atau pihak berwenang"},{en:"Tell a colleague informally",id:"Memberi tahu rekan secara informal"},{en:"Wait until end of shift",id:"Menunggu sampai akhir shift"}], correct:1},
+ { q:{en:"Bypassing Safety Controls: before overriding a critical alarm you must...",id:"Mengesampingkan Kontrol Keselamatan: sebelum mengesampingkan alarm kritikal Anda harus..."}, opts:[{en:"Just do it if you're in a hurry",id:"Langsung lakukan jika terburu-buru"},{en:"Obtain authorization from the supervisor or issuing authority",id:"Mendapatkan otorisasi dari supervisor atau pihak berwenang"},{en:"Tell a colleague informally",id:"Memberi tahu rekan secara informal"},{en:"Wait until end of shift",id:"Menunggu sampai akhir shift"}], correct:1},
  { q:{en:"Confined Space: who must you confirm with before entering?",id:"Ruang Terbatas: dengan siapa Anda harus memastikan sebelum masuk?"}, opts:[{en:"No one, just enter",id:"Tidak perlu, langsung masuk"},{en:"The supervisor/Permit Holder and the Safety Watch",id:"Supervisor/Pemegang Izin dan Safety Watch"},{en:"Only a friend on site",id:"Hanya teman di site"},{en:"Security only",id:"Hanya security"}], correct:1},
- { q:{en:"Driving: which is required at all times in a moving vehicle?",id:"Mengemudi: apa yang wajib setiap saat di kendaraan yang bergerak?"}, opts:[{en:"Radio on",id:"Radio menyala"},{en:"Seatbelt properly fastened",id:"Sabuk pengaman terpasang dengan benar"},{en:"Windows down",id:"Jendela terbuka"},{en:"Air conditioning on",id:"AC menyala"}], correct:1},
+ { q:{en:"Driving: which is required at all times in a moving vehicle?",id:"Berkendara: apa yang wajib setiap saat di kendaraan yang bergerak?"}, opts:[{en:"Radio on",id:"Radio menyala"},{en:"Seatbelt properly fastened",id:"Sabuk pengaman terpasang dengan benar"},{en:"Windows down",id:"Jendela terbuka"},{en:"Air conditioning on",id:"AC menyala"}], correct:1},
  { q:{en:"Energy Isolation protects people from hazards like...",id:"Isolasi Energi melindungi orang dari bahaya seperti..."}, opts:[{en:"Electricity, pressure, energized equipment",id:"Listrik, tekanan, peralatan bertenaga"},{en:"Noise only",id:"Hanya kebisingan"},{en:"Weather only",id:"Hanya cuaca"},{en:"Traffic only",id:"Hanya lalu lintas"}], correct:0},
  { q:{en:"Hot Work is defined as any activity that...",id:"Pekerjaan Panas didefinisikan sebagai aktivitas yang..."}, opts:[{en:"Happens during the day",id:"Terjadi di siang hari"},{en:"Creates an ignition source in a potentially flammable area",id:"Menimbulkan sumber penyalaan di area yang berpotensi mudah terbakar"},{en:"Uses hand tools only",id:"Hanya menggunakan alat tangan"},{en:"Is done outdoors",id:"Dilakukan di luar ruangan"}], correct:1},
- { q:{en:"Line of Fire is about being aware of...",id:"Line of Fire adalah tentang menyadari..."}, opts:[{en:"Struck-by and caught-in-between hazards",id:"Bahaya tertabrak dan terjepit"},{en:"Weather forecasts",id:"Prakiraan cuaca"},{en:"Lunch schedules",id:"Jadwal makan siang"},{en:"Parking rules",id:"Aturan parkir"}], correct:0},
- { q:{en:"Safe Mechanical Lifting requires access to be controlled by...",id:"Pengangkatan Mekanis Aman mengharuskan akses dikendalikan dengan..."}, opts:[{en:"Verbal warnings only",id:"Hanya peringatan lisan"},{en:"Barriers and exclusion zones",id:"Barikade dan zona eksklusi"},{en:"Nothing, it's open",id:"Tidak ada, terbuka"},{en:"A sign only",id:"Hanya tanda"}], correct:1},
+ { q:{en:"Line of Fire is about being aware of...",id:"Jalur Bahaya adalah tentang menyadari..."}, opts:[{en:"Struck-by and caught-in-between hazards",id:"Bahaya tertabrak dan terjepit"},{en:"Weather forecasts",id:"Prakiraan cuaca"},{en:"Lunch schedules",id:"Jadwal makan siang"},{en:"Parking rules",id:"Aturan parkir"}], correct:0},
+ { q:{en:"Safe Mechanical Lifting requires access to be controlled by...",id:"Pengangkatan Mekanik yang Aman mengharuskan akses dikendalikan dengan..."}, opts:[{en:"Verbal warnings only",id:"Hanya peringatan lisan"},{en:"Barriers and exclusion zones",id:"Barikade dan zona eksklusi"},{en:"Nothing, it's open",id:"Tidak ada, terbuka"},{en:"A sign only",id:"Hanya tanda"}], correct:1},
  { q:{en:"Work Authorisation means you must confirm the permit is...",id:"Otorisasi Kerja berarti Anda harus memastikan izin..."}, opts:[{en:"Old",id:"Lama"},{en:"Valid",id:"Berlaku"},{en:"Handwritten",id:"Tulisan tangan"},{en:"In English only",id:"Hanya dalam Bahasa Inggris"}], correct:1},
- { q:{en:"Working at Height: you must always...",id:"Bekerja di Ketinggian: Anda harus selalu..."}, opts:[{en:"Tie off when at height outside a protective environment",id:"Mengaitkan (tie off) saat di ketinggian di luar lingkungan terlindung"},{en:"Work alone",id:"Bekerja sendirian"},{en:"Skip the equipment check",id:"Melewati pemeriksaan alat"},{en:"Use any ladder available",id:"Menggunakan tangga apa saja"}], correct:0},
+ { q:{en:"Working at Height: you must always...",id:"Bekerja di Ketinggian: Anda harus selalu..."}, opts:[{en:"Tie off 100% to an approved anchor point when outside a protected area",id:"Mengaitkan (tie off) 100% pada titik jangkar yang ditetapkan saat di luar area yang terproteksi"},{en:"Work alone",id:"Bekerja sendirian"},{en:"Skip the equipment check",id:"Melewati pemeriksaan alat"},{en:"Use any ladder available",id:"Menggunakan tangga apa saja"}], correct:0},
  { q:{en:"Electrical work on site requires...",id:"Pekerjaan listrik di site memerlukan..."}, opts:[{en:"No special authorization",id:"Tidak perlu otorisasi khusus"},{en:"A competent, authorized person and a Permit to Work",id:"Personel kompeten, berwenang, dan Izin Kerja"},{en:"Just a helmet",id:"Cukup helm"},{en:"Only a torch",id:"Cukup senter"}], correct:1},
  { q:{en:"EcoOils Sei Mangkei is constructing its ___ SBEO plant in Indonesia.",id:"EcoOils Sei Mangkei membangun pabrik SBEO ke-___ di Indonesia."}, opts:[{en:"1st",id:"1"},{en:"2nd",id:"2"},{en:"3rd",id:"3"},{en:"4th",id:"4"}], correct:2},
  { q:{en:"What is the general police emergency number for Sei Mangkei?",id:"Berapa nomor darurat polisi umum Sei Mangkei?"}, opts:[{en:"100",id:"100"},{en:"110",id:"110"},{en:"112",id:"112"},{en:"119",id:"119"}], correct:1}
@@ -725,7 +728,7 @@ const L05 = mkc('L05','lift-rigging',null,"Which rigging is acceptable for a lif
   ["Only rigging certified for the load","Hanya rigging yang bersertifikat untuk beban tersebut"],
   [["An excavator bucket, if careful","Bucket ekskavator, jika hati-hati"],["Wire rope in place of a webbing sling","Wire rope sebagai pengganti webbing sling"],["Any hook that looks strong","Hook apa pun yang terlihat kuat"]]);
 const L06 = mkc('L06','height-tie',null,"A full body harness protects you only when…","Full body harness hanya melindungi Anda jika…",
-  ["It is hooked to an approved anchor point","Terkait pada titik jangkar yang disetujui"],
+  ["It is hooked to an approved anchor point","Terkait pada titik jangkar yang ditetapkan"],
   [["It is worn","Dikenakan"],["It is new","Masih baru"],["It is adjusted tight","Disetel kencang"]]);
 const L07 = mkc('L07','dropped-tools',null,"Tools used at height must be secured with…","Alat yang digunakan di ketinggian harus diamankan dengan…",
   ["Rated tool lanyards on rated attachment points","Tool lanyard bersertifikat pada titik pengait yang bersertifikat"],
@@ -738,7 +741,7 @@ const L09 = mkc('L09','hotwork-watcher','hotwork',"The fire watcher must monitor
 const L10 = mkc('L10','loto-energize','energy',"Before energizing a distribution board, you need…","Sebelum mengaktifkan (energize) panel distribusi, Anda memerlukan…",
   ["A permit and lockout (LOTO)","Izin kerja dan lockout (LOTO)"],
   [["A verbal OK from the supervisor","Persetujuan lisan dari supervisor"],["Nothing, if you are only testing","Tidak ada, jika hanya menguji"],["Only a competent colleague nearby","Hanya rekan kompeten di dekat Anda"]]);
-const L11 = mkc('L11','phone','driving',"While driving on site, you need to take a phone call. You should…","Saat mengemudi di site, Anda perlu menerima telepon. Anda harus…",
+const L11 = mkc('L11','phone','driving',"While driving on site, you need to take a phone call. You should…","Saat berkendara di site, Anda perlu menerima telepon. Anda harus…",
   ["Stop the vehicle fully before answering","Menghentikan kendaraan sepenuhnya sebelum menjawab"],
   [["Use the speaker","Menggunakan speaker"],["Keep it brief","Singkat saja"],["Take it only on a familiar route","Hanya di rute yang dikenal"]]);
 const L12 = mkc('L12','dumpbed','driving',"The dump bed of a truck must be…","Bak dump truck harus…",
@@ -762,13 +765,13 @@ const L17 = mkc('L17','report-damage',null,"If you damage equipment or property,
 
 /* ---- second question per Life Saving Rule ---- */
 const R_COUNT = mkf('R01','lsr-names',null,"How many Life Saving Rules are there?","Ada berapa Life Saving Rules?",[["5","5"],["7","7"],["9","9"],["12","12"]],2);
-const R_BYPASS = mkc('R02','bypass','bypass',"Bypassing Safety Controls: guards, interlocks and alarms exist to…","Melewati Kontrol Keselamatan: pengaman, interlock, dan alarm ada untuk…",
+const R_BYPASS = mkc('R02','bypass','bypass',"Bypassing Safety Controls: guards, interlocks and alarms exist to…","Mengesampingkan Kontrol Keselamatan: pengaman, interlock, dan alarm ada untuk…",
   ["Prevent or limit a fatality or major accident","Mencegah atau membatasi fatalitas atau kecelakaan besar"],
   [["Speed up the work","Mempercepat pekerjaan"],["Reduce paperwork","Mengurangi administrasi"],["Satisfy audit requirements","Memenuhi persyaratan audit"]]);
 const R_CONF = mkc('R03','confined-steps',null,"Confined Space: what must you do before entering?","Ruang Terbatas: apa yang harus dilakukan sebelum masuk?",
   ["Obtain a PTW, test and monitor the atmosphere, and verify it is safe","Memperoleh PTW, menguji dan memantau atmosfer, serta memastikan aman"],
   [["Enter briefly to check conditions","Masuk sebentar untuk memeriksa kondisi"],["Ask a colleague to look inside","Meminta rekan melihat ke dalam"],["Hold your breath and check for smell","Menahan napas dan memeriksa bau"]]);
-const R_DRIVE = mkc('R04','phone','driving',"Driving: as a passenger, what must you do if the driver uses a phone while driving?","Mengemudi: sebagai penumpang, apa yang harus dilakukan jika pengemudi menggunakan telepon saat mengemudi?",
+const R_DRIVE = mkc('R04','phone','driving',"Driving: as a passenger, what must you do if the driver uses a phone while driving?","Berkendara: sebagai penumpang, apa yang harus dilakukan jika pengemudi menggunakan telepon saat berkendara?",
   ["Intervene","Menegur"],
   [["Say nothing","Diam saja"],["Use your own phone too","Ikut menggunakan telepon"],["Record a video","Merekam video"]]);
 const R_ENERGY = mkc('R05','stored-energy','energy',"Energy Isolation: stored energy must be…","Isolasi Energi: energi tersimpan harus…",
@@ -777,23 +780,23 @@ const R_ENERGY = mkc('R05','stored-energy','energy',"Energy Isolation: stored en
 const R_HOT = mkc('R06','hotwork-equip','hotwork',"Hot Work: before starting, what must you confirm about fire/explosion protection equipment?","Pekerjaan Panas: sebelum mulai, apa yang harus dipastikan tentang peralatan proteksi kebakaran/ledakan?",
   ["It is functional","Berfungsi"],
   [["It is stored in the office","Disimpan di kantor"],["It is optional for short jobs","Opsional untuk pekerjaan singkat"],["It is painted red","Dicat merah"]]);
-const R_LOF = mkc('R07','lof','lof',"Line of Fire: which action protects you?","Line of Fire: tindakan mana yang melindungi Anda?",
-  ["Continually monitor your surroundings and keep out of the line of fire","Terus memantau sekeliling dan berada di luar line of fire"],
+const R_LOF = mkc('R07','lof','lof',"Line of Fire: which action protects you?","Jalur Bahaya: tindakan mana yang melindungi Anda?",
+  ["Continually monitor your surroundings and keep out of the line of fire","Terus memantau sekeliling dan berada di luar jalur bahaya"],
   [["Stand behind equipment where the operator can't see you","Berdiri di belakang alat yang tidak terlihat oleh operator"],["Focus only on your own task","Fokus hanya pada tugas sendiri"],["Assume operators can see you","Menganggap operator pasti melihat Anda"]]);
-const R_LIFT = mkc('R08','lift-people',null,"Safe Mechanical Lifting: if a lift involves lifting people, what must you verify?","Pengangkatan Mekanis Aman: jika pengangkatan melibatkan orang, apa yang harus diverifikasi?",
+const R_LIFT = mkc('R08','lift-people',null,"Safe Mechanical Lifting: if a lift involves lifting people, what must you verify?","Pengangkatan Mekanik yang Aman: jika pengangkatan melibatkan orang, apa yang harus diverifikasi?",
   ["The equipment is certified for lifting people","Peralatan bersertifikat untuk mengangkat orang"],
   [["The load is light","Beban ringan"],["A colleague has done it before","Rekan pernah melakukannya"],["The weather is dry","Cuaca kering"]]);
-const R_WA = mkc('R09','wa-change','workauth',"Work Authorisation: if the work or situation changes, what must happen?","Otorisasi Kerja: jika pekerjaan atau situasi berubah, apa yang harus dilakukan?",
-  ["Get a new permit","Ambil izin baru"],
+const R_WA = mkc('R09','wa-change','workauth',"Work Authorisation: if conditions change, what must you do?","Otorisasi Kerja: jika kondisi berubah, apa yang harus Anda lakukan?",
+  ["Stop and reassess — get a new permit if the work or situation has changed","Berhenti dan tinjau kembali — ambil izin baru jika pekerjaan atau situasi berubah"],
   [["Continue under the old permit","Lanjut dengan izin lama"],["Get a verbal OK from a colleague","Persetujuan lisan dari rekan"],["Nothing, if the crew is the same","Tidak ada, jika tim sama"]]);
 const R_HEIGHT = mkc('R10','height-tie',null,"Working at Height: fall protection must be secured to…","Bekerja di Ketinggian: alat pelindung jatuh harus dipasang pada…",
-  ["An approved anchor point","Titik jangkar yang disetujui"],
+  ["An approved anchor point","Titik jangkar yang ditetapkan"],
   [["Any nearby pipe","Pipa terdekat mana pun"],["A scaffold handrail","Handrail perancah"],["A colleague's belt","Sabuk rekan"]]);
 
 /* ---- other topics taught in the induction ---- */
 const N_NAMES = mkc('N01','lsr-names',null,"Which of these is NOT one of the 9 Life Saving Rules?","Mana yang BUKAN salah satu dari 9 Life Saving Rules?",
   ["Manual Handling","Penanganan Manual"],
-  [["Hot Work","Pekerjaan Panas"],["Confined Space","Ruang Terbatas"],["Driving","Mengemudi"]]);
+  [["Hot Work","Pekerjaan Panas"],["Confined Space","Ruang Terbatas"],["Driving","Berkendara"]]);
 const N_CONF = mkc('N02','confined-hazard',null,"A confined space such as a tank or pipe can contain…","Ruang terbatas seperti tangki atau pipa dapat mengandung…",
   ["Explosive gas or a toxic or asphyxiating atmosphere","Gas mudah meledak atau atmosfer beracun atau mencekik"],
   [["Only fresh air","Hanya udara segar"],["Only water","Hanya air"],["Nothing, if it looks empty","Tidak ada, jika terlihat kosong"]]);
@@ -807,7 +810,7 @@ const N_WASTE = mkc('N04','waste',null,"Where should waste be disposed of on sit
 /* ---- 10 mandatory slots: a = first attempt, b = alternate on retry ---- */
 const MANDATORY = [
  { a:R_COUNT, b:mkc('M01b','lsr-names',null,"Which of these is one of the 9 Life Saving Rules?","Mana yang termasuk salah satu dari 9 Life Saving Rules?",
-     ["Line of Fire","Line of Fire"],[["Manual Handling","Penanganan Manual"],["Waste Management","Pengelolaan Limbah"],["Tool Safety","Keselamatan Alat"]]) },
+     ["Line of Fire","Jalur Bahaya"],[["Manual Handling","Penanganan Manual"],["Waste Management","Pengelolaan Limbah"],["Tool Safety","Keselamatan Alat"]]) },
  { a:fromLegacy(6,'Q07','emergency'), b:mkc('M02b','emergency',null,"In an emergency, where do you go after leaving the area?","Dalam keadaan darurat, ke mana Anda pergi setelah meninggalkan area?",
      ["The designated safe zone, to check in for a head count","Zona aman yang ditentukan, untuk lapor dan dihitung jumlahnya"],
      [["The nearest canteen","Kantin terdekat"],["Your vehicle","Kendaraan Anda"],["Back to your work area","Kembali ke area kerja Anda"]]) },
@@ -1277,70 +1280,160 @@ function wrapLines(ctx, text, maxW){
   words.forEach(w=>{ const t = line ? line+' '+w : w; if(ctx.measureText(t).width > maxW && line){ lines.push(line); line = w; } else { line = t; } });
   if(line) lines.push(line); return lines;
 }
+
+/* ============ LSR POCKET CARDS — official IOGP "Life-Saving Rules" wording (EN poster + Indonesian poster) ============
+   Each item is [English, Indonesian, optional sub-items [[EN, ID], ...]].
+   Indonesian is the IOGP text; only 3 typos were corrected (duplicated "telah", "batasan- batasan", "terus menerus"). */
+const LSR_CARDS = {
+  driving:{ title:{en:"Driving",id:"Berkendara"},
+    rule:{en:"Follow safe driving rules",id:"Mengikuti aturan berkendara yang aman"},
+    items:[
+      ["I always wear a seatbelt","Saya selalu mengenakan sabuk pengaman"],
+      ["I do not exceed the speed limit, and reduce my speed for road conditions","Saya tidak melebihi batas kecepatan, dan mengurangi kecepatan sesuai dengan kondisi jalan"],
+      ["I do not use phones or operate devices while driving","Saya tidak menggunakan ponsel atau mengoperasikan perangkat lain saat berkendara"],
+      ["I am fit, rested and fully alert while driving","Saya dalam kondisi fit, beristirahat cukup dan waspada penuh saat berkendara"],
+      ["I follow journey management requirements","Saya mengikuti aturan manajemen perjalanan"]]},
+  bypass:{ title:{en:"Bypassing Safety Controls",id:"Mengesampingkan Kontrol Keselamatan"},
+    rule:{en:"Obtain authorisation before overriding or disabling safety controls",id:"Mendapatkan otorisasi sebelum mengesampingkan atau menonaktifkan kontrol keselamatan"},
+    items:[
+      ["I understand and use safety-critical equipment and procedures which apply to my task","Saya mengerti dan menggunakan alat keselamatan dan prosedur yang kritikal sesuai dengan tugas saya"],
+      ["I obtain authorisation before:","Saya mendapatkan otorisasi sebelum:",[
+        ["disabling or overriding safety equipment","menonaktifkan atau mengesampingkan alat keselamatan"],
+        ["deviating from procedures","menyimpang dari prosedur"],
+        ["crossing a barrier","melintasi penahan/pertahanan"]]]]},
+  confined:{ title:{en:"Confined Space",id:"Ruang Terbatas"},
+    rule:{en:"Obtain authorisation before entering a confined space",id:"Mendapatkan otorisasi sebelum memasuki ruang terbatas"},
+    items:[
+      ["I confirm energy sources are isolated","Saya memastikan bahwa sumber energi telah terisolasi"],
+      ["I confirm the atmosphere has been tested and is monitored","Saya memastikan bahwa kandungan udara telah diuji dan dimonitor"],
+      ["I check and use my breathing apparatus when required","Saya memeriksa dan menggunakan alat bantu pernapasan jika diperlukan"],
+      ["I confirm there is an attendant standing by","Saya memastikan ada seorang petugas yang berjaga"],
+      ["I confirm a rescue plan is in place","Saya memastikan adanya rencana penyelamatan"],
+      ["I obtain authorisation to enter","Saya mendapatkan otorisasi untuk masuk"]]},
+  energy:{ title:{en:"Energy Isolation",id:"Isolasi Energi"},
+    rule:{en:"Verify isolation and zero energy before work begins",id:"Melakukan verifikasi isolasi dan “zero” energi sebelum pekerjaan dimulai"},
+    items:[
+      ["I have identified all energy sources","Saya telah mengidentifikasi semua sumber energi"],
+      ["I confirm that hazardous energy sources have been isolated, locked, and tagged","Saya memastikan bahwa semua sumber energi yang berbahaya telah diisolasi, dikunci, dan ditandai"],
+      ["I have checked there is zero energy and tested for residual or stored energy","Saya telah memeriksa bahwa energi sudah tidak ada dan telah diuji terhadap energi yang tersisa atau tersimpan"]]},
+  hotwork:{ title:{en:"Hot Work",id:"Pekerjaan Panas"},
+    rule:{en:"Control flammables and ignition sources",id:"Mengendalikan bahan yang mudah terbakar dan sumber pengapian"},
+    items:[
+      ["I identify and control ignition sources","Saya mengidentifikasi dan mengontrol sumber pengapian"],
+      ["Before starting any hot work:","Sebelum memulai pekerjaan panas:",[
+        ["I confirm flammable material has been removed or isolated","Saya memastikan bahan yang mudah terbakar telah disingkirkan atau diisolasi"],
+        ["I obtain authorisation","Saya mendapatkan otorisasi"]]],
+      ["Before starting hot work in a hazardous area I confirm:","Sebelum memulai pekerjaan panas di area berbahaya, saya mengkonfirmasi:",[
+        ["a gas test has been completed","uji gas telah dilaksanakan"],
+        ["gas will be monitored continually","gas akan dipantau secara terus-menerus"]]]]},
+  lineoffire:{ title:{en:"Line of Fire",id:"Jalur Bahaya"},
+    rule:{en:"Keep yourself and others out of the line of fire",id:"Jauhkan diri Anda dan orang lain dari jalur bahaya"},
+    items:[
+      ["I position myself to avoid:","Saya memposisikan diri untuk menghindari:",[
+        ["moving objects","benda bergerak"],["vehicles","kendaraan"],["pressure releases","pelepasan tekanan"],["dropped objects","benda jatuh"]]],
+      ["I establish and obey barriers and exclusion zones","Saya melakukan serta mengikuti aturan pencegahan dan batasan-batasan yang ditetapkan"],
+      ["I take action to secure loose objects and report potential dropped objects","Saya mengambil tindakan untuk mengamankan benda-benda yang longgar dan melaporkan kondisi di mana ada potensi benda jatuh"]]},
+  lifting:{ title:{en:"Safe Mechanical Lifting",id:"Pengangkatan Mekanik yang Aman"},
+    rule:{en:"Plan lifting operations and control the area",id:"Rencanakan operasi pengangkatan dan pengaturan area"},
+    items:[
+      ["I confirm that the equipment and load have been inspected and are fit for purpose","Saya memastikan bahwa peralatan serta muatan telah diperiksa dan layak untuk digunakan"],
+      ["I only operate equipment that I am qualified to use","Saya hanya mengoperasikan peralatan jika saya memenuhi kualifikasi untuk menggunakannya"],
+      ["I establish and obey barriers and exclusion zones","Saya melakukan serta mengikuti aturan pencegahan dan batasan-batasan yang ditetapkan"],
+      ["I never walk under a suspended load","Saya tidak pernah berjalan di bawah beban tergantung"]]},
+  workauth:{ title:{en:"Work Authorisation",id:"Otorisasi Kerja"},
+    rule:{en:"Work with a valid permit when required",id:"Bekerja dengan izin kerja yang sah jika diperlukan"},
+    items:[
+      ["I have confirmed if a permit is required","Saya telah memastikan apakah izin kerja diperlukan"],
+      ["I am authorised to perform the work","Saya berwenang untuk melaksanakan pekerjaan itu"],
+      ["I understand the permit","Saya memahami izin kerjanya"],
+      ["I have confirmed that hazards are controlled and it is safe to start","Saya telah memastikan bahwa bahaya telah dikendalikan dan aman untuk memulai"],
+      ["I stop and reassess if conditions change","Saya berhenti dan meninjau kembali jika kondisi berubah"]]},
+  height:{ title:{en:"Working at Height",id:"Bekerja di Ketinggian"},
+    rule:{en:"Protect yourself against a fall when working at height",id:"Lindungi diri Anda agar tidak terjatuh ketika bekerja di ketinggian"},
+    items:[
+      ["I inspect my fall protection equipment before use","Saya memeriksa peralatan pelindung jatuh dari ketinggian sebelum digunakan"],
+      ["I secure tools and work materials to prevent dropped objects","Saya mengamankan peralatan dan barang-barang kerja lainnya untuk mencegah benda jatuh"],
+      ["I tie off 100% to approved anchor points while outside a protected area","Saya melakukan 100% pengikatan ke titik jangkar yang ditetapkan saat bekerja di luar area yang terproteksi"]]}
+};
+
+function iogpBlock(key, lang){
+  const c = LSR_CARDS[key]; if(!c) return ''; const li = lang==='en' ? 0 : 1;
+  const items = c.items.map(it=>'<li>'+it[li]+(it[2] ? '<ul>'+it[2].map(sb=>'<li>'+sb[li]+'</li>').join('')+'</ul>' : '')+'</li>').join('');
+  return '<div class="iogp-box"><div class="iogp-tag">'+(lang==='en'?'Official Life-Saving Rule (IOGP)':'Peraturan Keselamatan Jiwa resmi (IOGP)')+'</div><div class="iogp-rule">'+c.rule[lang]+'</div><ul>'+items+'</ul></div>';
+}
+function lsrCardNoteText(key, lang){
+  const done = !!(state.lsrCardSaved && state.lsrCardSaved[key]);
+  if(lang==='en') return done ? '✓ Your pocket card for this rule has been saved to your device.'
+                              : 'Tick the box below to continue — your pocket card for this rule will save to your device automatically.';
+  return done ? '✓ Kartu saku untuk aturan ini telah disimpan ke perangkat Anda.'
+              : 'Centang kotak di bawah untuk melanjutkan — kartu saku untuk aturan ini akan tersimpan otomatis di perangkat Anda.';
+}
+function lsrKeyOfSection(sec){ const m = /^Life Saving Rule (\d)\/9$/.exec(sec.tag.en); return m ? lsrData[+m[1]-1].key : null; }
+async function autoSaveLsrCard(sec){
+  const key = lsrKeyOfSection(sec); if(!key) return;
+  state.lsrCardSaved = state.lsrCardSaved || {};
+  if(state.lsrCardSaved[key]) return;                    // once per rule
+  state.lsrCardSaved[key] = true;
+  try{ await downloadLsrCardPNG(key); }
+  catch(e){ console.error('Pocket card failed:', e); state.lsrCardSaved[key] = false; return; }
+  const el = document.getElementById('lsrCardNote'); if(el) el.textContent = lsrCardNoteText(key, state.lang);
+  saveProgress();
+}
+function wrapLines(ctx, text, maxW){
+  const words = String(text).split(' '); const lines = []; let line = '';
+  words.forEach(w=>{ const t = line ? line+' '+w : w; if(ctx.measureText(t).width > maxW && line){ lines.push(line); line = w; } else { line = t; } });
+  if(line) lines.push(line); return lines;
+}
 async function downloadLsrCardPNG(key){
-  const r = lsrData.find(x=>x.key===key); if(!r) return;
-  const lang = state.lang, idx = lsrData.indexOf(r)+1;
+  const c = LSR_CARDS[key], r = lsrData.find(x=>x.key===key); if(!c || !r) return;
+  const lang = state.lang, li = lang==='en' ? 0 : 1, idx = lsrData.indexOf(r)+1;
   try{ await document.fonts.ready; }catch(e){}
   const logo = await loadLogoImg();
   const icon = await new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src="data:image/png;base64,"+LSR_ICON_B64[key]; });
-  const scale=2, cw=620, margin=14, left=margin+26, right=cw-margin-26, textW=right-left;
-  const lesson = LSR_LESSONS[key];
-  const T = lang==='en' ? {
-    you:'YOU MUST', sup:'SUPERVISOR / PERMIT HOLDER MUST', lesson:'LESSON FROM OUR SITE',
-    zt:'Zero Tolerance: choosing to break a Life Saving Rule means choosing not to work for EcoOils.',
-    keep:'Keep this card with you on site' } : {
-    you:'ANDA WAJIB', sup:'SUPERVISOR / PEMEGANG IZIN WAJIB', lesson:'PELAJARAN DARI SITE KAMI',
-    zt:'Toleransi Nol: memilih melanggar Life Saving Rule berarti memilih untuk tidak bekerja di EcoOils.',
-    keep:'Simpan kartu ini bersama Anda selama di site' };
+  const scale=2, cw=620, margin=14, left=margin+24, right=cw-margin-24, textW=right-left, BLUE='#0B5CAD', INK='#20241F';
+  const T = lang==='en' ? { head:'LIFE-SAVING RULES', keep:'Keep this card with you on site', brand:'EcoOils · Mentari Project' }
+                        : { head:'PERATURAN KESELAMATAN JIWA', keep:'Simpan kartu ini bersama Anda selama di site', brand:'EcoOils · Proyek Mentari' };
   const layout = (ctx, draw)=>{
-    let y = margin+30;
+    let y = margin+28;
     const lw = 150, lh = lw*(logo.height/logo.width);
-    if(draw){ ctx.drawImage(logo, left, y, lw, lh); ctx.textAlign='right'; ctx.fillStyle='#6B7280'; ctx.font="600 12px Poppins, sans-serif"; ctx.fillText('LIFE SAVING RULE '+idx+'/9', right, y+lh/2+4); ctx.textAlign='left'; }
-    y += lh+22;
-    const isz = 96;
-    if(draw && icon) ctx.drawImage(icon, (cw-isz)/2, y, isz, isz);
-    y += isz+28;
-    ctx.font="700 23px Poppins, sans-serif";
-    const tl = wrapLines(ctx, r.name[lang], textW);
-    if(draw){ ctx.fillStyle='#20241F'; ctx.textAlign='center'; tl.forEach((ln,i)=>ctx.fillText(ln, cw/2, y+i*29)); ctx.textAlign='left'; }
-    y += tl.length*29 + 6;
-    if(draw){ ctx.fillStyle='#F5C518'; ctx.fillRect(cw/2-30, y, 60, 4); }
-    y += 30;
-    const block = (hdr, items)=>{
-      ctx.font="700 12.5px Poppins, sans-serif";
-      if(draw){ ctx.fillStyle='#2F8F52'; ctx.fillText(hdr, left, y); }
-      y += 22;
-      items.forEach(t=>{
-        ctx.font="500 14px Inter, sans-serif";
-        const ls = wrapLines(ctx, t, textW-18);
-        if(draw){ ctx.fillStyle='#20241F'; ctx.fillText('•', left, y); ls.forEach((ln,i)=>ctx.fillText(ln, left+18, y+i*20)); }
-        y += ls.length*20 + 8;
-      });
-      y += 10;
-    };
-    block(T.you, r.you.map(x=>x[lang]));
-    if(r.sup && r.sup.length) block(T.sup, r.sup.map(x=>x[lang]));
-    if(lesson){
-      ctx.font="500 13px Inter, sans-serif";
-      const ls = wrapLines(ctx, lesson[lang], textW-28);
-      const bh = 36 + ls.length*18 + 8;
-      if(draw){
-        ctx.fillStyle='#FFF8DB'; roundRect(ctx, left, y, textW, bh, 10); ctx.fill();
-        ctx.fillStyle='#D9A900'; ctx.fillRect(left, y+8, 5, bh-16);
-        ctx.font="700 11px Poppins, sans-serif"; ctx.fillStyle='#8A6D00'; ctx.fillText(T.lesson, left+16, y+22);
-        ctx.font="500 13px Inter, sans-serif"; ctx.fillStyle='#5C4A00'; ls.forEach((ln,i)=>ctx.fillText(ln, left+16, y+44+i*18));
-      }
-      y += bh + 14;
+    if(draw){
+      ctx.drawImage(logo, left, y, lw, lh);
+      ctx.textAlign='right'; ctx.fillStyle=BLUE; ctx.font="800 12px Poppins, sans-serif"; ctx.fillText(T.head, right, y+lh/2-2);
+      ctx.fillStyle='#6B7280'; ctx.font="600 11px Poppins, sans-serif"; ctx.fillText(idx+' / 9', right, y+lh/2+14); ctx.textAlign='left';
     }
-    ctx.font="600 12px Inter, sans-serif";
-    const zl = wrapLines(ctx, T.zt, textW-24); const zh = zl.length*17 + 20;
-    if(draw){ ctx.fillStyle='#FBE7E1'; roundRect(ctx, left, y, textW, zh, 10); ctx.fill(); ctx.fillStyle='#C0392B'; ctx.font="600 12px Inter, sans-serif"; zl.forEach((ln,i)=>ctx.fillText(ln, left+12, y+22+i*17)); }
-    y += zh;
+    y += lh+18;
+    ctx.font="700 21px Poppins, sans-serif";
+    const tl = wrapLines(ctx, c.title[lang], textW-32), bh = tl.length*27+22;
+    if(draw){ ctx.fillStyle=BLUE; roundRect(ctx, left, y, textW, bh, 8); ctx.fill(); ctx.fillStyle='#FFFFFF'; ctx.font="700 21px Poppins, sans-serif"; tl.forEach((ln,i)=>ctx.fillText(ln, left+16, y+30+i*27)); }
+    y += bh+18;
+    const isz = 104;
+    ctx.font="700 17px Poppins, sans-serif";
+    const rl = wrapLines(ctx, c.rule[lang], textW-isz-18), rh = rl.length*23, rowH = Math.max(isz, rh);
+    if(draw){
+      if(icon) ctx.drawImage(icon, right-isz, y, isz, isz);
+      ctx.fillStyle=BLUE; ctx.font="700 17px Poppins, sans-serif"; rl.forEach((ln,i)=>ctx.fillText(ln, left, y+(rowH-rh)/2+17+i*23));
+    }
+    y += rowH+16;
+    if(draw){ ctx.fillStyle='#D6DEE8'; ctx.fillRect(left, y, textW, 2); }
+    y += 22;
+    c.items.forEach(it=>{
+      ctx.font="500 14.5px Inter, sans-serif";
+      const ls = wrapLines(ctx, it[li], textW-18);
+      if(draw){ ctx.fillStyle=INK; ctx.font="500 14.5px Inter, sans-serif"; ctx.fillText('•', left, y); ls.forEach((ln,i)=>ctx.fillText(ln, left+18, y+i*20)); }
+      y += ls.length*20 + 6;
+      (it[2]||[]).forEach(sb=>{
+        ctx.font="500 14.5px Inter, sans-serif";
+        const sl = wrapLines(ctx, sb[li], textW-18-24);
+        if(draw){ ctx.fillStyle=INK; ctx.font="500 14.5px Inter, sans-serif"; ctx.fillText('–', left+18, y); sl.forEach((ln,i)=>ctx.fillText(ln, left+42, y+i*20)); }
+        y += sl.length*20 + 4;
+      });
+      y += 6;
+    });
     return y;
   };
   const scratch = document.createElement('canvas').getContext('2d');
   const contentEnd = layout(scratch, false);
-  const footH = 56, ch = Math.max(760, Math.ceil(contentEnd + 26 + footH + margin));
+  const footH = 64, ch = Math.max(640, Math.ceil(contentEnd + 20 + footH + margin));
   const canvas = document.createElement('canvas'); canvas.width = cw*scale; canvas.height = ch*scale;
   const ctx = canvas.getContext('2d'); ctx.scale(scale, scale);
   ctx.save(); ctx.shadowColor="rgba(20,30,20,0.28)"; ctx.shadowBlur=28; ctx.shadowOffsetY=10; ctx.fillStyle="#FFFFFF";
@@ -1351,8 +1444,8 @@ async function downloadLsrCardPNG(key){
   ctx.textAlign='left';
   layout(ctx, true);
   ctx.fillStyle="#20241F"; ctx.fillRect(margin, ch-margin-footH, cw-margin*2, footH);
-  ctx.fillStyle="#F5C518"; ctx.font="600 12.5px Poppins, sans-serif"; ctx.textAlign="center";
-  ctx.fillText(T.keep, cw/2, ch-margin-footH/2+4);
+  ctx.textAlign="center"; ctx.fillStyle="#F5C518"; ctx.font="600 12.5px Poppins, sans-serif"; ctx.fillText(T.keep, cw/2, ch-margin-footH/2-3);
+  ctx.fillStyle="#FFFFFF"; ctx.font="500 11px Inter, sans-serif"; ctx.fillText(T.brand, cw/2, ch-margin-footH/2+15);
   ctx.textAlign="left"; ctx.restore();
   triggerDownload(canvas, "eco-oils-mentari-lsr-"+idx+"-"+key+"-pocket-card.png");
 }
@@ -1577,13 +1670,12 @@ function bind(){
     if(nextBtn) nextBtn.onclick = ()=>{ state.pos++; render(); };
     const dlContactsBtn = document.getElementById('dlContactsBtn');
     if(dlContactsBtn) dlContactsBtn.onclick = downloadContactsPNG;
-    document.querySelectorAll('[data-lsrcard]').forEach(b=>{ b.onclick = ()=>downloadLsrCardPNG(b.dataset.lsrcard); });
     const sec = sections[f.idx];
     if(sec && sec.confirmGate){
       const cb = document.getElementById('confirmGateInput');
       if(cb){
         cb.checked = !!state.lsrConfirmed[f.idx];
-        cb.onchange = ()=>{ state.lsrConfirmed[f.idx] = cb.checked; if(nextBtn) nextBtn.disabled = !cb.checked; };
+        cb.onchange = ()=>{ state.lsrConfirmed[f.idx] = cb.checked; if(nextBtn) nextBtn.disabled = !cb.checked; if(cb.checked) autoSaveLsrCard(sec); };
       }
     }
   }
@@ -1705,7 +1797,7 @@ function bind(){
     }
     const restartBtn = document.getElementById('restartBtn');
     if(restartBtn) restartBtn.onclick = ()=>{
-      state.paperBuilt=false; state.seenIds=[]; state.uploadStatus=''; state.pos=0; state.qIndex=0; state.score=0; state.attempts=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={};
+      state.paperBuilt=false; state.seenIds=[]; state.lsrCardSaved={}; state.uploadStatus=''; state.pos=0; state.qIndex=0; state.score=0; state.attempts=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={};
       state.visitor={name:"",company:"",host:"",hostName:"",hostPhone:"",idnum:"",purpose:"",certify:false,healthCert:""}; certNumber=""; state.startTime=0; state.recorded=false; state.certAutoDownloaded=false; state.selfieDataUrl=null; state.selfieConsent=false;
       render();
     };
