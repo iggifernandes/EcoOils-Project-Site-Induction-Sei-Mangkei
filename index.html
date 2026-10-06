@@ -166,9 +166,9 @@ const UI = {
     welcomeTitle:"Before you enter site", welcomeDesc:"This induction covers the EcoOils Mentari Project HSSE content and the 9 Life Saving Rules. Each section has a quick check on its own screen, and it ends with a graded assessment — 80% required to pass. This induction takes approximately 30 minutes — please watch the videos and familiarize yourself with the Life Saving Rules.",
     assessTitle:"HSSE Induction Assessment", assessDesc:"This assessment covers the induction content you just read.",
     assessInstr:"Instructions", assessBullets:["You must score at least <b>80%</b> to pass.","If you fail 2 attempts, you'll need to resit the full induction.","20 questions, one at a time."],
-    startAssess:"Start assessment", downloadContacts:"Download quick contact card (PNG)", downloadCert:"Download certificate (PNG)",
+    startAssess:"Start assessment", downloadContacts:"Download emergency contact card (PNG)", downloadLsrCard:"Download pocket card (PNG)", downloadCert:"Download certificate (PNG)",
     shareCert:"Share certificate", certAutoSaved:"Your certificate has been saved to your device.",
-    upSending:"Sending a copy of your certificate to Project HSSE…", upOk:"Certificate copy sent to Project HSSE ✓", upFail:"Upload pending — keep your screenshot and show it to your Host.",
+    upSending:"Sending a copy of your certificate to Project HSSE…", upOk:"Certificate copy sent to Project HSSE ✓", upFail:"Upload pending — keep your downloaded certificate and show it to your Host.",
     selfieTitle:"Verification Photo", selfieDesc:"Please take a quick selfie. This photo is used to verify your identity against your Induction Certificate when you meet Project HSSE on arrival at site.",
     selfieConsent:"By continuing, you consent to this photo being captured and included on your induction certificate for identity verification purposes only. A copy of your certificate is stored securely by Project HSSE as the induction record.",
     selfieCapture:"Take photo", selfieRetake:"Retake", selfieContinue:"Continue", selfieRetry:"Try again",
@@ -181,7 +181,7 @@ const UI = {
     resitBtn:"Resit full induction", passTitle:"EcoOils Mentari Project Site Induction Completed", passScore:(s,t,p)=>`Assessment score: ${s} / ${t} — pass mark ${p}/${t}`,
     warmTitle:"Welcome to the EcoOils Family", warmText:"You're now part of our team here at Sei Mangkei. Look out for yourself, look out for each other — every one of us wants you home safe, every single day.", warmMotto:"Be safe — Goal Zero is our motto.",
     certNo:"Certificate No.", nameF:"Name", companyF:"Vendor / company", hostF:"Host / contractor", purposeF:"Purpose", idF:"ID / Passport No.", attemptsF:"Attempts taken", issuedF:"Issued",
-    showGate:"Take a screenshot of this screen and send it to your Host", newVisitor:"New visitor", stampLine1:"INDUCTION", stampLine2:"COMPLETE",
+    showGate:"Induction completion record only. Not proof of employment, engagement or authorization to work. Name, company and ID are declared by the candidate and must be verified at the gate.", newVisitor:"New visitor", stampLine1:"INDUCTION", stampLine2:"COMPLETE",
     watchEn:"IOGP 'Rule in a Minute' — English (YouTube)", watchId:"IOGP 'Rule in a Minute' — Bahasa Indonesia (YouTube)",
     videoTitle:"Life Saving Rules — Induction Video", videoDesc:"Watch the video below in your preferred language before continuing to the 9 Life Saving Rules."
   },
@@ -204,9 +204,9 @@ const UI = {
     welcomeTitle:"Sebelum Anda masuk site", welcomeDesc:"Induksi ini mencakup materi HSSE Proyek Mentari EcoOils dan 9 Life Saving Rules. Setiap bagian memiliki cek cepat di layar terpisah, dan diakhiri dengan asesmen bernilai — minimal 80% untuk lulus. Induksi ini memerlukan waktu sekitar 30 menit — mohon tonton videonya dan pahami Life Saving Rules.",
     assessTitle:"Asesmen Induksi HSSE", assessDesc:"Asesmen ini mencakup materi induksi yang baru saja Anda baca.",
     assessInstr:"Instruksi", assessBullets:["Anda harus mencapai nilai minimal <b>80%</b> untuk lulus.","Jika gagal 2 kali percobaan, Anda harus mengulang seluruh induksi.","20 pertanyaan, satu per satu."],
-    startAssess:"Mulai asesmen", downloadContacts:"Unduh kartu kontak darurat (PNG)", downloadCert:"Unduh sertifikat (PNG)",
+    startAssess:"Mulai asesmen", downloadContacts:"Unduh kartu kontak darurat (PNG)", downloadLsrCard:"Unduh kartu saku (PNG)", downloadCert:"Unduh sertifikat (PNG)",
     shareCert:"Bagikan sertifikat", certAutoSaved:"Sertifikat Anda telah disimpan ke perangkat.",
-    upSending:"Mengirim salinan sertifikat Anda ke Project HSSE…", upOk:"Salinan sertifikat terkirim ke Project HSSE ✓", upFail:"Pengunggahan tertunda — simpan screenshot Anda dan tunjukkan kepada Host Anda.",
+    upSending:"Mengirim salinan sertifikat Anda ke Project HSSE…", upOk:"Salinan sertifikat terkirim ke Project HSSE ✓", upFail:"Pengunggahan tertunda — simpan sertifikat yang telah diunduh dan tunjukkan kepada Host Anda.",
     selfieTitle:"Foto Verifikasi", selfieDesc:"Mohon ambil swafoto singkat. Foto ini digunakan untuk memverifikasi identitas Anda terhadap Sertifikat Induksi Anda saat bertemu Project HSSE di site.",
     selfieConsent:"Dengan melanjutkan, Anda menyetujui pengambilan foto ini dan penyertaannya pada sertifikat induksi Anda semata-mata untuk tujuan verifikasi identitas. Salinan sertifikat Anda disimpan dengan aman oleh Project HSSE sebagai catatan induksi.",
     selfieCapture:"Ambil foto", selfieRetake:"Ambil ulang", selfieContinue:"Lanjutkan", selfieRetry:"Coba lagi",
@@ -219,7 +219,7 @@ const UI = {
     resitBtn:"Ulangi seluruh induksi", passTitle:"Induksi Site Proyek EcoOils Mentari Selesai", passScore:(s,t,p)=>`Nilai asesmen: ${s} / ${t} — nilai kelulusan ${p}/${t}`,
     warmTitle:"Selamat Datang di Keluarga EcoOils", warmText:"Anda kini menjadi bagian dari tim kami di Sei Mangkei. Jaga diri Anda, jaga sesama — kami semua ingin Anda pulang dengan selamat, setiap hari.", warmMotto:"Utamakan keselamatan — Goal Zero adalah moto kami.",
     certNo:"No. Sertifikat", nameF:"Nama", companyF:"Vendor / perusahaan", hostF:"Host / kontraktor", purposeF:"Tujuan", idF:"No. ID / Paspor", attemptsF:"Jumlah percobaan", issuedF:"Diterbitkan",
-    showGate:"Ambil tangkapan layar (screenshot) dari layar ini dan kirimkan kepada Host Anda", newVisitor:"Pengunjung baru", stampLine1:"INDUKSI", stampLine2:"SELESAI",
+    showGate:"Hanya catatan penyelesaian induksi. Bukan bukti pekerjaan, penugasan, atau izin untuk bekerja. Nama, perusahaan, dan ID dideklarasikan oleh kandidat dan harus diverifikasi di gerbang.", newVisitor:"Pengunjung baru", stampLine1:"INDUKSI", stampLine2:"SELESAI",
     watchEn:"Video IOGP 'Rule in a Minute' — Bahasa Inggris (YouTube)", watchId:"Video IOGP 'Rule in a Minute' — Bahasa Indonesia (YouTube)",
     videoTitle:"Video Induksi — Life Saving Rules", videoDesc:"Tonton video di bawah ini dalam bahasa pilihan Anda sebelum melanjutkan ke 9 Life Saving Rules."
   }
@@ -335,7 +335,7 @@ const sections = [
     <div class="contact-row"><span class="name">Murni Teguh Memorial</span><span class="num">+62 61-8050-1888</span></div>
     <div class="contact-row"><span class="name">Columbia Asia Hospital Medan</span><span class="num">+62 811-6171-333</span></div>
     <div class="contact-row"><span class="name">RS. Mitra Medika Premiere</span><span class="num">+62 813-7618-7341</span></div>
-    <div class="rule-note" style="margin-top:14px;">📸 ${lang==='en'?"Please take a screenshot of this screen so you have these numbers with you on site.":"Mohon ambil tangkapan layar (screenshot) dari layar ini agar nomor-nomor ini tetap bersama Anda selama di site."}</div>`,
+    <button type="button" class="dl-btn" id="dlContactsBtn">⬇ ${UI[lang].downloadContacts}</button>`,
   check:{ q:{en:"What is the general police emergency number for Sei Mangkei?",id:"Berapa nomor darurat polisi umum untuk Sei Mangkei?"},
     opts:[{en:"100",id:"100"},{en:"110",id:"110"},{en:"112",id:"112"},{en:"119",id:"119"}], correct:1,
     ok:{en:"Correct — 110, or +62 822-6771-6351.",id:"Benar — 110, atau +62 822-6771-6351."}, bad:{en:"Incorrect — the number listed is 110 (or +62 822-6771-6351).",id:"Kurang tepat — nomornya adalah 110 (atau +62 822-6771-6351)."} }
@@ -536,6 +536,7 @@ lsrData.forEach((r,idx)=>{
         <a href="${LSR_VIDEO_LINKS[r.key].en}" target="_blank" rel="noopener" class="lsr-rewatch-link"><span class="lsr-rewatch-icon">${lsrIcon(r.key)}</span><span>English</span></a>
         <a href="${LSR_VIDEO_LINKS[r.key].id}" target="_blank" rel="noopener" class="lsr-rewatch-link"><span class="lsr-rewatch-icon">${lsrIcon(r.key)}</span><span>Bahasa Indonesia</span></a>
       </div>`;
+      h += `<button type="button" class="dl-btn" data-lsrcard="${r.key}">⬇ ${UI[lang].downloadLsrCard}</button>`;
       h += `<label class="confirm-gate"><input type="checkbox" id="confirmGateInput">${lang==='en'
         ? `I have watched the video and understood the requirements of the <b>${r.name.en}</b> rule`
         : `Saya telah menonton video dan memahami persyaratan aturan <b>${r.name.id}</b>`}</label>`;
@@ -621,7 +622,9 @@ function addToSection(tagEn, fn){
   const orig = sec.bodyFn; sec.bodyFn = (lang)=>fn(orig(lang), lang);
 }
 const lessonBox = (lang, txt)=> `<div class="lesson-box"><b>${lang==='en'?'Lesson from our site':'Pelajaran dari site kami'}</b>${txt[lang]}</div>`;
+const LSR_LESSONS = {};
 function addLesson(tagEn, txt, beforeZT){
+  const m = /^Life Saving Rule (\d)\/9$/.exec(tagEn); if(m) LSR_LESSONS[lsrData[+m[1]-1].key] = txt;
   addToSection(tagEn, (h,lang)=> (beforeZT && h.includes('<div class="zt-box">'))
     ? h.replace('<div class="zt-box">', lessonBox(lang,txt)+'<div class="zt-box">')
     : h + lessonBox(lang,txt));
@@ -1262,6 +1265,91 @@ async function downloadContactsPNG(){
   ctx.restore();
   triggerDownload(canvas, "eco-oils-mentari-emergency-contacts.png");
 }
+
+function wrapLines(ctx, text, maxW){
+  const words = String(text).split(' '); const lines = []; let line = '';
+  words.forEach(w=>{ const t = line ? line+' '+w : w; if(ctx.measureText(t).width > maxW && line){ lines.push(line); line = w; } else { line = t; } });
+  if(line) lines.push(line); return lines;
+}
+async function downloadLsrCardPNG(key){
+  const r = lsrData.find(x=>x.key===key); if(!r) return;
+  const lang = state.lang, idx = lsrData.indexOf(r)+1;
+  try{ await document.fonts.ready; }catch(e){}
+  const logo = await loadLogoImg();
+  const icon = await new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src="data:image/png;base64,"+LSR_ICON_B64[key]; });
+  const scale=2, cw=620, margin=14, left=margin+26, right=cw-margin-26, textW=right-left;
+  const lesson = LSR_LESSONS[key];
+  const T = lang==='en' ? {
+    you:'YOU MUST', sup:'SUPERVISOR / PERMIT HOLDER MUST', lesson:'LESSON FROM OUR SITE',
+    zt:'Zero Tolerance: choosing to break a Life Saving Rule means choosing not to work for EcoOils.',
+    keep:'Keep this card with you on site' } : {
+    you:'ANDA WAJIB', sup:'SUPERVISOR / PEMEGANG IZIN WAJIB', lesson:'PELAJARAN DARI SITE KAMI',
+    zt:'Toleransi Nol: memilih melanggar Life Saving Rule berarti memilih untuk tidak bekerja di EcoOils.',
+    keep:'Simpan kartu ini bersama Anda selama di site' };
+  const layout = (ctx, draw)=>{
+    let y = margin+30;
+    const lw = 150, lh = lw*(logo.height/logo.width);
+    if(draw){ ctx.drawImage(logo, left, y, lw, lh); ctx.textAlign='right'; ctx.fillStyle='#6B7280'; ctx.font="600 12px Poppins, sans-serif"; ctx.fillText('LIFE SAVING RULE '+idx+'/9', right, y+lh/2+4); ctx.textAlign='left'; }
+    y += lh+22;
+    const isz = 96;
+    if(draw && icon) ctx.drawImage(icon, (cw-isz)/2, y, isz, isz);
+    y += isz+28;
+    ctx.font="700 23px Poppins, sans-serif";
+    const tl = wrapLines(ctx, r.name[lang], textW);
+    if(draw){ ctx.fillStyle='#20241F'; ctx.textAlign='center'; tl.forEach((ln,i)=>ctx.fillText(ln, cw/2, y+i*29)); ctx.textAlign='left'; }
+    y += tl.length*29 + 6;
+    if(draw){ ctx.fillStyle='#F5C518'; ctx.fillRect(cw/2-30, y, 60, 4); }
+    y += 30;
+    const block = (hdr, items)=>{
+      ctx.font="700 12.5px Poppins, sans-serif";
+      if(draw){ ctx.fillStyle='#2F8F52'; ctx.fillText(hdr, left, y); }
+      y += 22;
+      items.forEach(t=>{
+        ctx.font="500 14px Inter, sans-serif";
+        const ls = wrapLines(ctx, t, textW-18);
+        if(draw){ ctx.fillStyle='#20241F'; ctx.fillText('•', left, y); ls.forEach((ln,i)=>ctx.fillText(ln, left+18, y+i*20)); }
+        y += ls.length*20 + 8;
+      });
+      y += 10;
+    };
+    block(T.you, r.you.map(x=>x[lang]));
+    if(r.sup && r.sup.length) block(T.sup, r.sup.map(x=>x[lang]));
+    if(lesson){
+      ctx.font="500 13px Inter, sans-serif";
+      const ls = wrapLines(ctx, lesson[lang], textW-28);
+      const bh = 36 + ls.length*18 + 8;
+      if(draw){
+        ctx.fillStyle='#FFF8DB'; roundRect(ctx, left, y, textW, bh, 10); ctx.fill();
+        ctx.fillStyle='#D9A900'; ctx.fillRect(left, y+8, 5, bh-16);
+        ctx.font="700 11px Poppins, sans-serif"; ctx.fillStyle='#8A6D00'; ctx.fillText(T.lesson, left+16, y+22);
+        ctx.font="500 13px Inter, sans-serif"; ctx.fillStyle='#5C4A00'; ls.forEach((ln,i)=>ctx.fillText(ln, left+16, y+44+i*18));
+      }
+      y += bh + 14;
+    }
+    ctx.font="600 12px Inter, sans-serif";
+    const zl = wrapLines(ctx, T.zt, textW-24); const zh = zl.length*17 + 20;
+    if(draw){ ctx.fillStyle='#FBE7E1'; roundRect(ctx, left, y, textW, zh, 10); ctx.fill(); ctx.fillStyle='#C0392B'; ctx.font="600 12px Inter, sans-serif"; zl.forEach((ln,i)=>ctx.fillText(ln, left+12, y+22+i*17)); }
+    y += zh;
+    return y;
+  };
+  const scratch = document.createElement('canvas').getContext('2d');
+  const contentEnd = layout(scratch, false);
+  const footH = 56, ch = Math.max(760, Math.ceil(contentEnd + 26 + footH + margin));
+  const canvas = document.createElement('canvas'); canvas.width = cw*scale; canvas.height = ch*scale;
+  const ctx = canvas.getContext('2d'); ctx.scale(scale, scale);
+  ctx.save(); ctx.shadowColor="rgba(20,30,20,0.28)"; ctx.shadowBlur=28; ctx.shadowOffsetY=10; ctx.fillStyle="#FFFFFF";
+  roundRect(ctx, margin, margin, cw-margin*2, ch-margin*2, 22); ctx.fill(); ctx.restore();
+  ctx.save(); roundRect(ctx, margin, margin, cw-margin*2, ch-margin*2, 22); ctx.clip();
+  ctx.fillStyle="#F5C518"; ctx.fillRect(margin, margin, cw-margin*2, 8);
+  ctx.strokeStyle="#E1E6DD"; ctx.lineWidth=1.5; roundRect(ctx, margin+0.75, margin+0.75, cw-margin*2-1.5, ch-margin*2-1.5, 21); ctx.stroke();
+  ctx.textAlign='left';
+  layout(ctx, true);
+  ctx.fillStyle="#20241F"; ctx.fillRect(margin, ch-margin-footH, cw-margin*2, footH);
+  ctx.fillStyle="#F5C518"; ctx.font="600 12.5px Poppins, sans-serif"; ctx.textAlign="center";
+  ctx.fillText(T.keep, cw/2, ch-margin-footH/2+4);
+  ctx.textAlign="left"; ctx.restore();
+  triggerDownload(canvas, "eco-oils-mentari-lsr-"+idx+"-"+key+"-pocket-card.png");
+}
 function roundRect(ctx,x,y,w,h,r){
   ctx.beginPath();
   ctx.moveTo(x+r,y);
@@ -1277,7 +1365,11 @@ async function genCertificateCanvas(){
   const dateStr = now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
   const timeStr = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
   const durationLabel = state.startTime ? formatDuration(now.getTime()-state.startTime) : '—';
-  const scale=2, cw=820, ch=1520, w=cw*scale, h=ch*scale;
+  const _mctx = document.createElement('canvas').getContext('2d'); _mctx.font = "700 12.5px Poppins, sans-serif";
+  const _bandW = (820-140)-28;
+  const bandH = (measureWrapLines(_mctx, UI.en.showGate, _bandW) + measureWrapLines(_mctx, UI.id.showGate, _bandW))*17 + 34;
+  const extraH = Math.max(0, bandH - 46);
+  const scale=2, cw=820, ch=1520+extraH, w=cw*scale, h=ch*scale;
   const canvas=document.createElement('canvas'); canvas.width=w; canvas.height=h;
   const ctx=canvas.getContext('2d'); ctx.scale(scale,scale);
   const margin=16, radius=22;
@@ -1293,6 +1385,11 @@ async function genCertificateCanvas(){
   roundRect(ctx, margin+1, margin+1, cw-margin*2-2, ch-margin*2-2, radius-1); ctx.stroke();
   ctx.strokeStyle="#E7F3EC"; ctx.lineWidth=8;
   roundRect(ctx, margin+10, margin+10, cw-margin*2-20, ch-margin*2-20, radius-6); ctx.stroke();
+  // faint diagonal watermark: part of the image pixels, so it cannot be edited out as text
+  ctx.save(); ctx.globalAlpha=0.055; ctx.fillStyle="#1F6B3B"; ctx.font="800 24px Poppins, sans-serif"; ctx.textAlign="center";
+  ctx.translate(cw/2, ch/2); ctx.rotate(-Math.PI/6);
+  for(let wy=-ch; wy<=ch; wy+=96){ ctx.fillText("INDUCTION COMPLETION RECORD · NOT PROOF OF EMPLOYMENT", 0, wy); }
+  ctx.restore();
 
   const logo = await loadLogoImg();
   const logoW = 240, logoH = logoW*(logo.height/logo.width);
@@ -1352,10 +1449,12 @@ async function genCertificateCanvas(){
   });
 
   y += 18;
-  ctx.fillStyle="#20241F"; roundRect(ctx, rowLeft-4, y, (rowRight-rowLeft)+8, 46, 8); ctx.fill();
-  ctx.fillStyle="#F5C518"; ctx.font="700 14px Poppins, sans-serif"; ctx.textAlign="center";
-  wrapCenteredText(ctx, L.showGate, cw/2, y+29, (rowRight-rowLeft)-20, 18);
-  y += 76;
+  ctx.fillStyle="#20241F"; roundRect(ctx, rowLeft-4, y, (rowRight-rowLeft)+8, bandH, 8); ctx.fill();
+  ctx.font="700 12.5px Poppins, sans-serif"; ctx.textAlign="center";
+  const bandW = (rowRight-rowLeft)-28, enN = measureWrapLines(ctx, UI.en.showGate, bandW);
+  ctx.fillStyle="#F5C518"; wrapCenteredText(ctx, UI.en.showGate, cw/2, y+23, bandW, 17);
+  ctx.fillStyle="#FFFFFF"; wrapCenteredText(ctx, UI.id.showGate, cw/2, y+23+enN*17+4, bandW, 17);
+  y += bandH + 30;
 
   ctx.textAlign="center";
   ctx.font="700 15px Poppins, sans-serif"; ctx.fillStyle="#1F6B3B";
@@ -1470,6 +1569,9 @@ function bind(){
   if(f.type==='content'){
     const nextBtn = document.getElementById('nextBtn');
     if(nextBtn) nextBtn.onclick = ()=>{ state.pos++; render(); };
+    const dlContactsBtn = document.getElementById('dlContactsBtn');
+    if(dlContactsBtn) dlContactsBtn.onclick = downloadContactsPNG;
+    document.querySelectorAll('[data-lsrcard]').forEach(b=>{ b.onclick = ()=>downloadLsrCardPNG(b.dataset.lsrcard); });
     const sec = sections[f.idx];
     if(sec && sec.confirmGate){
       const cb = document.getElementById('confirmGateInput');
