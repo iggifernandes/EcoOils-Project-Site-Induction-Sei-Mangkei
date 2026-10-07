@@ -174,6 +174,8 @@ const UI = {
     shareCert:"Share certificate", certAutoSaved:"Your certificate has been saved to your device.",
     upSending:"Sending your record to Project HSSE…", upRow:"Record saved ✓ — your certificate copy will upload as soon as the connection allows.", upOk:"Record and certificate copy saved ✓", upFail:"Not sent yet — it is saved on this phone and will send automatically when internet is available. Keep this page open if you can.",
     verifyTitle:"Scan to verify this certificate", verifyHint:"Security: compare the scanned page with this certificate. NOT VERIFIED, or different details = do not accept it.", verifyCodeLbl:"Verify code",
+    bookletNote:"Your pocket-card booklet (all 9 Life Saving Rules, PDF) saves to your device automatically.", bookletSaved:"✓ Pocket-card booklet saved to your device (PDF).", bookletBtn:"Download booklet again (PDF)",
+    verifyHeading:"Certificate verification", verifyChecking:"Checking the record…", verifyOkTitle:"✓ VERIFIED", verifyOkSub:"Induction record found", verifyBadTitle:"✗ NOT VERIFIED", verifyBadText:"No matching induction record was found. Do not accept this certificate.", verifyOffline:"Could not reach the verification service. Check the internet connection and try again.", verifyRetry:"Try again", verifyCompare:"Compare the face and details with the person and the certificate they show. This is a self-declared induction record — not proof of employment or authorization to work.", verifyOnFile:"Certificate on file", verifyNoImg:"Certificate image not on file yet.", verifyIdLast4:"ID (last 4 digits)", verifyHostContact:"Host contact", verifyResult:"Result",
     selfieTitle:"Verification Photo", selfieDesc:"Please take a quick selfie. This photo is used to verify your identity against your Induction Certificate when you meet Project HSSE on arrival at site.",
     selfieConsent:"By continuing, you consent to this photo being captured and included on your induction certificate for identity verification purposes only. A copy of your certificate is stored securely by Project HSSE as the induction record.",
     selfieCapture:"Take photo", selfieRetake:"Retake", selfieContinue:"Continue", selfieRetry:"Try again",
@@ -213,6 +215,8 @@ const UI = {
     shareCert:"Bagikan sertifikat", certAutoSaved:"Sertifikat Anda telah disimpan ke perangkat.",
     upSending:"Mengirim data Anda ke Project HSSE…", upRow:"Data tersimpan ✓ — salinan sertifikat akan terunggah segera setelah koneksi memungkinkan.", upOk:"Data dan salinan sertifikat tersimpan ✓", upFail:"Belum terkirim — tersimpan di ponsel ini dan akan terkirim otomatis saat internet tersedia. Biarkan halaman ini tetap terbuka jika bisa.",
     verifyTitle:"Pindai untuk memverifikasi sertifikat ini", verifyHint:"Petugas keamanan: cocokkan halaman hasil pindai dengan sertifikat ini. NOT VERIFIED, atau data berbeda = jangan diterima.", verifyCodeLbl:"Kode verifikasi",
+    bookletNote:"Buku kartu saku Anda (9 Life Saving Rules, PDF) tersimpan otomatis di perangkat Anda.", bookletSaved:"✓ Buku kartu saku tersimpan di perangkat Anda (PDF).", bookletBtn:"Unduh ulang buku kartu saku (PDF)",
+    verifyHeading:"Verifikasi sertifikat", verifyChecking:"Memeriksa data…", verifyOkTitle:"✓ TERVERIFIKASI", verifyOkSub:"Data induksi ditemukan", verifyBadTitle:"✗ TIDAK TERVERIFIKASI", verifyBadText:"Tidak ada data induksi yang cocok. Jangan terima sertifikat ini.", verifyOffline:"Tidak dapat menghubungi layanan verifikasi. Periksa koneksi internet lalu coba lagi.", verifyRetry:"Coba lagi", verifyCompare:"Cocokkan wajah dan data dengan orangnya dan sertifikat yang ditunjukkan. Ini adalah catatan induksi berdasarkan pernyataan sendiri — bukan bukti pekerjaan atau izin untuk bekerja.", verifyOnFile:"Sertifikat yang tersimpan", verifyNoImg:"Gambar sertifikat belum tersimpan.", verifyIdLast4:"ID (4 digit terakhir)", verifyHostContact:"Kontak Host", verifyResult:"Hasil",
     selfieTitle:"Foto Verifikasi", selfieDesc:"Mohon ambil swafoto singkat. Foto ini digunakan untuk memverifikasi identitas Anda terhadap Sertifikat Induksi Anda saat bertemu Project HSSE di site.",
     selfieConsent:"Dengan melanjutkan, Anda menyetujui pengambilan foto ini dan penyertaannya pada sertifikat induksi Anda semata-mata untuk tujuan verifikasi identitas. Salinan sertifikat Anda disimpan dengan aman oleh Project HSSE sebagai catatan induksi.",
     selfieCapture:"Ambil foto", selfieRetake:"Ambil ulang", selfieContinue:"Lanjutkan", selfieRetry:"Coba lagi",
@@ -230,7 +234,7 @@ const UI = {
     videoTitle:"Video Induksi — Life Saving Rules", videoDesc:"9 Life Saving Rules dibahas satu per satu pada halaman berikutnya. Setiap halaman memiliki videonya sendiri — mohon tonton, lalu konfirmasi dan lanjutkan."
   }
 };
-UI.ms = Object.assign({}, UI.en, {"subTitle":"Induksi dan Penilaian Tapak","footer":"Merangkumi Induksi HSSE Projek EcoOils Mentari dan Life Saving Rules (Sei Mangkei, Rev 00). Markah lulus 80% diperlukan pada penilaian akhir. Dua percubaan yang gagal memerlukan pengulangan penuh kandungan induksi, selaras dengan dasar tapak.","start":"Mulakan induksi","continueBtn":"Teruskan","back":"Kembali","nextSection":"Bahagian seterusnya","nextQuestion":"Soalan seterusnya","seeResult":"Lihat keputusan","quickCheck":"Semakan pantas","detailsTitle":"Butiran pelawat & vendor","detailsDesc":"Masukkan butiran anda tepat seperti yang tertera pada kad pengenalan anda.","requiredNote":"Medan bertanda <span class=\"req\">*</span> adalah wajib — anda tidak boleh meneruskan sehingga ia dilengkapkan.","certifyLabel":"Saya mengakui bahawa semua butiran yang dimasukkan di atas adalah betul dan tidak dipalsukan.","healthCertQ":"Saya telah menyerahkan Sijil Kesihatan saya (MCU / Surat Sehat, mengikut peraturan Indonesia).<span class=\"req\">*</span>","healthCertNote":"Sila serahkan Sijil Kesihatan kepada Host anda, dan kepada HSSE EcoOils.","healthCertYes":"Ya","healthCertNo":"Tidak","adminExport":"Admin: eksport rekod (CSV)","adminExportEmpty":"Belum ada rekod ditemui pada peranti ini.","adminExportDone":"Rekod telah dieksport.","adminLoginTitle":"Akses admin","adminLoginDesc":"Masukkan kata laluan admin untuk melihat dan mengeksport rekod induksi.","adminPasswordPlaceholder":"Kata laluan","adminLoginBtn":"Log masuk","adminWrongPassword":"Kata laluan salah.","adminPanelTitle":"Rekod induksi","adminPanelDesc":"Eksport semua penyelesaian yang direkodkan sebagai fail CSV (dibuka dalam Excel).","adminExportBtn":"Eksport CSV","durationF":"Masa yang diambil","fName":"Nama penuh","fCompany":"Nama vendor / syarikat","fId":"Nombor kad pengenalan / pasport","fHost":"Host / kontraktor yang anda lawati","fHostName":"Nama hubungan Host (orang yang anda lawati)","fHostPhone":"Nombor telefon hubungan Host","phoneInvalid":"Masukkan nombor telefon yang sah (7–15 digit, dengan atau tanpa kod negara, cth. +628123456789 atau 08123456789).","fPurpose":"Tujuan lawatan","selectOpt":"Pilih...","welcomeTitle":"Sebelum anda memasuki tapak","welcomeDesc":"Induksi ini merangkumi kandungan HSSE Projek EcoOils Mentari dan 9 Life Saving Rules. Setiap bahagian mempunyai semakan pantas pada skrinnya sendiri, dan ia berakhir dengan penilaian bergred — 80% diperlukan untuk lulus. Induksi ini mengambil masa kira-kira 30 minit — sila tonton video dan biasakan diri dengan Life Saving Rules.","assessTitle":"Penilaian Induksi HSSE","assessDesc":"Penilaian ini merangkumi kandungan induksi yang baru anda baca.","assessInstr":"Arahan","assessBullets":["Anda mesti mendapat sekurang-kurangnya <b>80%</b> untuk lulus.","Jika anda gagal 2 percubaan, anda perlu mengulang induksi penuh.","20 soalan, satu demi satu."],"startAssess":"Mulakan penilaian","downloadContacts":"Muat turun kad hubungan kecemasan (PNG)","downloadCert":"Muat turun sijil (JPG)","shareCert":"Kongsi sijil","certAutoSaved":"Sijil anda telah disimpan ke peranti anda.","upSending":"Menghantar rekod anda kepada HSSE Projek…","upRow":"Rekod disimpan ✓ — salinan sijil anda akan dimuat naik sebaik sahaja sambungan membenarkan.","upOk":"Rekod dan salinan sijil disimpan ✓","upFail":"Belum dihantar — ia disimpan pada telefon ini dan akan dihantar secara automatik apabila internet tersedia. Biarkan halaman ini terbuka jika boleh.","verifyTitle":"Imbas untuk mengesahkan sijil ini","verifyHint":"Pengawal: bandingkan halaman yang diimbas dengan sijil ini. NOT VERIFIED, atau butiran berbeza = jangan terima.","verifyCodeLbl":"Kod pengesahan","selfieTitle":"Foto Pengesahan","selfieDesc":"Sila ambil swafoto pantas. Foto ini digunakan untuk mengesahkan identiti anda berbanding Sijil Induksi anda apabila anda bertemu HSSE Projek semasa tiba di tapak.","selfieConsent":"Dengan meneruskan, anda bersetuju foto ini diambil dan dimasukkan dalam sijil induksi anda untuk tujuan pengesahan identiti sahaja. Salinan sijil anda disimpan dengan selamat oleh HSSE Projek sebagai rekod induksi.","selfieCapture":"Ambil foto","selfieRetake":"Ambil semula","selfieContinue":"Teruskan","selfieRetry":"Cuba lagi","selfieCameraError":"Tidak dapat mengakses kamera anda. Swafoto diperlukan untuk melengkapkan induksi ini — sila semak kebenaran kamera anda dan cuba lagi.","failTitle":"Belum lulus","autoRestartNote":"Memulakan semula induksi secara automatik…","retryAssess":"Cuba semula penilaian","resitTitle":"Ulangan penuh diperlukan","resitBtn":"Ulang induksi penuh","passTitle":"Induksi Tapak Projek EcoOils Mentari Selesai","warmTitle":"Selamat Datang ke Keluarga EcoOils","warmText":"Anda kini sebahagian daripada pasukan kami di Sei Mangkei. Jaga diri anda, jaga satu sama lain — setiap seorang daripada kami mahu anda pulang dengan selamat, setiap hari.","warmMotto":"Utamakan keselamatan — Matlamat Sifar ialah moto kami.","certNo":"No. Sijil","nameF":"Nama","companyF":"Vendor / syarikat","hostF":"Host / kontraktor","purposeF":"Tujuan","idF":"No. Kad Pengenalan / Pasport","attemptsF":"Percubaan yang diambil","issuedF":"Dikeluarkan","showGate":"Rekod penyelesaian induksi sahaja. Bukan bukti pekerjaan, pelantikan atau kebenaran untuk bekerja. Nama, syarikat dan ID diisytiharkan oleh calon dan mesti disahkan di pintu pagar.","newVisitor":"Pelawat baharu","stampLine1":"INDUKSI","stampLine2":"SELESAI","watchEn":"IOGP 'Rule in a Minute' — Bahasa Inggeris (YouTube)","watchId":"IOGP 'Rule in a Minute' — Bahasa Indonesia (YouTube)","videoTitle":"Life Saving Rules — Video Induksi","videoDesc":"9 Life Saving Rules dibincangkan satu demi satu pada halaman seterusnya. Setiap halaman mempunyai videonya sendiri — sila tonton, kemudian sahkan dan teruskan."});
+UI.ms = Object.assign({}, UI.en, {"subTitle":"Induksi dan Penilaian Tapak","footer":"Merangkumi Induksi HSSE Projek EcoOils Mentari dan Life Saving Rules (Sei Mangkei, Rev 00). Markah lulus 80% diperlukan pada penilaian akhir. Dua percubaan yang gagal memerlukan pengulangan penuh kandungan induksi, selaras dengan dasar tapak.","start":"Mulakan induksi","continueBtn":"Teruskan","back":"Kembali","nextSection":"Bahagian seterusnya","nextQuestion":"Soalan seterusnya","seeResult":"Lihat keputusan","quickCheck":"Semakan pantas","detailsTitle":"Butiran pelawat & vendor","detailsDesc":"Masukkan butiran anda tepat seperti yang tertera pada kad pengenalan anda.","requiredNote":"Medan bertanda <span class=\"req\">*</span> adalah wajib — anda tidak boleh meneruskan sehingga ia dilengkapkan.","certifyLabel":"Saya mengakui bahawa semua butiran yang dimasukkan di atas adalah betul dan tidak dipalsukan.","healthCertQ":"Saya telah menyerahkan Sijil Kesihatan saya (MCU / Surat Sehat, mengikut peraturan Indonesia).<span class=\"req\">*</span>","healthCertNote":"Sila serahkan Sijil Kesihatan kepada Host anda, dan kepada HSSE EcoOils.","healthCertYes":"Ya","healthCertNo":"Tidak","adminExport":"Admin: eksport rekod (CSV)","adminExportEmpty":"Belum ada rekod ditemui pada peranti ini.","adminExportDone":"Rekod telah dieksport.","adminLoginTitle":"Akses admin","adminLoginDesc":"Masukkan kata laluan admin untuk melihat dan mengeksport rekod induksi.","adminPasswordPlaceholder":"Kata laluan","adminLoginBtn":"Log masuk","adminWrongPassword":"Kata laluan salah.","adminPanelTitle":"Rekod induksi","adminPanelDesc":"Eksport semua penyelesaian yang direkodkan sebagai fail CSV (dibuka dalam Excel).","adminExportBtn":"Eksport CSV","durationF":"Masa yang diambil","fName":"Nama penuh","fCompany":"Nama vendor / syarikat","fId":"Nombor kad pengenalan / pasport","fHost":"Host / kontraktor yang anda lawati","fHostName":"Nama hubungan Host (orang yang anda lawati)","fHostPhone":"Nombor telefon hubungan Host","phoneInvalid":"Masukkan nombor telefon yang sah (7–15 digit, dengan atau tanpa kod negara, cth. +628123456789 atau 08123456789).","fPurpose":"Tujuan lawatan","selectOpt":"Pilih...","welcomeTitle":"Sebelum anda memasuki tapak","welcomeDesc":"Induksi ini merangkumi kandungan HSSE Projek EcoOils Mentari dan 9 Life Saving Rules. Setiap bahagian mempunyai semakan pantas pada skrinnya sendiri, dan ia berakhir dengan penilaian bergred — 80% diperlukan untuk lulus. Induksi ini mengambil masa kira-kira 30 minit — sila tonton video dan biasakan diri dengan Life Saving Rules.","assessTitle":"Penilaian Induksi HSSE","assessDesc":"Penilaian ini merangkumi kandungan induksi yang baru anda baca.","assessInstr":"Arahan","assessBullets":["Anda mesti mendapat sekurang-kurangnya <b>80%</b> untuk lulus.","Jika anda gagal 2 percubaan, anda perlu mengulang induksi penuh.","20 soalan, satu demi satu."],"startAssess":"Mulakan penilaian","downloadContacts":"Muat turun kad hubungan kecemasan (PNG)","downloadCert":"Muat turun sijil (JPG)","shareCert":"Kongsi sijil","certAutoSaved":"Sijil anda telah disimpan ke peranti anda.","upSending":"Menghantar rekod anda kepada HSSE Projek…","upRow":"Rekod disimpan ✓ — salinan sijil anda akan dimuat naik sebaik sahaja sambungan membenarkan.","upOk":"Rekod dan salinan sijil disimpan ✓","upFail":"Belum dihantar — ia disimpan pada telefon ini dan akan dihantar secara automatik apabila internet tersedia. Biarkan halaman ini terbuka jika boleh.","verifyTitle":"Imbas untuk mengesahkan sijil ini","verifyHint":"Pengawal: bandingkan halaman yang diimbas dengan sijil ini. NOT VERIFIED, atau butiran berbeza = jangan terima.","verifyCodeLbl":"Kod pengesahan","bookletNote":"Buku kad saku anda (9 Life Saving Rules, PDF — dalam Bahasa Indonesia) akan disimpan ke peranti anda secara automatik.","bookletSaved":"✓ Buku kad saku disimpan ke peranti anda (PDF, Bahasa Indonesia).","bookletBtn":"Muat turun semula buku kad saku (PDF)","verifyHeading":"Pengesahan sijil","verifyChecking":"Menyemak rekod…","verifyOkTitle":"✓ DISAHKAN","verifyOkSub":"Rekod induksi ditemui","verifyBadTitle":"✗ TIDAK DISAHKAN","verifyBadText":"Tiada rekod induksi yang sepadan ditemui. Jangan terima sijil ini.","verifyOffline":"Tidak dapat menghubungi perkhidmatan pengesahan. Semak sambungan internet dan cuba lagi.","verifyRetry":"Cuba lagi","verifyCompare":"Bandingkan wajah dan butiran dengan orang itu dan sijil yang ditunjukkan. Ini ialah rekod induksi yang diisytiharkan sendiri — bukan bukti pekerjaan atau kebenaran untuk bekerja.","verifyOnFile":"Sijil dalam simpanan","verifyNoImg":"Imej sijil belum disimpan.","verifyIdLast4":"ID (4 digit terakhir)","verifyHostContact":"Hubungan Host","verifyResult":"Keputusan","selfieTitle":"Foto Pengesahan","selfieDesc":"Sila ambil swafoto pantas. Foto ini digunakan untuk mengesahkan identiti anda berbanding Sijil Induksi anda apabila anda bertemu HSSE Projek semasa tiba di tapak.","selfieConsent":"Dengan meneruskan, anda bersetuju foto ini diambil dan dimasukkan dalam sijil induksi anda untuk tujuan pengesahan identiti sahaja. Salinan sijil anda disimpan dengan selamat oleh HSSE Projek sebagai rekod induksi.","selfieCapture":"Ambil foto","selfieRetake":"Ambil semula","selfieContinue":"Teruskan","selfieRetry":"Cuba lagi","selfieCameraError":"Tidak dapat mengakses kamera anda. Swafoto diperlukan untuk melengkapkan induksi ini — sila semak kebenaran kamera anda dan cuba lagi.","failTitle":"Belum lulus","autoRestartNote":"Memulakan semula induksi secara automatik…","retryAssess":"Cuba semula penilaian","resitTitle":"Ulangan penuh diperlukan","resitBtn":"Ulang induksi penuh","passTitle":"Induksi Tapak Projek EcoOils Mentari Selesai","warmTitle":"Selamat Datang ke Keluarga EcoOils","warmText":"Anda kini sebahagian daripada pasukan kami di Sei Mangkei. Jaga diri anda, jaga satu sama lain — setiap seorang daripada kami mahu anda pulang dengan selamat, setiap hari.","warmMotto":"Utamakan keselamatan — Matlamat Sifar ialah moto kami.","certNo":"No. Sijil","nameF":"Nama","companyF":"Vendor / syarikat","hostF":"Host / kontraktor","purposeF":"Tujuan","idF":"No. Kad Pengenalan / Pasport","attemptsF":"Percubaan yang diambil","issuedF":"Dikeluarkan","showGate":"Rekod penyelesaian induksi sahaja. Bukan bukti pekerjaan, pelantikan atau kebenaran untuk bekerja. Nama, syarikat dan ID diisytiharkan oleh calon dan mesti disahkan di pintu pagar.","newVisitor":"Pelawat baharu","stampLine1":"INDUKSI","stampLine2":"SELESAI","watchEn":"IOGP 'Rule in a Minute' — Bahasa Inggeris (YouTube)","watchId":"IOGP 'Rule in a Minute' — Bahasa Indonesia (YouTube)","videoTitle":"Life Saving Rules — Video Induksi","videoDesc":"9 Life Saving Rules dibincangkan satu demi satu pada halaman seterusnya. Setiap halaman mempunyai videonya sendiri — sila tonton, kemudian sahkan dan teruskan."});
 Object.assign(UI.ms, {
   stepOf:(a,b)=>`Langkah ${a} daripada ${b}`, questionOf:(a,b)=>`Soalan ${a} daripada ${b}`,
   failDesc:(s,t,p)=>`Anda belum memenuhi keperluan peratusan lulus penilaian — sila cuba lagi. `,
@@ -536,7 +540,6 @@ lsrData.forEach((r,idx)=>{
         <a href="${LSR_VIDEO_LINKS[r.key].id}" target="_blank" rel="noopener" class="lsr-rewatch-link"><span class="lsr-rewatch-icon">${lsrIcon(r.key)}</span><span>Bahasa Indonesia</span></a>
       </div>
       <p class="required-note" style="color:var(--green-dark);margin-top:8px;">${lang==='en'?'The video opens in a new tab or app. Your progress is saved — come back to this page when it ends.':lang==='ms'?'Video dibuka dalam tab atau aplikasi baharu. Kemajuan anda disimpan — kembali ke halaman ini apabila video tamat. (Video Bahasa Melayu belum tersedia — sila gunakan video Bahasa Indonesia atau Inggeris.)':'Video akan terbuka di tab atau aplikasi baru. Kemajuan Anda tersimpan — kembali ke halaman ini setelah video selesai.'}</p>`;
-      h += `<p class="required-note" id="lsrCardNote" style="color:var(--green-dark);margin-top:10px;">${lsrCardNoteText(r.key, lang)}</p>`;
       h += `<label class="confirm-gate"><input type="checkbox" id="confirmGateInput">${lang==='en'?`I have watched the video and understood the requirements of the <b>${r.name.en}</b> rule`:lang==='ms'?`Saya telah menonton video dan memahami keperluan peraturan <b>${r.name.ms}</b>`:`Saya telah menonton video dan memahami persyaratan aturan <b>${r.name.id}</b>`}</label>`;
       return h;
     },
@@ -619,6 +622,7 @@ function addLesson(tagEn, txt, beforeZT){
     ? h.replace('<div class="zt-box">', lessonBox(lang,txt)+'<div class="zt-box">')
     : h + lessonBox(lang,txt));
 }
+addToSection("Life Saving Rules Video", (h,lang)=> h + bookletBlock(lang));
 addToSection("Emergency Evacuation", (h,lang)=> h.replace('</ol>',
   `<li><b>${lang==='en'?'In case of emergency:':lang==='ms'?'Dalam keadaan kecemasan:':'Dalam keadaan darurat:'}</b> ${lang==='en'?'stay calm and move to the designated muster station':lang==='ms'?'bertenang dan bergerak ke tempat berhimpun (muster station) yang ditetapkan':'tetap tenang dan menuju titik kumpul (muster station) yang ditentukan'}</li>
    <li><b>${lang==='en'?'Feeling unwell:':lang==='ms'?'Berasa tidak sihat:':'Merasa tidak sehat:'}</b> ${lang==='en'?'inform your supervisor and HSSE immediately':lang==='ms'?'maklumkan penyelia dan HSSE anda dengan segera':'segera beritahu supervisor dan HSSE Anda'}</li></ol>`));
@@ -899,6 +903,10 @@ const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxOlG2
 const GITHUB_URL = "https://iggifernandes.github.io/EcoOils-Project-Site-Induction-Sei-Mangkei/";
 const ON_GITHUB_PAGES = location.hostname.includes('github.io');
 const START_PARAM = new URLSearchParams(location.search).get('start') === '1';
+const _qp = new URLSearchParams(location.search);
+const VERIFY_V = _qp.get('v') || '', VERIFY_C = _qp.get('c') || '';
+const VERIFY_MODE = /^MTR-HSSE-\d{6}-\d{3}$/.test(VERIFY_V) && /^[A-HJ-NP-Z2-9]{10}$/.test(VERIFY_C);   // opened from the QR code on a certificate
+let verifyState = { phase:'checking', data:null, started:false };
 const state = { lang:"en", pos: START_PARAM ? 1 : 0, visitor:{name:"",company:"",host:"",hostName:"",hostPhone:"",idnum:"",purpose:"",certify:false,healthCert:""}, secAnswers:{}, qIndex:0, qAnswers:{}, score:0, attempts:0, lsrConfirmed:{}, paperBuilt:false, seenIds:[], startTime: START_PARAM ? Date.now() : 0, recorded:false, certAutoDownloaded:false, selfieDataUrl:null, selfieConsent:false };
 let certNumber = "";
 let isAdminMode = (location.hash === '#admin');
@@ -920,7 +928,7 @@ function genVerifyCode(){
   catch(e){ for(let i=0;i<10;i++) c+=A[Math.floor(Math.random()*32)]; }
   return c;
 }
-function verifyUrl(){ return GOOGLE_SHEET_WEBHOOK_URL + '?v=' + encodeURIComponent(certNumber) + '&c=' + verifyCode; }
+function verifyUrl(){ const base = ON_GITHUB_PAGES ? (location.origin + location.pathname) : GITHUB_URL; return base + '?v=' + encodeURIComponent(certNumber) + '&c=' + verifyCode; }
 function secondLang(){ return state.lang==='ms' ? 'ms' : 'id'; }
 function formatDuration(ms){
   const totalSec = Math.max(0, Math.round(ms/1000));
@@ -1090,6 +1098,35 @@ function applyStaticUI(){
   document.getElementById('btnId').classList.toggle('active', state.lang==='id'); document.getElementById('btnMs').classList.toggle('active', state.lang==='ms');
 }
 
+function escHtml(t){ return String(t==null?'':t).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function viewVerify(L){
+  const ph = verifyState.phase, d = verifyState.data;
+  if(ph==='checking') return `<div class="panel"><h2>${L.verifyHeading}</h2><p class="desc">${L.verifyChecking}</p></div>`;
+  if(ph==='offline') return `<div class="panel"><h2>${L.verifyHeading}</h2><p class="desc" style="color:var(--danger);">${L.verifyOffline}</p></div><div class="foot"><button class="btn btn-primary" id="verifyRetryBtn">${L.verifyRetry}</button></div>`;
+  if(ph==='bad') return `<div class="panel" style="border:2px solid var(--danger);background:var(--danger-light);text-align:center;"><h2 style="color:var(--danger);font-size:26px;margin:0 0 8px;">${L.verifyBadTitle}</h2><p style="margin:6px 0;">${L.verifyBadText}</p></div>`;
+  const r = (d && d.record) || {};
+  const row = (k,v)=>`<div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);"><span style="color:var(--muted);">${k}</span><b style="text-align:right;">${escHtml(v)}</b></div>`;
+  const idMasked = r.idLast4 ? '••••'+r.idLast4 : '';
+  const img = (d && typeof d.image==='string' && /^data:image\/(jpeg|png);base64,[A-Za-z0-9+\/=]+$/.test(d.image)) ? `<img alt="${escHtml(L.verifyOnFile)}" src="${d.image}" style="width:100%;border-radius:10px;border:1px solid var(--line);margin-top:10px;">` : `<p class="required-note">${L.verifyNoImg}</p>`;
+  return `<div class="panel" style="border:2px solid var(--green);background:var(--green-light,#E3F4E8);text-align:center;"><h2 style="color:var(--green-dark);font-size:26px;margin:0 0 6px;">${L.verifyOkTitle}</h2><p style="margin:4px 0;">${L.verifyOkSub}</p></div>
+    <div class="panel">${row(L.certNo,r.cert)}${row(L.nameF,r.name)}${row(L.companyF,r.company)}${row(L.verifyIdLast4,idMasked)}${row(L.hostF,r.host)}${row(L.verifyHostContact,r.hostName)}${row(L.purposeF,r.purpose)}${row(L.verifyResult,(r.result||'')+' — '+(r.score||'')+' / '+(r.total||''))}${row(L.attemptsF,r.attempts)}${row(L.issuedF,r.issued)}
+    <p class="required-note" style="margin-top:12px;">${L.verifyCompare}</p><h3>${L.verifyOnFile}</h3>${img}</div>`;
+}
+async function startVerify(){
+  verifyState = { phase:'checking', data:null, started:true };
+  const ctrl = new AbortController(); const t = setTimeout(()=>ctrl.abort(), 25000);
+  try{
+    const res = await fetch(GOOGLE_SHEET_WEBHOOK_URL + '?v=' + encodeURIComponent(VERIFY_V) + '&c=' + encodeURIComponent(VERIFY_C) + '&f=json', { signal: ctrl.signal });
+    const j = await res.json();
+    verifyState = (j && j.ok) ? (j.verified ? { phase:'ok', data:j, started:true } : { phase:'bad', data:null, started:true }) : { phase:'offline', data:null, started:true };
+  }catch(e){ verifyState = { phase:'offline', data:null, started:true }; }
+  finally{ clearTimeout(t); }
+  render();
+}
+function bindVerify(){
+  document.querySelectorAll('#langToggle button').forEach(b=>{ b.onclick = ()=>{ state.lang = b.dataset.lang; render(); }; });
+  const rb = document.getElementById('verifyRetryBtn'); if(rb) rb.onclick = ()=>{ verifyState = { phase:'checking', data:null, started:false }; render(); };
+}
 function render(){
   applyStaticUI(); setProgress();
   const L = UI[state.lang], lang = state.lang;
@@ -1098,6 +1135,11 @@ function render(){
     host.innerHTML = viewResumeOffer(resumeOffer);
     document.getElementById('resumeContinueBtn').onclick = ()=>{ applySnap(resumeOffer); resumeOffer = null; render(); };
     document.getElementById('resumeNewBtn').onclick = ()=>{ try{ localStorage.removeItem(LOCAL_SAVE_KEY); }catch(e){} resumeOffer = null; render(); };
+    return;
+  }
+  if(VERIFY_MODE && !isAdminMode){
+    host.innerHTML = viewVerify(L); bindVerify();
+    if(!verifyState.started) startVerify();
     return;
   }
   if(isAdminMode){
@@ -1397,23 +1439,83 @@ function iogpBlock(key, lang){
   const items = c.items.map(it=>'<li>'+it[li]+(it[2] ? '<ul>'+it[2].map(sb=>'<li>'+sb[li]+'</li>').join('')+'</ul>' : '')+'</li>').join('');
   return '<div class="iogp-box"><div class="iogp-tag">'+(lang==='en'?'Official Life-Saving Rule (IOGP)':lang==='ms'?'Peraturan Life-Saving rasmi (IOGP) — teks rasmi dalam Bahasa Indonesia':'Peraturan Keselamatan Jiwa resmi (IOGP)')+'</div><div class="iogp-rule">'+c.rule[cl]+'</div><ul>'+items+'</ul></div>';
 }
-function lsrCardNoteText(key, lang){
-  const done = !!(state.lsrCardSaved && state.lsrCardSaved[key]);
-  if(lang==='en') return done ? '✓ Your pocket card for this rule has been saved to your device.'
-                              : 'Tick the box below to continue — your pocket card for this rule will save to your device automatically.';
-  if(lang==='ms') return done ? '✓ Kad saku (Bahasa Indonesia) untuk peraturan ini telah disimpan ke peranti anda.' : 'Tandakan kotak di bawah untuk meneruskan — kad saku (Bahasa Indonesia) untuk peraturan ini akan disimpan ke peranti anda secara automatik.';
-  return done ? '✓ Kartu saku untuk aturan ini telah disimpan ke perangkat Anda.'
-              : 'Centang kotak di bawah untuk melanjutkan — kartu saku untuk aturan ini akan tersimpan otomatis di perangkat Anda.';
+/* ============ POCKET-CARD BOOKLET: one PDF (cover + the 9 official pocket cards), saved once when the Life Saving Rules section opens ============ */
+function bookletNoteText(lang){ return state.bookletSaved ? UI[lang].bookletSaved : UI[lang].bookletNote; }
+function bookletBlock(lang){
+  return '<p class="required-note" id="bookletNote" style="color:var(--green-dark);margin-top:10px;">'+bookletNoteText(lang)+'</p><button type="button" class="dl-btn" id="bookletBtn">⬇ '+UI[lang].bookletBtn+'</button>';
 }
-function lsrKeyOfSection(sec){ const m = /^Life Saving Rule (\d)\/9$/.exec(sec.tag.en); return m ? lsrData[+m[1]-1].key : null; }
-async function autoSaveLsrCard(sec){
-  const key = lsrKeyOfSection(sec); if(!key) return;
-  state.lsrCardSaved = state.lsrCardSaved || {};
-  if(state.lsrCardSaved[key]) return;                    // once per rule
-  state.lsrCardSaved[key] = true;
-  try{ await downloadLsrCardPNG(key); }
-  catch(e){ console.error('Pocket card failed:', e); state.lsrCardSaved[key] = false; return; }
-  const el = document.getElementById('lsrCardNote'); if(el) el.textContent = lsrCardNoteText(key, state.lang);
+function dataUrlToBytes(u){ const b=atob(u.split(',')[1]); const a=new Uint8Array(b.length); for(let i=0;i<b.length;i++) a[i]=b.charCodeAt(i); return a; }
+function triggerFileDownload(bytes, filename, type){
+  const blob=new Blob([bytes],{type}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
+  a.href=url; a.download=filename; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function makePdf(jpgs, pxW, pxH){                 // minimal PDF: one JPEG image per page, no external library
+  const enc=new TextEncoder(), chunks=[], offs=[]; let len=0;
+  const push=d=>{ const u=typeof d==='string' ? enc.encode(d) : d; chunks.push(u); len+=u.length; };
+  const W=pxW*0.5, H=pxH*0.5, n=jpgs.length;
+  const obj=(num,body)=>{ offs[num]=len; push(num+' 0 obj\n'+body+'\nendobj\n'); };
+  push('%PDF-1.4\n');
+  obj(1,'<< /Type /Catalog /Pages 2 0 R >>');
+  obj(2,'<< /Type /Pages /Kids ['+jpgs.map((_,i)=>(3+3*i)+' 0 R').join(' ')+'] /Count '+n+' >>');
+  jpgs.forEach((j,i)=>{
+    const pg=3+3*i, ct=4+3*i, im=5+3*i, cs='q '+W+' 0 0 '+H+' 0 0 cm /Im0 Do Q';
+    obj(pg,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+W+' '+H+'] /Resources << /XObject << /Im0 '+im+' 0 R >> >> /Contents '+ct+' 0 R >>');
+    obj(ct,'<< /Length '+cs.length+' >>\nstream\n'+cs+'\nendstream');
+    offs[im]=len; push(im+' 0 obj\n<< /Type /XObject /Subtype /Image /Width '+pxW+' /Height '+pxH+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+j.length+' >>\nstream\n'); push(j); push('\nendstream\nendobj\n');
+  });
+  const xrefAt=len, total=2+3*n; let x='xref\n0 '+(total+1)+'\n0000000000 65535 f \n';
+  for(let k=1;k<=total;k++) x+=String(offs[k]).padStart(10,'0')+' 00000 n \n';
+  push(x+'trailer\n<< /Size '+(total+1)+' /Root 1 0 R >>\nstartxref\n'+xrefAt+'\n%%EOF\n');
+  const out=new Uint8Array(len); let pos=0; chunks.forEach(c=>{ out.set(c,pos); pos+=c.length; }); return out;
+}
+async function renderBookletCover(lang, pxW, pxH, scale){
+  const logo = await loadLogoImg(), keys = lsrData.map(r=>r.key);
+  const icons = await Promise.all(keys.map(k=>new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src="data:image/png;base64,"+LSR_ICON_B64[k]; })));
+  const T = lang==='en' ? { head:'LIFE-SAVING RULES', sub:'Pocket booklet', keep:'Keep this booklet with you on site', brand:'EcoOils · Mentari Project' }
+                        : { head:'PERATURAN KESELAMATAN JIWA', sub:'Buku kartu saku', keep:'Simpan buku ini bersama Anda selama di site', brand:'EcoOils · Proyek Mentari' };
+  const cw=620, margin=14, H=pxH/scale, BLUE='#0B5CAD';
+  const c=document.createElement('canvas'); c.width=pxW; c.height=pxH; const ctx=c.getContext('2d'); ctx.scale(scale,scale);
+  ctx.fillStyle='#EEF2EC'; ctx.fillRect(0,0,cw,H);
+  ctx.save(); ctx.shadowColor="rgba(20,30,20,0.28)"; ctx.shadowBlur=28; ctx.shadowOffsetY=10; ctx.fillStyle="#FFFFFF";
+  roundRect(ctx, margin, margin, cw-margin*2, H-margin*2, 22); ctx.fill(); ctx.restore();
+  ctx.save(); roundRect(ctx, margin, margin, cw-margin*2, H-margin*2, 22); ctx.clip();
+  ctx.fillStyle="#F5C518"; ctx.fillRect(margin, margin, cw-margin*2, 8);
+  const lw=190, lh=lw*(logo.height/logo.width); ctx.drawImage(logo,(cw-lw)/2, margin+34, lw, lh);
+  let y = margin+34+lh+46;
+  ctx.textAlign='center'; ctx.fillStyle=BLUE; ctx.font="800 26px Poppins, sans-serif";
+  const hl = wrapLines(ctx, T.head, cw-90); hl.forEach((ln,i)=>ctx.fillText(ln, cw/2, y+i*32)); y += hl.length*32;
+  ctx.fillStyle='#20241F'; ctx.font="600 16px Poppins, sans-serif"; ctx.fillText(T.sub, cw/2, y+8); y += 28;
+  ctx.fillStyle='#F5C518'; ctx.fillRect(cw/2-30, y, 60, 4); y += 36;
+  const gx=margin+26, gw=cw-(margin+26)*2, cellW=gw/3, cellH=152;
+  keys.forEach((k,i)=>{
+    const col=i%3, row=Math.floor(i/3), cx=gx+cellW*(col+0.5), cy=y+row*cellH;
+    if(icons[i]) ctx.drawImage(icons[i], cx-34, cy, 68, 68);
+    ctx.fillStyle=BLUE; ctx.font="700 11px Poppins, sans-serif"; ctx.fillText((i+1)+' / 9', cx, cy+84);
+    ctx.fillStyle='#20241F'; ctx.font="600 12px Poppins, sans-serif";
+    wrapLines(ctx, LSR_CARDS[k].title[lang], cellW-14).slice(0,3).forEach((ln,j)=>ctx.fillText(ln, cx, cy+100+j*15));
+  });
+  const footH=64; ctx.fillStyle='#20241F'; ctx.fillRect(margin, H-margin-footH, cw-margin*2, footH);
+  ctx.fillStyle='#F5C518'; ctx.font="600 12.5px Poppins, sans-serif"; ctx.fillText(T.keep, cw/2, H-margin-footH/2-3);
+  ctx.fillStyle='#FFFFFF'; ctx.font="500 11px Inter, sans-serif"; ctx.fillText(T.brand, cw/2, H-margin-footH/2+15);
+  ctx.textAlign='left'; ctx.restore(); return c;
+}
+async function buildBookletPdf(){
+  const lang = state.lang==='ms' ? 'id' : state.lang, scale = 1.5, COVER_H = 850;
+  const cards = []; for(const r of lsrData) cards.push(await renderLsrCard(r.key, scale));
+  const pxW = cards[0].width, pxH = Math.max(Math.round(COVER_H*scale), ...cards.map(c=>c.height));
+  const pages = [await renderBookletCover(lang, pxW, pxH, scale)];
+  cards.forEach(card=>{ const p=document.createElement('canvas'); p.width=pxW; p.height=pxH; const x=p.getContext('2d');
+    x.fillStyle='#EEF2EC'; x.fillRect(0,0,pxW,pxH); x.drawImage(card, 0, Math.round((pxH-card.height)/2)); pages.push(p); });
+  return makePdf(pages.map(pg=>dataUrlToBytes(pg.toDataURL('image/jpeg',0.8))), pxW, pxH);
+}
+async function autoSaveBooklet(force){
+  if(state.bookletSaved && !force) return;              // once per session (the button saves it again)
+  state.bookletSaved = true;
+  try{
+    const bytes = await buildBookletPdf();
+    triggerFileDownload(bytes, 'eco-oils-mentari-life-saving-rules-booklet-'+(state.lang==='ms'?'id':state.lang)+'.pdf', 'application/pdf');
+  }catch(e){ console.error('Booklet failed:', e); state.bookletSaved = false; return; }
+  const el = document.getElementById('bookletNote'); if(el) el.textContent = bookletNoteText(state.lang);
   saveProgress();
 }
 function wrapLines(ctx, text, maxW){
@@ -1421,13 +1523,13 @@ function wrapLines(ctx, text, maxW){
   words.forEach(w=>{ const t = line ? line+' '+w : w; if(ctx.measureText(t).width > maxW && line){ lines.push(line); line = w; } else { line = t; } });
   if(line) lines.push(line); return lines;
 }
-async function downloadLsrCardPNG(key){
+async function renderLsrCard(key, scaleArg){
   const c = LSR_CARDS[key], r = lsrData.find(x=>x.key===key); if(!c || !r) return;
   const lang = state.lang==='ms' ? 'id' : state.lang, li = lang==='en' ? 0 : 1, idx = lsrData.indexOf(r)+1;
   try{ await document.fonts.ready; }catch(e){}
   const logo = await loadLogoImg();
   const icon = await new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src="data:image/png;base64,"+LSR_ICON_B64[key]; });
-  const scale=2, cw=620, margin=14, left=margin+24, right=cw-margin-24, textW=right-left, BLUE='#0B5CAD', INK='#20241F';
+  const scale=scaleArg||2, cw=620, margin=14, left=margin+24, right=cw-margin-24, textW=right-left, BLUE='#0B5CAD', INK='#20241F';
   const T = lang==='en' ? { head:'LIFE-SAVING RULES', keep:'Keep this card with you on site', brand:'EcoOils · Mentari Project' }
                         : { head:'PERATURAN KESELAMATAN JIWA', keep:'Simpan kartu ini bersama Anda selama di site', brand:'EcoOils · Proyek Mentari' };
   const layout = (ctx, draw)=>{
@@ -1484,7 +1586,7 @@ async function downloadLsrCardPNG(key){
   ctx.textAlign="center"; ctx.fillStyle="#F5C518"; ctx.font="600 12.5px Poppins, sans-serif"; ctx.fillText(T.keep, cw/2, ch-margin-footH/2-3);
   ctx.fillStyle="#FFFFFF"; ctx.font="500 11px Inter, sans-serif"; ctx.fillText(T.brand, cw/2, ch-margin-footH/2+15);
   ctx.textAlign="left"; ctx.restore();
-  triggerDownload(canvas, "eco-oils-mentari-lsr-"+idx+"-"+key+"-pocket-card.png");
+  return canvas;
 }
 function roundRect(ctx,x,y,w,h,r){
   ctx.beginPath();
@@ -1524,7 +1626,7 @@ async function genCertificateCanvas(){
   ctx.strokeStyle="#E7F3EC"; ctx.lineWidth=8;
   roundRect(ctx, margin+10, margin+10, cw-margin*2-20, ch-margin*2-20, radius-6); ctx.stroke();
   // faint diagonal watermark: part of the image pixels, so it cannot be edited out as text
-  ctx.save(); ctx.globalAlpha=0.055; ctx.fillStyle="#1F6B3B"; ctx.font="800 24px Poppins, sans-serif"; ctx.textAlign="center";
+  ctx.save(); ctx.globalAlpha=0.13; ctx.fillStyle="#1B5E34"; ctx.font="800 26px Poppins, sans-serif"; ctx.textAlign="center";
   ctx.translate(cw/2, ch/2); ctx.rotate(-Math.PI/6);
   for(let wy=-ch; wy<=ch; wy+=96){ ctx.fillText("INDUCTION COMPLETION RECORD · NOT PROOF OF EMPLOYMENT", 0, wy); }
   ctx.restore();
@@ -1730,11 +1832,13 @@ function bind(){
     const dlContactsBtn = document.getElementById('dlContactsBtn');
     if(dlContactsBtn) dlContactsBtn.onclick = downloadContactsPNG;
     const sec = sections[f.idx];
+    const bookletBtn = document.getElementById('bookletBtn'); if(bookletBtn) bookletBtn.onclick = ()=>autoSaveBooklet(true);
+    if(sec && sec.tag.en==='Life Saving Rules Video') autoSaveBooklet(false);
     if(sec && sec.confirmGate){
       const cb = document.getElementById('confirmGateInput');
       if(cb){
         cb.checked = !!state.lsrConfirmed[f.idx];
-        cb.onchange = ()=>{ state.lsrConfirmed[f.idx] = cb.checked; if(nextBtn) nextBtn.disabled = !cb.checked; if(cb.checked) autoSaveLsrCard(sec); };
+        cb.onchange = ()=>{ state.lsrConfirmed[f.idx] = cb.checked; if(nextBtn) nextBtn.disabled = !cb.checked; };
       }
     }
   }
@@ -1856,7 +1960,7 @@ function bind(){
     }
     const restartBtn = document.getElementById('restartBtn');
     if(restartBtn) restartBtn.onclick = ()=>{
-      state.paperBuilt=false; state.seenIds=[]; state.lsrCardSaved={}; state.uploadStatus=''; state.pos=0; state.qIndex=0; state.score=0; state.attempts=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={};
+      state.paperBuilt=false; state.seenIds=[]; state.bookletSaved=false; state.uploadStatus=''; state.pos=0; state.qIndex=0; state.score=0; state.attempts=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={};
       state.visitor={name:"",company:"",host:"",hostName:"",hostPhone:"",idnum:"",purpose:"",certify:false,healthCert:""}; certNumber=""; state.startTime=0; state.recorded=false; state.certAutoDownloaded=false; state.selfieDataUrl=null; state.selfieConsent=false;
       render();
     };
@@ -1864,11 +1968,11 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v3-ms', SAVE_MAX_AGE = 6*3600*1000;
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v5-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
-  if(isAdminMode || resumeOffer) return;
+  if(isAdminMode || resumeOffer || VERIFY_MODE) return;
   const snap = (withSelfie)=>JSON.stringify({ build:BUILD_ID, t:Date.now(), certNumber, verifyCode, PASS_MARK, finalQuestions,
     state:Object.assign({}, state, withSelfie ? {} : {selfieDataUrl:null}) });
   try{ sessionStorage.setItem(SAVE_KEY, snap(true)); }
@@ -1893,7 +1997,7 @@ function viewResumeOffer(snap){
     <div class="foot"><button class="btn btn-ghost" id="resumeNewBtn">Start new / Mulai baru</button><button class="btn btn-primary" id="resumeContinueBtn">Continue / Lanjutkan</button></div>`;
 }
 function loadProgress(){
-  if(isAdminMode) return;
+  if(isAdminMode || VERIFY_MODE) return;
   try{                                                   // 1) same tab reloaded: restore silently
     const raw = sessionStorage.getItem(SAVE_KEY);
     if(raw){ const snap = JSON.parse(raw); if(validSnap(snap) && Date.now()-snap.t <= SAVE_MAX_AGE){ applySnap(snap); return; } sessionStorage.removeItem(SAVE_KEY); }
