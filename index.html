@@ -526,7 +526,7 @@ lsrData.forEach((r,idx)=>{
   sections.push({
     tag:{en:`Life Saving Rule ${idx+1}/9`,id:`Life Saving Rule ${idx+1}/9`,ms:`Life Saving Rule ${idx+1}/9`},
     title:r.name,
-    confirmGate:true,
+    confirmGate:true, lsrKey:r.key,
     bodyFn:(lang)=>{
       let h = `<div class="lsr-page-icon">${lsrIcon(r.key)}</div>`;
       h += `<p class="desc">${r.intro[lang]}</p>`;
@@ -534,13 +534,7 @@ lsrData.forEach((r,idx)=>{
       h += `<h3>${lang==='en'?'You must':lang==='ms'?'Anda mesti':'Anda wajib'}</h3>` + ul(r.you.map(x=>({en:x.en,id:x.id,ms:x.ms})),lang);
       if(r.sup.length) h += `<h3>${lang==='en'?'If you are the supervisor / Permit Holder, you must':lang==='ms'?'Jika anda penyelia / Pemegang Permit, anda mesti':'Jika Anda supervisor / Pemegang Izin, Anda wajib'}</h3>` + ul(r.sup.map(x=>({en:x.en,id:x.id,ms:x.ms})),lang);
       h += `<div class="zt-box">${lang==='en'?"EcoOils Zero Tolerance: choosing to break a Life Saving Rule means choosing not to work for EcoOils.":lang==='ms'?"Toleransi Sifar EcoOils: memilih untuk melanggar Life Saving Rule bermaksud memilih untuk tidak bekerja dengan EcoOils.":"Toleransi Nol EcoOils: memilih melanggar Life Saving Rule berarti memilih untuk tidak bekerja di EcoOils."}</div>`;
-      h += `<p class="desc" style="margin-top:14px;">${lang==='en'?"If you have not watched the video, or would like to watch it again, please find the links below.":lang==='ms'?"Jika anda belum menonton video, atau ingin menontonnya semula, sila gunakan pautan di bawah.":"Jika Anda belum menonton video, atau ingin menonton kembali, silakan gunakan tautan di bawah ini."}</p>
-      <div class="lsr-rewatch-links">
-        <a href="${LSR_VIDEO_LINKS[r.key].en}" target="_blank" rel="noopener" class="lsr-rewatch-link"><span class="lsr-rewatch-icon">${lsrIcon(r.key)}</span><span>English</span></a>
-        <a href="${LSR_VIDEO_LINKS[r.key].id}" target="_blank" rel="noopener" class="lsr-rewatch-link"><span class="lsr-rewatch-icon">${lsrIcon(r.key)}</span><span>Bahasa Indonesia</span></a>
-      </div>
-      <p class="required-note" style="color:var(--green-dark);margin-top:8px;">${lang==='en'?'The video opens in a new tab or app. Your progress is saved — come back to this page when it ends.':lang==='ms'?'Video dibuka dalam tab atau aplikasi baharu. Kemajuan anda disimpan — kembali ke halaman ini apabila video tamat. (Video Bahasa Melayu belum tersedia — sila gunakan video Bahasa Indonesia atau Inggeris.)':'Video akan terbuka di tab atau aplikasi baru. Kemajuan Anda tersimpan — kembali ke halaman ini setelah video selesai.'}</p>`;
-      h += `<label class="confirm-gate"><input type="checkbox" id="confirmGateInput">${lang==='en'?`I have watched the video and understood the requirements of the <b>${r.name.en}</b> rule`:lang==='ms'?`Saya telah menonton video dan memahami keperluan peraturan <b>${r.name.ms}</b>`:`Saya telah menonton video dan memahami persyaratan aturan <b>${r.name.id}</b>`}</label>`;
+      h += videoGateHtml(r, lang);
       return h;
     },
     check: (()=>{
@@ -908,7 +902,7 @@ const VERIFY_V = _qp.get('v') || '', VERIFY_C = _qp.get('c') || '';
 const VERIFY_MODE = /^MTR-HSSE-\d{6}-\d{3}$/.test(VERIFY_V) && /^[A-HJ-NP-Z2-9]{10}$/.test(VERIFY_C);   // opened from the QR code on a certificate
 const VERIFY_D = (_qp.get('n') && /^\d{1,3}$/.test(_qp.get('s')||'') && /^\d{1,3}$/.test(_qp.get('t')||'')) ? { name:_qp.get('n'), company:_qp.get('o')||'', id4:_qp.get('i')||'', score:_qp.get('s'), total:_qp.get('t') } : null;
 let verifyState = { phase:'checking', data:null, started:false };
-const state = { lang:"en", pos: START_PARAM ? 1 : 0, visitor:{name:"",company:"",host:"",hostName:"",hostPhone:"",cc:"+62",idnum:"",purpose:"",certify:false,healthCert:""}, secAnswers:{}, qIndex:0, qAnswers:{}, score:0, attempts:0, lsrConfirmed:{}, paperBuilt:false, seenIds:[], startTime: START_PARAM ? Date.now() : 0, recorded:false, certAutoDownloaded:false, selfieDataUrl:null, selfieConsent:false };
+const state = { lang:"en", pos: START_PARAM ? 1 : 0, visitor:{name:"",company:"",host:"",hostName:"",hostPhone:"",cc:"+62",idnum:"",purpose:"",certify:false,healthCert:""}, secAnswers:{}, qIndex:0, qAnswers:{}, score:0, attempts:0, lsrConfirmed:{}, lsrWatch:{}, lsrPick:{}, lsrCurIdx:-1, paperBuilt:false, seenIds:[], startTime: START_PARAM ? Date.now() : 0, recorded:false, certAutoDownloaded:false, selfieDataUrl:null, selfieConsent:false };
 let certNumber = "";
 let isAdminMode = (location.hash === '#admin');
 let adminAuthed = false;
@@ -1007,7 +1001,7 @@ async function recordSubmission(){
   const completionTime = Date.now();
   const durationMs = state.startTime ? (completionTime - state.startTime) : 0;
   const record = {
-    certNumber, verifyCode, name:v.name, company:v.company, idnum:idLast4(), host:v.host, hostName:v.hostName, hostPhone:phoneFull(), purpose:v.purpose,
+    certNumber, verifyCode, name:v.name, company:v.company, idnum:idLast4(), host:v.host, hostName:v.hostName, hostPhone:phoneFull(), videosWatched:videoSummary().n, videoSecs:videoSummary().secs, purpose:v.purpose,
     certify:v.certify, healthCert:v.healthCert,
     score:state.score, totalQuestions:finalQuestions.length,
     percentage: Math.round((state.score/finalQuestions.length)*100),
@@ -1210,7 +1204,7 @@ function bindVerify(){
   const rg = document.getElementById('verifyRegRetryBtn'); if(rg) rg.onclick = ()=>{ verifyState = { phase:'checking', data:null, started:false }; startVerify(); };
 }
 function render(){
-  applyStaticUI(); setProgress();
+  stopVideoGate(); applyStaticUI(); setProgress();
   const L = UI[state.lang], lang = state.lang;
   const host = document.getElementById('cardHost');
   if(resumeOffer && !isAdminMode){
@@ -1287,8 +1281,155 @@ function viewDetails(L,lang){
     </div></div>
     <div class="foot"><button class="btn btn-ghost" id="backBtn">${L.back}</button><button class="btn btn-primary" id="nextBtn" disabled>${L.continueBtn}</button></div>`;
 }
+
+/* ============ VIDEO VIEWING GATE: plays each Life Saving Rule video inside the page and counts real playing time ============ */
+const WATCH_PCT = 0.9, FALLBACK_SECS = 150;
+function T3(lang,en,id,ms){ return lang==='en' ? en : (lang==='ms' && ms) ? ms : id; }
+function vidId(url){ const m = String(url).match(/youtu\.be\/([\w-]{6,})/) || String(url).match(/[?&]v=([\w-]{6,})/); return m ? m[1] : ''; }
+function watchRec(id){ state.lsrWatch = state.lsrWatch || {}; return state.lsrWatch[id] || (state.lsrWatch[id] = {sec:0, dur:0, mode:'', clicked:false, t0:0}); }
+function recDone(w){ return !!w && ((w.dur>0 && w.sec >= w.dur*WATCH_PCT) || (w.mode==='fallback' && w.clicked && w.t0 && (Date.now()-w.t0)/1000 >= FALLBACK_SECS)); }
+function watchDone(key){
+  if(typeof isAdminMode!=='undefined' && isAdminMode) return true;
+  const L = LSR_VIDEO_LINKS[key]; if(!L) return true;
+  const ws = state.lsrWatch || {};
+  return [vidId(L.en), vidId(L.id)].some(id => recDone(ws[id]));
+}
+function videoSummary(){
+  let n = 0, secs = 0;
+  lsrData.forEach(r=>{ const L = LSR_VIDEO_LINKS[r.key], ws = state.lsrWatch || {}; if(watchDone(r.key)) n++;
+    secs += Math.max(...[vidId(L.en), vidId(L.id)].map(id => (ws[id] && ws[id].sec) || 0)); });
+  return { n, secs: Math.round(secs) };
+}
+function fmtClock(s){ s = Math.max(0, Math.round(s)); return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); }
+function videoGateHtml(r, lang){
+  const L = LSR_VIDEO_LINKS[r.key];
+  const done = watchDone(r.key);
+  const name = r.name[lang] || r.name.id;
+  return `<div id="vidGate" data-key="${r.key}" style="margin-top:16px;">
+    <div style="font-weight:800;color:var(--green-dark);margin-bottom:6px;">${T3(lang,'Watch the video — required','Tonton video — wajib','Tonton video — diwajibkan')}</div>
+    <p class="desc" style="margin:0 0 8px;">${T3(lang,'The video plays here. It must be watched through before you can continue. Skipping ahead does not count.','Video diputar di sini. Video harus ditonton sampai selesai sebelum Anda dapat melanjutkan. Melompati bagian video tidak dihitung.','Video dimainkan di sini. Video mesti ditonton sehingga habis sebelum anda boleh teruskan. Melangkau bahagian video tidak dikira.')}</p>
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <button type="button" class="btn btn-ghost" id="vidLangEn" style="flex:1;padding:8px;">English</button>
+      <button type="button" class="btn btn-ghost" id="vidLangId" style="flex:1;padding:8px;">Bahasa Indonesia</button>
+    </div>
+    <div style="position:relative;width:100%;padding-top:56.25%;background:#0b1f14;border-radius:10px;overflow:hidden;">
+      <div id="vidBox" style="position:absolute;inset:0;"></div>
+      <div id="vidWait" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#d6e8dc;font-size:14px;text-align:center;padding:12px;">${T3(lang,'Loading video…','Memuat video…','Memuatkan video…')}</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px;"><button type="button" class="btn btn-primary" id="vidPlay" style="flex:1;padding:10px;" disabled>▶ ${T3(lang,'Play / Pause','Putar / Jeda','Main / Jeda')}</button></div>
+    <div style="margin-top:10px;height:10px;background:#e3ece6;border-radius:6px;overflow:hidden;"><div id="vidBar" style="height:100%;width:0;background:var(--green);transition:width .4s;"></div></div>
+    <div id="vidTxt" style="margin-top:5px;font-size:13px;color:#475569;"></div>
+    <div id="vidFallback" style="display:none;margin-top:10px;padding:10px 12px;border-left:4px solid #D9A900;background:#FFF8E1;color:#3B2F00;border-radius:6px;font-size:13px;">
+      <div style="font-weight:700;margin-bottom:6px;">${T3(lang,'The video cannot play inside this page on your phone or network.','Video tidak dapat diputar di halaman ini pada ponsel atau jaringan Anda.','Video tidak dapat dimainkan dalam halaman ini pada telefon atau rangkaian anda.')}</div>
+      <div style="margin-bottom:8px;">${T3(lang,'Open the video below, watch it fully, then come back. Continue unlocks after a waiting time and HSSE may check your viewing.','Buka video di bawah, tonton sampai selesai, lalu kembali. Tombol lanjut terbuka setelah waktu tunggu dan HSSE dapat memeriksa tontonan Anda.','Buka video di bawah, tonton sehingga habis, kemudian kembali. Butang teruskan dibuka selepas masa menunggu dan HSSE boleh menyemak tontonan anda.')}</div>
+      <div class="lsr-rewatch-links">
+        <a href="${L.en}" target="_blank" rel="noopener" class="vidExt lsr-rewatch-link"><span class="lsr-rewatch-icon">${lsrIcon(r.key)}</span><span>English</span></a>
+        <a href="${L.id}" target="_blank" rel="noopener" class="vidExt lsr-rewatch-link"><span class="lsr-rewatch-icon">${lsrIcon(r.key)}</span><span>Bahasa Indonesia</span></a>
+      </div>
+    </div>
+    <label class="confirm-gate"><input type="checkbox" id="confirmGateInput" ${done?'':'disabled'}><span>${T3(lang,`I have watched the video and understood the requirements of the <b>${r.name.en}</b> rule`,`Saya telah menonton video dan memahami persyaratan aturan <b>${r.name.id}</b>`,`Saya telah menonton video dan memahami keperluan peraturan <b>${r.name.ms||r.name.id}</b>`)}</span></label>
+  </div>`;
+}
+let vidTimer = null, vidPlayer = null, vidApiP = null;
+function stopVideoGate(){
+  if(vidTimer){ clearInterval(vidTimer); vidTimer = null; }
+  try{ if(vidPlayer && vidPlayer.destroy) vidPlayer.destroy(); }catch(e){}
+  vidPlayer = null;
+}
+function loadYT(){
+  if(window.YT && window.YT.Player) return Promise.resolve();
+  if(vidApiP) return vidApiP;
+  vidApiP = new Promise((res,rej)=>{
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = ()=>{ try{ if(prev) prev(); }catch(e){} res(); };
+    const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; s.onerror = ()=>{ vidApiP = null; rej(new Error('yt')); };
+    document.head.appendChild(s);
+    setTimeout(()=>{ if(!(window.YT && window.YT.Player)){ vidApiP = null; rej(new Error('timeout')); } }, 10000);
+  });
+  return vidApiP;
+}
+function initVideoGate(key, onUnlock){
+  stopVideoGate();
+  const root = document.getElementById('vidGate'); if(!root) return;
+  const lang = state.lang, L = LSR_VIDEO_LINKS[key];
+  const ids = { en: vidId(L.en), id: vidId(L.id) };
+  let cur = (state.lsrPick && state.lsrPick[key]) || (lang==='en' ? 'en' : 'id');
+  const cb = document.getElementById('confirmGateInput'), bar = document.getElementById('vidBar'), txt = document.getElementById('vidTxt');
+  const playBtn = document.getElementById('vidPlay'), wait = document.getElementById('vidWait'), fb = document.getElementById('vidFallback');
+  let last = null, tick = 0, fell = false;
+  const refresh = ()=>{
+    const done = watchDone(key);
+    const w = watchRec(ids[cur]);
+    if(w.mode==='fallback' && !done){
+      const left = Math.max(0, FALLBACK_SECS - (w.clicked && w.t0 ? (Date.now()-w.t0)/1000 : 0));
+      bar.style.width = (w.clicked ? Math.min(100, 100*(FALLBACK_SECS-left)/FALLBACK_SECS) : 0) + '%';
+      txt.textContent = !w.clicked ? T3(lang,'Open one of the videos above to start the timer.','Buka salah satu video di atas untuk memulai penghitung waktu.','Buka salah satu video di atas untuk memulakan pemasa.')
+        : T3(lang,`Continue unlocks in ${fmtClock(left)}`,`Lanjut terbuka dalam ${fmtClock(left)}`,`Teruskan dibuka dalam ${fmtClock(left)}`);
+    } else if(done){
+      bar.style.width = '100%';
+      txt.innerHTML = '<b style="color:var(--green-dark);">✓ ' + T3(lang,'Video watched. You can tick the box and continue.','Video selesai ditonton. Centang kotak dan lanjutkan.','Video selesai ditonton. Tandakan kotak dan teruskan.') + '</b>';
+    } else {
+      const need = w.dur ? w.dur*WATCH_PCT : 0;
+      bar.style.width = need ? Math.min(100, 100*w.sec/need) + '%' : '0%';
+      txt.textContent = w.dur ? T3(lang,`Watched ${fmtClock(w.sec)} of ${fmtClock(w.dur)} — the video must play through`,`Ditonton ${fmtClock(w.sec)} dari ${fmtClock(w.dur)} — video harus diputar sampai selesai`,`Ditonton ${fmtClock(w.sec)} daripada ${fmtClock(w.dur)} — video mesti dimainkan sehingga habis`) : '';
+    }
+    if(cb){ if(done){ cb.disabled = false; } else { cb.disabled = true; if(cb.checked){ cb.checked = false; state.lsrConfirmed[state.lsrCurIdx] = false; if(onUnlock) onUnlock(false); } } }
+    document.getElementById('vidLangEn').style.outline = cur==='en' ? '3px solid var(--green)' : 'none';
+    document.getElementById('vidLangId').style.outline = cur==='id' ? '3px solid var(--green)' : 'none';
+  };
+  const fallback = ()=>{
+    if(fell) return; fell = true; stopVideoGate();
+    wait.style.display = 'none'; fb.style.display = 'block'; playBtn.style.display = 'none';
+    ['en','id'].forEach(k=>{ const w = watchRec(ids[k]); if(!w.dur || w.sec < w.dur*WATCH_PCT) w.mode = 'fallback'; });
+    root.querySelectorAll('.vidExt').forEach(a=>{ a.addEventListener('click', ()=>{ ['en','id'].forEach(k=>{ const w = watchRec(ids[k]); if(w.mode==='fallback' && !w.clicked){ w.clicked = true; w.t0 = Date.now(); } }); saveProgress(); refresh(); }); });
+    vidTimer = setInterval(()=>{ refresh(); if(watchDone(key)){ clearInterval(vidTimer); vidTimer = null; saveProgress(); } }, 1000);
+    refresh();
+  };
+  const startPlayer = ()=>{
+    if(fell) return; stopVideoGate(); last = null;
+    const box = document.getElementById('vidBox'); if(!box) return;
+    box.innerHTML = '<div id="vidMount"></div>'; wait.style.display = 'flex'; wait.textContent = T3(lang,'Loading video…','Memuat video…','Memuatkan video…'); playBtn.disabled = true;
+    try{
+      vidPlayer = new YT.Player('vidMount', { videoId: ids[cur], width:'100%', height:'100%',
+        host: 'https://www.youtube-nocookie.com',
+        playerVars: { controls:0, disablekb:1, rel:0, modestbranding:1, playsinline:1, iv_load_policy:3, fs:0 },
+        events: {
+          onReady: ()=>{ wait.style.display = 'none'; playBtn.disabled = false; refresh(); },
+          onError: ()=>fallback(),
+          onStateChange: (ev)=>{ if(ev.data===0){ tickFn(true); refresh(); } }
+        } });
+    }catch(e){ fallback(); return; }
+    vidTimer = setInterval(()=>tickFn(false), 500);
+  };
+  const tickFn = (force)=>{
+    const p = vidPlayer; if(!p || !p.getPlayerState) return;
+    let st; try{ st = p.getPlayerState(); }catch(e){ return; }
+    const w = watchRec(ids[cur]);
+    try{ const d = p.getDuration(); if(d > 0) w.dur = d; }catch(e){}
+    if(st === 1 && document.visibilityState === 'visible'){
+      let rate = 1; try{ rate = p.getPlaybackRate(); }catch(e){}
+      if(rate !== 1){ try{ p.setPlaybackRate(1); }catch(e){} last = null; }
+      else {
+        const t = p.getCurrentTime();
+        if(last !== null){ const d = t - last; if(d > 0 && d <= 1.6) w.sec += d; }
+        last = t;
+      }
+    } else { last = null; }
+    if(st === 0 && w.dur && !recDone(w)){ /* ended without enough real play time: the clip was skipped through */ }
+    if(++tick % 10 === 0) saveProgress();
+    const wasDone = cb && !cb.disabled;
+    refresh();
+    if(!wasDone && watchDone(key)){ saveProgress(); }
+  };
+  playBtn.onclick = ()=>{ try{ if(!vidPlayer) return; const s = vidPlayer.getPlayerState(); if(s===1) vidPlayer.pauseVideo(); else vidPlayer.playVideo(); }catch(e){} };
+  document.getElementById('vidLangEn').onclick = ()=>{ if(cur==='en') return; cur='en'; (state.lsrPick = state.lsrPick||{})[key]='en'; if(!fell) startPlayer(); refresh(); };
+  document.getElementById('vidLangId').onclick = ()=>{ if(cur==='id') return; cur='id'; (state.lsrPick = state.lsrPick||{})[key]='id'; if(!fell) startPlayer(); refresh(); };
+  refresh();
+  loadYT().then(startPlayer).catch(()=>fallback());
+}
+
 function viewContent(sec,L,lang,idx){
-  const gateDisabled = sec.confirmGate && !state.lsrConfirmed[idx];
+  const gateDisabled = sec.confirmGate && !(state.lsrConfirmed[idx] && watchDone(sec.lsrKey));
   return `<div class="panel"><div class="eyebrow">${sec.tag[lang]}</div><h2>${sec.title[lang]}</h2>${sec.bodyFn(lang)}</div>
   <div class="foot"><button class="btn btn-ghost" id="backBtn">${L.back}</button><button class="btn btn-primary" id="nextBtn" ${gateDisabled?'disabled':''}>${L.continueBtn}</button></div>`;
 }
@@ -1926,10 +2067,14 @@ function bind(){
     if(sec && sec.tag.en==='Life Saving Rules Video') autoSaveBooklet(false);
     if(sec && sec.confirmGate){
       const cb = document.getElementById('confirmGateInput');
+      state.lsrCurIdx = f.idx;
       if(cb){
-        cb.checked = !!state.lsrConfirmed[f.idx];
-        cb.onchange = ()=>{ state.lsrConfirmed[f.idx] = cb.checked; if(nextBtn) nextBtn.disabled = !cb.checked; };
+        cb.checked = !!state.lsrConfirmed[f.idx] && watchDone(sec.lsrKey);
+        if(nextBtn) nextBtn.disabled = !cb.checked;
+        cb.onchange = ()=>{ if(!watchDone(sec.lsrKey)){ cb.checked = false; } state.lsrConfirmed[f.idx] = cb.checked; if(nextBtn) nextBtn.disabled = !cb.checked; };
+        initVideoGate(sec.lsrKey, (ok)=>{ if(nextBtn) nextBtn.disabled = !ok; });
       }
+      if(nextBtn) nextBtn.onclick = ()=>{ if(!watchDone(sec.lsrKey)) return; stopVideoGate(); state.pos++; render(); };
     }
   }
 
@@ -2030,7 +2175,7 @@ function bind(){
     const resitBtn = document.getElementById('resitBtn');
     if(resitBtn) resitBtn.onclick = ()=>{
       if(autoRestartTimer){ clearTimeout(autoRestartTimer); autoRestartTimer=null; }
-      state.qIndex=0; state.score=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={}; state.selfieDataUrl=null; state.selfieConsent=false; state.paperBuilt=false;
+      state.qIndex=0; state.score=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={}; state.lsrWatch={}; state.lsrPick={}; state.selfieDataUrl=null; state.selfieConsent=false; state.paperBuilt=false;
       state.pos = flow.findIndex(x=>x.type==='content');
       render();
     };
@@ -2050,7 +2195,7 @@ function bind(){
     }
     const restartBtn = document.getElementById('restartBtn');
     if(restartBtn) restartBtn.onclick = ()=>{
-      state.paperBuilt=false; state.seenIds=[]; state.bookletSaved=false; state.uploadStatus=''; state.pos=0; state.qIndex=0; state.score=0; state.attempts=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={};
+      state.paperBuilt=false; state.seenIds=[]; state.bookletSaved=false; state.uploadStatus=''; state.pos=0; state.qIndex=0; state.score=0; state.attempts=0; state.qAnswers={}; state.secAnswers={}; state.lsrConfirmed={}; state.lsrWatch={}; state.lsrPick={};
       state.visitor={name:"",company:"",host:"",hostName:"",hostPhone:"",cc:"+62",idnum:"",purpose:"",certify:false,healthCert:""}; certNumber=""; state.startTime=0; state.recorded=false; state.certAutoDownloaded=false; state.selfieDataUrl=null; state.selfieConsent=false;
       render();
     };
@@ -2058,7 +2203,7 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v5-ms', SAVE_MAX_AGE = 6*3600*1000;
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v6-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
