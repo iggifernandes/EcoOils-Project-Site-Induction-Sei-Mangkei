@@ -1312,11 +1312,16 @@ function videoGateHtml(r, lang){
       <button type="button" class="btn btn-ghost" id="vidLangEn" style="flex:1;padding:8px;">English</button>
       <button type="button" class="btn btn-ghost" id="vidLangId" style="flex:1;padding:8px;">Bahasa Indonesia</button>
     </div>
-    <div style="position:relative;width:100%;padding-top:56.25%;background:#0b1f14;border-radius:10px;overflow:hidden;">
+    <div id="vidWrap" style="position:relative;width:100%;padding-top:56.25%;background:#0b1f14;border-radius:10px;overflow:hidden;">
       <div id="vidBox" style="position:absolute;inset:0;"></div>
+      <div id="vidFsBar" style="display:none;position:absolute;left:0;right:0;bottom:0;z-index:3;gap:10px;align-items:center;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;font-size:14px;">
+        <button type="button" id="vidFsPlay" style="background:#fff;color:#14532d;border:0;border-radius:8px;padding:8px 14px;font-weight:800;">▶ / ❚❚</button>
+        <span id="vidFsTxt" style="flex:1;"></span>
+        <button type="button" id="vidFsExit" style="background:#fff;color:#14532d;border:0;border-radius:8px;padding:8px 14px;font-weight:800;">✕ ${T3(lang,'Exit','Keluar','Keluar')}</button>
+      </div>
       <div id="vidWait" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#d6e8dc;font-size:14px;text-align:center;padding:12px;">${T3(lang,'Loading video…','Memuat video…','Memuatkan video…')}</div>
     </div>
-    <div style="display:flex;gap:8px;margin-top:8px;"><button type="button" class="btn btn-primary" id="vidPlay" style="flex:1;padding:10px;" disabled>▶ ${T3(lang,'Play / Pause','Putar / Jeda','Main / Jeda')}</button></div>
+    <div style="display:flex;gap:8px;margin-top:8px;"><button type="button" class="btn btn-primary" id="vidPlay" style="flex:1;padding:10px;" disabled>▶ ${T3(lang,'Play / Pause','Putar / Jeda','Main / Jeda')}</button><button type="button" class="btn btn-ghost" id="vidFs" style="flex:1;padding:10px;" disabled>⛶ ${T3(lang,'Full screen (landscape)','Layar penuh (landscape)','Skrin penuh (landscape)')}</button></div>
     <div style="margin-top:10px;height:10px;background:#e3ece6;border-radius:6px;overflow:hidden;"><div id="vidBar" style="height:100%;width:0;background:var(--green);transition:width .4s;"></div></div>
     <div id="vidTxt" style="margin-top:5px;font-size:13px;color:#475569;"></div>
     <div id="vidFallback" style="display:none;margin-top:10px;padding:10px 12px;border-left:4px solid #D9A900;background:#FFF8E1;color:#3B2F00;border-radius:6px;font-size:13px;">
@@ -1332,6 +1337,7 @@ function videoGateHtml(r, lang){
 }
 let vidTimer = null, vidPlayer = null, vidApiP = null;
 function stopVideoGate(){
+  try{ if(window.__vidFsOff) window.__vidFsOff(); }catch(e){}
   if(vidTimer){ clearInterval(vidTimer); vidTimer = null; }
   try{ if(vidPlayer && vidPlayer.destroy) vidPlayer.destroy(); }catch(e){}
   vidPlayer = null;
@@ -1374,12 +1380,13 @@ function initVideoGate(key, onUnlock){
       txt.textContent = w.dur ? T3(lang,`Watched ${fmtClock(w.sec)} of ${fmtClock(w.dur)} — the video must play through`,`Ditonton ${fmtClock(w.sec)} dari ${fmtClock(w.dur)} — video harus diputar sampai selesai`,`Ditonton ${fmtClock(w.sec)} daripada ${fmtClock(w.dur)} — video mesti dimainkan sehingga habis`) : '';
     }
     if(cb){ if(done){ cb.disabled = false; } else { cb.disabled = true; if(cb.checked){ cb.checked = false; state.lsrConfirmed[state.lsrCurIdx] = false; if(onUnlock) onUnlock(false); } } }
+    if(fsTxt) fsTxt.textContent = txt.textContent;
     document.getElementById('vidLangEn').style.outline = cur==='en' ? '3px solid var(--green)' : 'none';
     document.getElementById('vidLangId').style.outline = cur==='id' ? '3px solid var(--green)' : 'none';
   };
   const fallback = ()=>{
     if(fell) return; fell = true; stopVideoGate();
-    wait.style.display = 'none'; fb.style.display = 'block'; playBtn.style.display = 'none';
+    wait.style.display = 'none'; fb.style.display = 'block'; playBtn.style.display = 'none'; fsBtn.style.display = 'none'; fsOff();
     ['en','id'].forEach(k=>{ const w = watchRec(ids[k]); if(!w.dur || w.sec < w.dur*WATCH_PCT) w.mode = 'fallback'; });
     root.querySelectorAll('.vidExt').forEach(a=>{ a.addEventListener('click', ()=>{ ['en','id'].forEach(k=>{ const w = watchRec(ids[k]); if(w.mode==='fallback' && !w.clicked){ w.clicked = true; w.t0 = Date.now(); } }); saveProgress(); refresh(); }); });
     vidTimer = setInterval(()=>{ refresh(); if(watchDone(key)){ clearInterval(vidTimer); vidTimer = null; saveProgress(); } }, 1000);
@@ -1394,7 +1401,7 @@ function initVideoGate(key, onUnlock){
         host: 'https://www.youtube-nocookie.com',
         playerVars: { controls:0, disablekb:1, rel:0, modestbranding:1, playsinline:1, iv_load_policy:3, fs:0 },
         events: {
-          onReady: ()=>{ wait.style.display = 'none'; playBtn.disabled = false; refresh(); },
+          onReady: ()=>{ wait.style.display = 'none'; playBtn.disabled = false; fsBtn.disabled = false; refresh(); },
           onError: ()=>fallback(),
           onStateChange: (ev)=>{ if(ev.data===0){ tickFn(true); refresh(); } }
         } });
@@ -1421,6 +1428,39 @@ function initVideoGate(key, onUnlock){
     refresh();
     if(!wasDone && watchDone(key)){ saveProgress(); }
   };
+
+  const wrap = document.getElementById('vidWrap'), fsBar = document.getElementById('vidFsBar'), fsTxt = document.getElementById('vidFsTxt'), fsBtn = document.getElementById('vidFs');
+  let fsOn = false, swapping = false;
+  const layoutFS = ()=>{
+    if(!fsOn) return;
+    const W = window.innerWidth, H = window.innerHeight;
+    Object.assign(wrap.style, {position:'fixed', zIndex:'9999', background:'#000', borderRadius:'0', paddingTop:'0', left:'0', top:'0', overflow:'hidden'});
+    if(W < H){ wrap.style.width = H+'px'; wrap.style.height = W+'px'; wrap.style.transformOrigin = '0 0'; wrap.style.transform = 'translateX('+W+'px) rotate(90deg)'; }
+    else { wrap.style.width = W+'px'; wrap.style.height = H+'px'; wrap.style.transform = 'none'; }
+  };
+  const fsOff = ()=>{
+    if(!fsOn) return; fsOn = false;
+    Object.assign(wrap.style, {position:'relative', zIndex:'', background:'#0b1f14', borderRadius:'10px', paddingTop:'56.25%', left:'', top:'', width:'100%', height:'', transform:'none'});
+    fsBar.style.display = 'none'; document.body.style.overflow = '';
+    try{ if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen(); else if(document.webkitFullscreenElement && document.webkitExitFullscreen) document.webkitExitFullscreen(); }catch(e){}
+    try{ if(screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); }catch(e){}
+    window.removeEventListener('resize', layoutFS); window.removeEventListener('orientationchange', layoutFS);
+  };
+  window.__vidFsOff = fsOff;
+  const fsOnFn = ()=>{
+    if(fsOn) return; fsOn = true; document.body.style.overflow = 'hidden'; fsBar.style.display = 'flex';
+    layoutFS(); window.addEventListener('resize', layoutFS); window.addEventListener('orientationchange', layoutFS);
+    try{ const rq = wrap.requestFullscreen || wrap.webkitRequestFullscreen; if(rq){ const r = rq.call(wrap); if(r && r.then) r.then(()=>{
+          let locked = Promise.resolve();
+          try{ locked = screen.orientation.lock('landscape'); }catch(e){ locked = Promise.reject(e); }
+          const settle = ()=>{ layoutFS(); if(fsOn && window.innerWidth < window.innerHeight && document.fullscreenElement){ swapping = true; try{ document.exitFullscreen(); }catch(e){} setTimeout(()=>{ swapping = false; layoutFS(); }, 400); } };
+          Promise.resolve(locked).then(()=>setTimeout(settle,500), ()=>setTimeout(settle,50));
+        }).catch(()=>{}); } }catch(e){}
+  };
+  document.addEventListener('fullscreenchange', ()=>{ if(!document.fullscreenElement && fsOn && !swapping) fsOff(); });
+  fsBtn.onclick = fsOnFn;
+  document.getElementById('vidFsExit').onclick = fsOff;
+  document.getElementById('vidFsPlay').onclick = ()=>playBtn.click();
   playBtn.onclick = ()=>{ try{ if(!vidPlayer) return; const s = vidPlayer.getPlayerState(); if(s===1) vidPlayer.pauseVideo(); else vidPlayer.playVideo(); }catch(e){} };
   document.getElementById('vidLangEn').onclick = ()=>{ if(cur==='en') return; cur='en'; (state.lsrPick = state.lsrPick||{})[key]='en'; if(!fell) startPlayer(); refresh(); };
   document.getElementById('vidLangId').onclick = ()=>{ if(cur==='id') return; cur='id'; (state.lsrPick = state.lsrPick||{})[key]='id'; if(!fell) startPlayer(); refresh(); };
