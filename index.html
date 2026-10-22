@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <title>EcoOils Mentari — HSSE Induction</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
 :root{
   --green:#2F8F52; --green-dark:#1F6B3B; --green-light:#E7F3EC;
   --gold:#F5C518; --gold-dark:#D9A900; --ink:#20241F; --bg:#FFFFFF;
@@ -126,15 +126,89 @@ button.btn:active{transform:scale(0.98);}
 .btn-ghost{background:transparent;color:var(--muted);border:1.5px solid var(--line);} .btn-ghost:hover{border-color:var(--muted);}
 .btn-alert{background:var(--danger);color:#fff;}
 .footer-note{color:#7C877B;font-size:11px;text-align:center;max-width:440px;margin-top:14px;line-height:1.5;padding:0 20px;}
+
+/* ===== EcoOils minimal Shell-style theme (look only) ===== */
+:root{--green:#44a276;--green-dark:#231f20;--green-light:#eef7f2;--gold:#ffc600;--gold-dark:#ffc600;--ink:#231f20;--bg:#fff;--card:#fff;--line:#dcdcdc;--muted:#6e6b6c;--danger:#c0392b;--danger-light:#fff;--radius:8px;}
+html,body,button,input,select,textarea{font-family:Jost,system-ui,Arial,sans-serif;}
+body{background:#fff;font-size:16px;font-weight:400;position:relative;}
+body::after{content:"";position:fixed;right:-26px;bottom:-26px;width:180px;height:180px;pointer-events:none;z-index:0;opacity:.3;background-image:radial-gradient(circle,#aaa 0 4.5px,transparent 5.5px);background-size:30px 30px;background-position:0 0;-webkit-mask-image:linear-gradient(#000,#000);}
+.stage,.progress-wrap,.footer-note,.topbar{position:relative;z-index:1;}
+.topbar{background:#fff;border-bottom:0;padding:14px 16px 0;}
+.topbar-inner{max-width:480px;margin:0 auto;display:block;}
+.topbar .brandrow{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.logo-img{height:42px;}
+.topbar .rightcol{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+#verTag{font-size:12px;font-weight:500;color:#6e6b6c;letter-spacing:.06em;line-height:1;}
+.langtoggle{position:static;border:0;border-radius:0;overflow:visible;display:flex;gap:14px;background:none;}
+.langtoggle button{border:0;border-bottom:3px solid transparent;background:none;color:#6e6b6c;font-family:Jost,system-ui,Arial,sans-serif;font-size:15px;font-weight:500;padding:4px 0 3px;min-height:0;cursor:pointer;}
+.langtoggle button.active{background:none;color:#231f20;border-bottom-color:#44a276;}
+.topbar h1{font-family:Jost,system-ui,Arial,sans-serif;font-weight:300;font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:#6e6b6c;text-align:left;margin:0;padding:26px 0 14px;position:relative;border-bottom:1px solid #231f20;}
+.topbar h1::after{content:"";position:absolute;left:0;bottom:-4px;width:44px;height:7px;background:#44a276;}
+.topbar .sub{font-size:13px;color:#6e6b6c;text-align:left;margin-top:14px;}
+@media (max-width:420px){.topbar h1{font-size:18px;letter-spacing:.1em;}.langtoggle button{font-size:14px;}}
+.progress-track{height:4px;border-radius:0;background:#e6e6e6;}
+.progress-fill{background:#44a276;}
+.progress-text{font-family:Jost,system-ui,sans-serif;font-size:12px;color:#6e6b6c;}
+.card{box-shadow:none;border:1px solid #dcdcdc;border-radius:8px;background:#fff;}
+.eyebrow,.checkbadge,.contact-row .num,.rule-pill,.panel h2,.panel h3,.iogp-tag,.iogp-rule,.lesson-box b,.contact-group,.dl-btn,.field label,.gate-note,.warm-msg-title,.warm-msg-motto,.stamp,button.btn{font-family:Jost,system-ui,Arial,sans-serif;}
+.field input,.field select,.opt{font-family:Jost,system-ui,Arial,sans-serif;font-size:16px;background:#fff;}
+.panel h2{font-weight:500;color:#231f20;}
+.panel h3{font-weight:500;color:#231f20;}
+.eyebrow{color:#6e6b6c;font-weight:500;}
+.panel p.desc,ul.rules li,.icon-item,.cf-row,.contact-row,.rule-note,.feedback{font-size:15px;}
+.rule-pill.p1{background:#231f20;} .rule-pill.p2{background:#44a276;color:#231f20;} .rule-pill.p3{background:#6e6b6c;}
+ul.rules li::before{color:#44a276;} ul.rules li.warn::before{color:#231f20;}
+.icon-item,.lsr-item,.lsr-icon-tile,.lsr-rewatch-link,.video-links a{background:#fff;border-color:#dcdcdc;}
+.icon-item.pos svg,.icon-item.neg svg,.icon-item.info svg,.lsr-icon-tile svg,.lsr-icon-tile img,.lsr-page-icon svg,.lsr-page-icon img,.lsr-rewatch-icon svg,.lsr-rewatch-icon img{stroke:#44a276;}
+.lsr-item,.lsr-icon-tile span,.lsr-rewatch-link span:last-child{color:#231f20;}
+.video-links a svg{stroke:#231f20;}
+.confirm-gate{background:#fff;border:1px solid #dcdcdc;color:#231f20;}
+.rule-note{background:#fff;border:1px solid #dcdcdc;color:#231f20;}
+.iogp-box{background:#fff;border:1px solid #dcdcdc;border-left:5px solid #44a276;} .iogp-tag,.iogp-rule{color:#231f20;}
+.lesson-box{background:#fffbe6;border:1px solid #f1e3a0;border-left:5px solid #ffc600;color:#231f20;} .lesson-box b{color:#231f20;}
+.zt-box{background:#fff;border:1px solid #c0392b;color:#231f20;}
+.contact-row .num{color:#231f20;}
+.dl-btn{border:1px solid #dcdcdc;background:#fff;color:#231f20;font-weight:500;font-size:15px;border-radius:8px;min-height:44px;}
+.field label{font-weight:500;color:#6e6b6c;font-size:13px;}
+.field input,.field select{border:1px solid #aaa;border-radius:8px;background:#fff;min-height:44px;}
+.field input:focus,.field select:focus,button:focus-visible,.opt:focus-visible{outline:3px solid #ffc600;outline-offset:1px;border-color:#44a276;}
+.required-note,.field label .req,.safety-notice p{color:#c0392b;}
+.checkbadge{background:#fff;border:1px solid #dcdcdc;color:#231f20;}
+.opt{border:1px solid #dcdcdc;font-size:15px;min-height:44px;}
+.opt:hover{border-color:#44a276;}
+.opt.correct{background:#eef7f2;border-color:#44a276;color:#231f20;}
+.opt.wrong{background:#fff;border-color:#231f20;color:#231f20;}
+.feedback.ok{background:#eef7f2;color:#231f20;} .feedback.bad{background:#f4f4f4;color:#231f20;}
+.dot.hit{background:#44a276;} .dot.miss{background:#231f20;}
+.cert-frame{border:1px solid #231f20;outline:none;background:#fff;}
+.stamp{border-color:#44a276;color:#231f20;font-weight:600;} .stamp::after{border-color:#44a276;}
+.cf-row .k{color:#6e6b6c;}
+.gate-note{background:#231f20;color:#fff;font-weight:500;}
+.selfie-thumb{border-color:#44a276;}
+.warm-msg-title{color:#231f20;font-weight:500;} .warm-msg-motto{color:#231f20;font-weight:500;}
+button.btn{border-radius:8px;font-weight:600;font-size:16px;min-height:44px;letter-spacing:0;transition:background .15s;}
+.btn-primary{background:#44a276;color:#231f20;font-weight:600;} .btn-primary:hover{filter:none;background:#3a9167;}
+.btn-primary:disabled{background:#e6e6e6;color:#aaa;}
+.btn-ghost{background:#fff;color:#231f20;border:1px solid #aaa;} .btn-ghost:hover{border-color:#231f20;}
+.btn-alert{background:#231f20;color:#fff;}
+.footer-note{color:#6e6b6c;font-size:12px;}
+a.btn{flex:1;padding:13px 16px;border-radius:8px;min-height:44px;font-weight:600;font-size:16px;font-family:Jost,system-ui,Arial,sans-serif;cursor:pointer;}
+.footer-note{padding-bottom:150px;}
+@media print{body::after{display:none;}}
 </style>
 </head>
 <body>
 <div class="topbar">
-  <div class="langtoggle" id="langToggle">
-    <button data-lang="en" id="btnEn">EN</button><button data-lang="id" id="btnId">ID</button><button data-lang="ms" id="btnMs">MS</button>
-  </div>
   <div class="topbar-inner">
-    <img class="logo-img" id="logoImg" alt="EcoOils Mentari">
+    <div class="brandrow">
+      <img class="logo-img" id="logoImg" alt="EcoOils Mentari">
+      <div class="rightcol">
+        <div id="verTag" aria-label="Version"></div>
+        <div class="langtoggle" id="langToggle">
+          <button data-lang="en" id="btnEn">EN</button><button data-lang="id" id="btnId">ID</button><button data-lang="ms" id="btnMs">MS</button>
+        </div>
+      </div>
+    </div>
     <h1 id="pageTitle">HSSE Induction — Sei Mangkei</h1>
     <div class="sub" id="pageSub">Site Induction and Assessment</div>
   </div>
@@ -2308,7 +2382,8 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v7-ms', SAVE_MAX_AGE = 6*3600*1000;
+document.getElementById('verTag').textContent = 'v8';
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v8-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
