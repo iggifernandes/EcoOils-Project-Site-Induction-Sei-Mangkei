@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
 <title>EcoOils Mentari — HSSE Induction</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
@@ -194,6 +194,21 @@ button.btn{border-radius:8px;font-weight:600;font-size:16px;min-height:44px;lett
 .footer-note{color:#6e6b6c;font-size:12px;}
 a.btn{flex:1;padding:13px 16px;border-radius:8px;min-height:44px;font-weight:600;font-size:16px;font-family:Jost,system-ui,Arial,sans-serif;cursor:pointer;}
 .footer-note{padding-bottom:150px;}
+
+/* ===== Fit-to-screen: the app wraps whatever screen it opens on ===== */
+:root{--col:100%;--zoomK:1;}
+.topbar-inner,.progress-wrap,.stage{max-width:var(--col);width:100%;}
+.footer-note{max-width:min(var(--col),640px);}
+.panel{max-height:calc(100vh - 290px);max-height:calc(100dvh - 290px);min-height:180px;}
+@media (min-width:600px){:root{--col:640px;}}
+@media (min-width:1024px){:root{--col:820px;}}
+@media (min-width:1600px){:root{--col:980px;}.stage-zoom{}}
+@media (min-width:1600px){body{zoom:1.2;}}
+@media (min-width:2200px){body{zoom:1.5;}}
+@media (min-width:3000px){body{zoom:2;}}
+@media (max-height:520px) and (orientation:landscape){.panel{max-height:calc(100dvh - 130px);}.topbar h1{padding:10px 0 8px;}}
+@supports (padding:max(0px)){.topbar{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right));padding-top:max(14px,env(safe-area-inset-top));}.stage{padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right));}}
+img,video,canvas,svg{max-width:100%;}
 @media print{body::after{display:none;}}
 </style>
 </head>
@@ -2382,8 +2397,31 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-document.getElementById('verTag').textContent = 'v8';
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v8-ms', SAVE_MAX_AGE = 6*3600*1000;
+document.getElementById('verTag').textContent = 'v9';
+
+/* ---- fit the card to whatever screen it is on (phone, laptop, big/extended screen) ---- */
+(function(){
+  var host=document.getElementById('cardHost'); if(!host) return;
+  var busy=false;
+  function fit(){
+    if(busy) return; busy=true;
+    try{
+      var pn=host.querySelector('.panel'), ft=host.querySelector('.foot');
+      if(!pn){ return; }
+      pn.style.maxHeight='none';
+      if(!ft){ return; }
+      var ratio=ft.offsetHeight? ft.getBoundingClientRect().height/ft.offsetHeight : 1; if(!ratio||!isFinite(ratio)) ratio=1;
+      var over=(ft.getBoundingClientRect().bottom+18)-window.innerHeight;
+      if(over>0){ pn.style.maxHeight=Math.max(170, Math.floor(pn.offsetHeight-over/ratio))+'px'; }
+    }catch(e){} finally{ busy=false; }
+  }
+  var t=null; function soon(){ clearTimeout(t); t=setTimeout(fit,30); }
+  try{ new MutationObserver(soon).observe(host,{childList:true}); }catch(e){}
+  window.addEventListener('resize',soon); window.addEventListener('orientationchange',soon);
+  document.addEventListener('fullscreenchange',soon);
+  soon();
+})();
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v9-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
