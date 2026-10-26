@@ -980,7 +980,7 @@ const SAFETY_NOTICE_MS = "Sijil ini BUKAN kebenaran untuk memulakan kerja. Apabi
 const SAFETY_NOTICE_ID = "Sertifikat ini BUKAN izin untuk memulai pekerjaan. Setibanya di site, Anda wajib bertemu langsung dengan Site HSSE untuk briefing keselamatan singkat — mencakup titik kumpul dan kondisi site terkini — sebelum melanjutkan. Anda hanya dapat memulai pekerjaan setelah Site HSSE menerbitkan stiker induksi Anda.";
 const MAX_ATTEMPTS = 2;
 const ADMIN_PASSWORD = "0808"; // change this before deploying — visible in page source, so treat as a light deterrent only
-const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxOlG2ms2MAL-CE8on4xWw3ufVvF_9EhinOYsmhB4mtaCNgncgvnzc0rrHcex1TKhR9ow/exec"; // paste your deployed Google Apps Script Web App URL here to also push each pass to a Google Sheet
+const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxyo45Zz7pd65z8e8O56ZcpbHh-59k5v4ty2AFHk_VP-vc34aYxjLbw5SnQCZYlRKGmXQ/exec"; // paste your deployed Google Apps Script Web App URL here to also push each pass to a Google Sheet
 
 /* ============ STATE / FLOW ============ */
 const GITHUB_URL = "https://iggifernandes.github.io/EcoOils-Project-Site-Induction-Sei-Mangkei/";
@@ -2451,7 +2451,7 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-document.getElementById('verTag').textContent = 'v11';
+document.getElementById('verTag').textContent = 'v12';
 
 /* ---- fit the card to whatever screen it is on (phone, laptop, big/extended screen) ---- */
 (function(){
@@ -2475,7 +2475,7 @@ document.getElementById('verTag').textContent = 'v11';
   document.addEventListener('fullscreenchange',soon);
   soon();
 })();
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v11-ms', SAVE_MAX_AGE = 6*3600*1000;
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v12-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
