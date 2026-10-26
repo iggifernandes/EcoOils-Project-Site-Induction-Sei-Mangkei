@@ -2452,7 +2452,7 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-document.getElementById('verTag').textContent = 'v17';
+document.getElementById('verTag').textContent = 'v18';
 /* ---------- HSSE statistics view: Ctrl+Alt+M (laptop) or tap the version number 5 times (phone). Officer name + PIN, same as the sign-off. ---------- */
 (function(){
   const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -2484,7 +2484,7 @@ document.getElementById('verTag').textContent = 'v17';
       const b=document.getElementById('stGo'); b.disabled=true; b.textContent='Checking…';
       const j=await post({action:'admin',officer:o,pin:p});
       if(j&&j.ok){ show(j); return; }
-      err.textContent=(j&&j.error==='PIN')?'Wrong name or PIN.':(j&&j.error==='LOCKED')?'Too many wrong attempts. Try again in 15 minutes.':'Could not reach the register. Try again.';
+      err.textContent=(j&&j.error==='PIN')?'Wrong name or PIN.':(j&&j.error==='LOCKED')?'Too many wrong attempts. Try again in 15 minutes.':(j?('The register answered: '+String(j.error||'unknown')+(j.error==='Invalid record'?' — the script on the web address is older than v7.8: deploy a New version.':'')):'No answer from the register. Check your connection and try again.');
       b.disabled=false; b.textContent='Open statistics'; pin.value=''; };
   }
   function show(d){
@@ -2531,7 +2531,7 @@ document.getElementById('verTag').textContent = 'v17';
   document.addEventListener('fullscreenchange',soon);
   soon();
 })();
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v17-ms', SAVE_MAX_AGE = 6*3600*1000;
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v18-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
