@@ -2452,7 +2452,7 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-document.getElementById('verTag').textContent = 'v16';
+document.getElementById('verTag').textContent = 'v17';
 /* ---------- HSSE statistics view: Ctrl+Alt+M (laptop) or tap the version number 5 times (phone). Officer name + PIN, same as the sign-off. ---------- */
 (function(){
   const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -2494,13 +2494,13 @@ document.getElementById('verTag').textContent = 'v16';
     const mTop=cos.filter(c=>d.months.some(m=>m.c[c]));
     const monRows=d.months.map(m=>'<tr><td '+td+'>'+esc(m.m)+'</td>'+mTop.map(c=>'<td '+tr+'>'+(m.c[c]||'')+'</td>').join('')+'<td '+tr+'><b>'+mTop.reduce((a,c)=>a+(m.c[c]||0),0)+'</b></td></tr>').join('');
     const rec=d.recent.map(r=>'<tr><td '+td+'>'+esc(r.date)+'</td><td '+td+'>'+esc(r.name)+'</td><td '+td+'>'+esc(r.company)+'</td><td '+tr+'>'+esc(r.score)+'</td></tr>').join('');
-    shell(H('HSSE statistics')+'<p style="color:#6e6b6c;font-size:14px;margin:6px 0 14px;">Signed in as <b>'+esc(d.officer)+'</b> · '+(d.scope==='ALL'?'all contractors':'contractor: '+esc(d.scope))+' · PASS = '+d.passMark+' or more out of 20 · '+d.total+' attempts since the project start. Completed = a person with at least one pass; earlier fails are retries.</p>'+
+    shell(H('HSSE statistics')+'<p style="color:#6e6b6c;font-size:14px;margin:6px 0 14px;">Signed in as <b>'+esc(d.officer)+'</b> · '+(d.scope==='ALL'?'all contractors':'contractor: '+esc(d.scope))+' · PASS = '+d.passMark+' or more out of 20 · '+d.total+' attempts in 2026. Completed = a person with at least one pass; earlier fails are retries. Early-2026 records may lack the contractor breakdown (shown as "Other (not stated)").</p>'+
       '<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:14px;width:100%;"><tr><th '+th+'>Contractor</th><th '+th+'>Attempts</th><th '+th+'>Pass</th><th '+th+'>Fail</th><th '+th+'>People</th><th '+th+'>Completed</th></tr>'+sumRows+
       '<tr><td '+td+'><b>Total</b></td><td '+tr+'><b>'+tot.attempts+'</b></td><td '+tr+'><b>'+tot.pass+'</b></td><td '+tr+'><b>'+tot.fail+'</b></td><td '+tr+'><b>'+tot.people+'</b></td><td '+tr+'><b>'+tot.done+'</b></td></tr></table></div>'+
       '<h3 style="margin:22px 0 6px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;font-size:15px;color:#6e6b6c;">People completing the induction, by month</h3>'+
       '<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:14px;width:100%;"><tr><th '+th+'>Month</th>'+mTop.map(c=>'<th '+th+'>'+esc(c.replace(/^Other: /,''))+'</th>').join('')+'<th '+th+'>Total</th></tr>'+monRows+'</table></div>'+
       '<h3 style="margin:22px 0 6px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;font-size:15px;color:#6e6b6c;">Latest 40 completions</h3>'+
-      '<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:14px;width:100%;"><tr><th '+th+'>Date</th><th '+th+'>Name</th><th '+th+'>Contractor</th><th '+th+'>Score</th></tr>'+rec+'</table></div>');
+      '<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:14px;width:100%;"><tr><th '+th+'>Date</th><th '+th+'>Name</th><th '+th+'>Contractor</th><th '+th+'>Score</th></tr>'+rec+'</table></div>'+(d.archive&&d.archive.inductions?'<p style="margin:20px 0 0;color:#6e6b6c;font-size:14px;border-top:1px solid #e5e5e5;padding-top:12px;">2025 data archived: <b>'+d.archive.inductions+'</b> inductions conducted in 2025'+(d.scope==='ALL'?'':' ('+esc(d.scope)+')')+'.</p>':''));
     document.getElementById('stClose').onclick=close;
   }
   document.addEventListener('keydown',e=>{ if(e.ctrlKey&&e.altKey&&e.code==='KeyM'){ e.preventDefault(); login(); } else if(e.key==='Escape') close(); });
@@ -2531,7 +2531,7 @@ document.getElementById('verTag').textContent = 'v16';
   document.addEventListener('fullscreenchange',soon);
   soon();
 })();
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v16-ms', SAVE_MAX_AGE = 6*3600*1000;
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v17-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
