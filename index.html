@@ -1444,7 +1444,7 @@ function viewDetails(L,lang){
     <div class="field"><label>${L.fName}<span class="req">*</span></label><input id="f_name" value="${v.name}"></div>
     <div class="field"><label>${L.fCompany}<span class="req">*</span></label><input id="f_company" value="${v.company}"></div>
     <div class="field"><label>${L.fId}<span class="req">*</span></label><input id="f_id" value="${v.idnum}" placeholder="0001" autocomplete="off" autocapitalize="characters" spellcheck="false" style="letter-spacing:3px;font-weight:700;max-width:170px;"><div id="idNote" style="margin-top:8px;padding:9px 11px;border-left:4px solid #D9A900;background:#FFF8E1;color:#3B2F00;border-radius:6px;font-size:13px;line-height:1.45;">🔒 ${L.fIdNote}<div id="idTrim" style="display:none;font-weight:700;margin-top:5px;">${L.fIdTrim}</div></div></div>
-    <div class="field"><label>${L.fHost}<span class="req">*</span></label><select id="f_host"><option value="">${L.selectOpt}</option>${["GSB","WEN","KKS","PBS","EcoOils","Other"].map(o=>`<option value="${o}" ${v.host===o?'selected':''}>${o}</option>`).join('')}</select></div>
+    <div class="field"><label>${L.fHost}<span class="req">*</span></label><select id="f_host"><option value="">${L.selectOpt}</option>${["GSB","WEN","KKS","PBS","MPE","EcoOils","Other"].map(o=>`<option value="${o}" ${v.host===o?'selected':''}>${o}</option>`).join('')}</select></div>
     <div class="field"><label>${L.fHostName}<span class="req">*</span></label><input id="f_hostname" value="${v.hostName}"></div>
     <div class="field"><label>${L.fHostPhone}<span class="req">*</span></label>
       <div style="display:flex;gap:8px;"><select id="f_cc" aria-label="${L.phoneCcLabel}" style="flex:0 0 46%;max-width:210px;">${PHONE_CC.map(x=>`<option value="${x.c}" ${(v.cc||'+62')===x.c?'selected':''}>${x.n[lang==='id'?1:lang==='ms'?2:0]} (${x.c})</option>`).join('')}<option value="other" ${v.cc==='other'?'selected':''}>${L.phoneOther}</option></select>
@@ -2452,7 +2452,7 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-document.getElementById('verTag').textContent = 'v14';
+document.getElementById('verTag').textContent = 'v15';
 
 /* ---- fit the card to whatever screen it is on (phone, laptop, big/extended screen) ---- */
 (function(){
@@ -2476,7 +2476,7 @@ document.getElementById('verTag').textContent = 'v14';
   document.addEventListener('fullscreenchange',soon);
   soon();
 })();
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v14-ms', SAVE_MAX_AGE = 6*3600*1000;
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v15-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
