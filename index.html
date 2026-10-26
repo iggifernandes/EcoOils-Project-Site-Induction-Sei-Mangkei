@@ -2452,7 +2452,62 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-document.getElementById('verTag').textContent = 'v15';
+document.getElementById('verTag').textContent = 'v16';
+/* ---------- HSSE statistics view: Ctrl+Alt+M (laptop) or tap the version number 5 times (phone). Officer name + PIN, same as the sign-off. ---------- */
+(function(){
+  const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  let box=null;
+  function close(){ if(box){ box.remove(); box=null; document.body.style.overflow=''; } }
+  async function post(o){ const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),45000);
+    try{ const r=await fetch(GOOGLE_SHEET_WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(o),signal:ctrl.signal}); return await r.json(); }catch(e){ return null; } finally{ clearTimeout(t); } }
+  function shell(inner){ if(!box){ box=document.createElement('div'); box.id='statsBox'; box.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(35,31,32,.55);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:16px;font-family:Jost,Arial,sans-serif;'; document.body.appendChild(box); document.body.style.overflow='hidden'; box.addEventListener('click',e=>{ if(e.target===box) close(); }); }
+    box.innerHTML='<div style="background:#fff;color:#231f20;width:100%;max-width:980px;margin:auto;padding:20px 20px 24px;border-top:4px solid #dd1d21;">'+inner+'</div>'; }
+  const H=t=>'<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><h2 style="margin:0;font-weight:300;letter-spacing:.14em;text-transform:uppercase;font-size:18px;color:#6e6b6c;">'+t+'</h2><button id="stClose" style="border:1px solid #aaa;background:#fff;padding:6px 12px;cursor:pointer;">Close</button></div>';
+  async function login(){
+    shell(H('HSSE statistics')+'<p style="color:#6e6b6c;font-size:14px;">Loading officers…</p>'); document.getElementById('stClose').onclick=close;
+    let names=[]; try{ const r=await fetch(GOOGLE_SHEET_WEBHOOK_URL+'?f=officers'); const j=await r.json(); names=(j&&j.officers)||[]; }catch(e){}
+    if(!names.length){ shell(H('HSSE statistics')+'<p style="color:#b00;">Could not reach the register. Try again in a moment.</p>'); document.getElementById('stClose').onclick=close; return; }
+    shell(H('HSSE statistics')+'<p style="font-size:14px;color:#6e6b6c;">Officer name and PIN (the same PIN as the site sign-off).</p>'+
+      '<div style="max-width:360px;"><select id="stOff" style="width:100%;padding:10px;margin:6px 0;font:inherit;"><option value="">Select your name…</option>'+names.map(n=>'<option>'+esc(n)+'</option>').join('')+'</select>'+
+      '<input id="stPin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" style="width:100%;padding:10px;margin:6px 0;font:inherit;box-sizing:border-box;">'+
+      '<p id="stErr" style="color:#b00;min-height:20px;margin:4px 0;font-size:14px;"></p>'+
+      '<button id="stGo" style="background:#dd1d21;color:#fff;border:0;padding:11px 18px;cursor:pointer;font:inherit;">Open statistics</button> '+
+      '<a href="#" id="stMail" style="margin-left:12px;font-size:14px;color:#6e6b6c;">Forgot PIN? Email me my PIN</a></div>');
+    document.getElementById('stClose').onclick=close;
+    const err=document.getElementById('stErr'), pin=document.getElementById('stPin');
+    pin.onkeydown=e=>{ if(e.key==='Enter') document.getElementById('stGo').click(); };
+    document.getElementById('stMail').onclick=async e=>{ e.preventDefault(); const o=document.getElementById('stOff').value; if(!o){ err.style.color='#b00'; err.textContent='Pick your name first.'; return; }
+      err.style.color='#6e6b6c'; err.textContent='Sending…'; const j=await post({action:'emailpin',officer:o});
+      if(j&&j.ok){ err.textContent='PIN sent to '+j.to+'. Check Inbox and Junk/Spam.'; } else { err.style.color='#b00'; err.textContent=(j&&j.error==='WAIT')?'Already sent a moment ago. Wait 10 minutes.':(j&&j.error==='NOEMAIL')?'No email on file for this officer. Ask Ignatius.':'Could not send. Try again.'; } };
+    document.getElementById('stGo').onclick=async()=>{ const o=document.getElementById('stOff').value, p=pin.value.trim(); err.style.color='#b00';
+      if(!o||!p){ err.textContent='Pick your name and enter the PIN.'; return; }
+      const b=document.getElementById('stGo'); b.disabled=true; b.textContent='Checking…';
+      const j=await post({action:'admin',officer:o,pin:p});
+      if(j&&j.ok){ show(j); return; }
+      err.textContent=(j&&j.error==='PIN')?'Wrong name or PIN.':(j&&j.error==='LOCKED')?'Too many wrong attempts. Try again in 15 minutes.':'Could not reach the register. Try again.';
+      b.disabled=false; b.textContent='Open statistics'; pin.value=''; };
+  }
+  function show(d){
+    const cos=d.companies, S=d.summary, tot=cos.reduce((a,c)=>{ const s=S[c]; ['attempts','pass','fail','people','done'].forEach(k=>a[k]+=s[k]); return a; },{attempts:0,pass:0,fail:0,people:0,done:0});
+    const th='style="text-align:left;padding:7px 8px;border-bottom:2px solid #231f20;font-weight:600;white-space:nowrap;"', td='style="padding:6px 8px;border-bottom:1px solid #e5e5e5;white-space:nowrap;"', tr='style="padding:6px 8px;border-bottom:1px solid #e5e5e5;text-align:right;"';
+    const sumRows=cos.map(c=>{ const s=S[c]; return '<tr><td '+td+'>'+esc(c)+'</td><td '+tr+'>'+s.attempts+'</td><td '+tr+'>'+s.pass+'</td><td '+tr+'>'+s.fail+'</td><td '+tr+'>'+s.people+'</td><td '+tr+'><b>'+s.done+'</b></td></tr>'; }).join('');
+    const mTop=cos.filter(c=>d.months.some(m=>m.c[c]));
+    const monRows=d.months.map(m=>'<tr><td '+td+'>'+esc(m.m)+'</td>'+mTop.map(c=>'<td '+tr+'>'+(m.c[c]||'')+'</td>').join('')+'<td '+tr+'><b>'+mTop.reduce((a,c)=>a+(m.c[c]||0),0)+'</b></td></tr>').join('');
+    const rec=d.recent.map(r=>'<tr><td '+td+'>'+esc(r.date)+'</td><td '+td+'>'+esc(r.name)+'</td><td '+td+'>'+esc(r.company)+'</td><td '+tr+'>'+esc(r.score)+'</td></tr>').join('');
+    shell(H('HSSE statistics')+'<p style="color:#6e6b6c;font-size:14px;margin:6px 0 14px;">Signed in as <b>'+esc(d.officer)+'</b> · '+(d.scope==='ALL'?'all contractors':'contractor: '+esc(d.scope))+' · PASS = '+d.passMark+' or more out of 20 · '+d.total+' attempts since the project start. Completed = a person with at least one pass; earlier fails are retries.</p>'+
+      '<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:14px;width:100%;"><tr><th '+th+'>Contractor</th><th '+th+'>Attempts</th><th '+th+'>Pass</th><th '+th+'>Fail</th><th '+th+'>People</th><th '+th+'>Completed</th></tr>'+sumRows+
+      '<tr><td '+td+'><b>Total</b></td><td '+tr+'><b>'+tot.attempts+'</b></td><td '+tr+'><b>'+tot.pass+'</b></td><td '+tr+'><b>'+tot.fail+'</b></td><td '+tr+'><b>'+tot.people+'</b></td><td '+tr+'><b>'+tot.done+'</b></td></tr></table></div>'+
+      '<h3 style="margin:22px 0 6px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;font-size:15px;color:#6e6b6c;">People completing the induction, by month</h3>'+
+      '<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:14px;width:100%;"><tr><th '+th+'>Month</th>'+mTop.map(c=>'<th '+th+'>'+esc(c.replace(/^Other: /,''))+'</th>').join('')+'<th '+th+'>Total</th></tr>'+monRows+'</table></div>'+
+      '<h3 style="margin:22px 0 6px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;font-size:15px;color:#6e6b6c;">Latest 40 completions</h3>'+
+      '<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:14px;width:100%;"><tr><th '+th+'>Date</th><th '+th+'>Name</th><th '+th+'>Contractor</th><th '+th+'>Score</th></tr>'+rec+'</table></div>');
+    document.getElementById('stClose').onclick=close;
+  }
+  document.addEventListener('keydown',e=>{ if(e.ctrlKey&&e.altKey&&e.code==='KeyM'){ e.preventDefault(); login(); } else if(e.key==='Escape') close(); });
+  let taps=0, tt=null; const vt=document.getElementById('verTag');
+  if(vt){ vt.style.cursor='default'; vt.addEventListener('click',()=>{ taps++; clearTimeout(tt); tt=setTimeout(()=>taps=0,2500); if(taps>=5){ taps=0; login(); } }); }
+})();
+
 
 /* ---- fit the card to whatever screen it is on (phone, laptop, big/extended screen) ---- */
 (function(){
@@ -2476,7 +2531,7 @@ document.getElementById('verTag').textContent = 'v15';
   document.addEventListener('fullscreenchange',soon);
   soon();
 })();
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v15-ms', SAVE_MAX_AGE = 6*3600*1000;
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v16-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
