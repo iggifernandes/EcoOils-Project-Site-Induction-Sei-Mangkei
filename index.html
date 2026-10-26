@@ -1332,7 +1332,7 @@ async function startVerify(){
   if(VERIFY_LOCAL_OK) render();
   const ctrl = new AbortController(); const t = setTimeout(()=>ctrl.abort(), 25000);
   try{
-    const res = await fetch(GOOGLE_SHEET_WEBHOOK_URL + '?v=' + encodeURIComponent(VERIFY_V) + '&c=' + encodeURIComponent(VERIFY_C) + '&f=json', { signal: ctrl.signal });
+    const res = await fetch(GOOGLE_SHEET_WEBHOOK_URL + '?cert=' + encodeURIComponent(VERIFY_V) + '&code=' + encodeURIComponent(VERIFY_C) + '&f=json', { signal: ctrl.signal });
     const j = await res.json();
     if(VERIFY_LOCAL_OK){
       verifyState = (j && j.ok && j.verified) ? { phase:'ok', data:j, started:true } : { phase:'local', data:null, reg:(j && j.ok) ? 'missing' : 'offline', started:true };
@@ -2451,7 +2451,7 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-document.getElementById('verTag').textContent = 'v12';
+document.getElementById('verTag').textContent = 'v13';
 
 /* ---- fit the card to whatever screen it is on (phone, laptop, big/extended screen) ---- */
 (function(){
@@ -2475,7 +2475,7 @@ document.getElementById('verTag').textContent = 'v12';
   document.addEventListener('fullscreenchange',soon);
   soon();
 })();
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v12-ms', SAVE_MAX_AGE = 6*3600*1000;
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-10-v13-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
