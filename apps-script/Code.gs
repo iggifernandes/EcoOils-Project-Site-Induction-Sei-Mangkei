@@ -1,4 +1,4 @@
-// CODE.GS VERSION 8.0 - 2026-11-02 (paste this whole file, then Deploy > Manage deployments > New version; adds ?f=counts for the HSSE Tracker)
+// CODE.GS VERSION 8.1 - 2026-11-02 (built on live v7.10 FINAL; adds ?f=counts for the HSSE Tracker)
 /**
  * Mentari HSSE Induction – receiver v7
  * 1) The sheet ROW is written first (small, fast, safe)
@@ -12,19 +12,19 @@
  * Replies {ok, rowSaved, imageSaved, link} so the app knows exactly what was saved.
  */
 // Leave both EMPTY to let this script create its own Sheet and Drive folder in the account that runs it (first use), or paste the IDs of an existing Sheet / folder you own.
-const ROOT_FOLDER_ID = '';
-const SHEET_ID = '';
+const ROOT_FOLDER_ID = '';   // live copy has the real folder ID; kept out of the public repo
+const SHEET_ID = '';   // live copy has the real Sheet ID; kept out of the public repo
 const SHEET_NAME = 'Induction Records';
 const TZ = 'Asia/Jakarta';
-const SCRIPT_VERSION = 'v8.0 (2026-11-02)';   // shown by the plain address, so you can see which code the live address runs
+const SCRIPT_VERSION = 'v7.10 FINAL (2026-10-26)';   // shown by the plain address, so you can see which code the live address runs
 const MAX_IMAGE_CHARS = 4000000;
 const MAX_MCU_CHARS = 3200000;                 // ~2.3 MB file limit for the MCU               // ~3 MB image limit
 
 const HEADERS = ['Timestamp','Certificate No','Name','Company','ID/Passport (last 4)','Host/Contractor',
   'Host Contact Name','Host Contact Phone','Purpose','Details Certified','Health Cert Submitted',
   'Score','Total Questions','Percentage','Result','Attempts Taken','Start Time','Completion Time',
-  'Duration','Language','Certificate Link','Verify Code','MCU Link','Familiarised By','Familiarised At','Sticker No'];
-const COL_LINK = 21, COL_CODE = 22, COL_MCU = 23, COL_FAM_BY = 24, COL_FAM_AT = 25, COL_STICKER = 26;
+  'Duration','Language','Certificate Link','Verify Code','MCU Link','Familiarised By','Familiarised At','Sticker No','Full ID (PRIVATE)'];
+const COL_LINK = 21, COL_CODE = 22, COL_MCU = 23, COL_FAM_BY = 24, COL_FAM_AT = 25, COL_STICKER = 26, COL_FULLID = 27;   // col 27 = the complete KTP/passport number: private, never read by the verification, certificate or statistics code
 const FAM_SHEET = 'Familiarisation', OFFICER_SHEET = 'HSSE Officers';
 const FAM_HEADERS = ['Timestamp','Certificate No','Name','Company','ID/Passport (last 4)','HSSE Officer','Sticker No','Checklist'];
 const OFFICER_SEED = [                          // the HSSE personnel who may sign off (edit the sheet tab afterwards, not this list)
@@ -183,7 +183,7 @@ function admin_(d) {
   return { ok: true, officer: officer.name, scope: scope, passMark: PASS_MARK, companies: order, summary: sum, months: months, recent: recent, total: rows.length, archive: archive, from: STATS_FROM };
 }
 
-// v8.0: counts only, for the Mentari HSSE Performance Tracker. No names, PINs or companies leave the script.
+// v8.1: counts only, for the Mentari HSSE Performance Tracker. No names, PINs or companies leave the script.
 // Same rule as the Induction Stats screen: one induction per person (name + company), counted in the month of their first PASS. Attempts = every sitting.
 function counts_() {
   const rows = statRows_().filter(function (r) { return r.date >= STATS_FROM; });
@@ -460,6 +460,7 @@ function rootId_() {
   return id;
 }
 
+function fullId_(s) { const x = String(s == null ? '' : s).replace(/[^A-Za-z0-9]/g, '').toUpperCase(); return /^[A-Z0-9]{6,20}$/.test(x) ? x : ''; }   // complete number: kept only in the private column
 function last4_(s) { return String(s == null ? '' : s).replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(-4); }
 
 function findRow_(sh, cert, idnum) {               // returns the sheet row number, or 0
@@ -477,6 +478,7 @@ function logRecord_(d) {
   const found = findRow_(sh, d.certNumber, d.idnum);
   if (found) {                                     // already logged (a retry): just make sure the verify code is there
     if (d.verifyCode && !sh.getRange(found, COL_CODE).getValue()) sh.getRange(found, COL_CODE).setValue(String(d.verifyCode));
+    if (fullId_(d.idFull) && !sh.getRange(found, COL_FULLID).getValue()) sh.getRange(found, COL_FULLID).setNumberFormat('@').setValue(fullId_(d.idFull));
     return found;
   }
   const row = [
@@ -486,7 +488,7 @@ function logRecord_(d) {
     d.healthCert === 'yes' ? 'Yes' : (d.healthCert === 'no' ? 'No' : ''),
     d.score, d.totalQuestions, (d.percentage != null ? d.percentage + '%' : ''),
     d.passed ? 'Pass' : 'Fail', d.attemptsTaken, d.startTime, d.completionTime,
-    d.durationLabel, d.lang, '', String(d.verifyCode || ''), '', '', '', ''
+    d.durationLabel, d.lang, '', String(d.verifyCode || ''), '', '', '', '', fullId_(d.idFull)
   ];
   const r = sh.getLastRow() + 1;
   const range = sh.getRange(r, 1, 1, row.length);
