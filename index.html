@@ -605,6 +605,14 @@ const lsrData = [
   sup:[{en:"Confirm it's safe to start work at height.",id:"Pastikan aman untuk memulai pekerjaan di ketinggian.",ms:"Sahkan ia selamat untuk memulakan kerja di tempat tinggi."}]
 }
 ];
+sections.splice(2,0,{ // Respect for Women (priority message, shown right after the Rules of Engagement)
+  tag:{en:"Respect for Women",id:"Menghormati Perempuan",ms:"Menghormati Wanita"}, title:{en:"Respect for Women",id:"Menghormati Perempuan",ms:"Menghormati Wanita"},
+  bodyFn:(lang)=>{ const W={"en": {"tag": "Respect for Women", "title": "Respect for Women", "pill": "Respect for women is our priority", "intro": "Everyone on this project, whether employee, contractor, driver, vendor or visitor, must treat women with respect at all times.", "items": ["<b>No cat-calling.</b> No whistling, shouting, staring, following or unwelcome comments about a woman's body or appearance.", "<b>No unwelcome behaviour</b> of any kind: no inappropriate gestures, messages, photos or touching.", "<b>Report it.</b> If you experience or see this, tell your supervisor, HSSE or security straight away."], "box_t": "If a woman reports this", "box": "The person concerned will be <strong>immediately secured for investigation</strong> and disciplinary action will be initiated. The result can range from a <strong>warning up to termination</strong>."}, "id": {"tag": "Menghormati Perempuan", "title": "Menghormati Perempuan", "pill": "Menghormati perempuan adalah prioritas kami", "intro": "Setiap orang di proyek ini, baik karyawan, kontraktor, pengemudi, vendor maupun tamu, wajib memperlakukan perempuan dengan hormat setiap saat.", "items": ["<b>Tidak ada cat-calling.</b> Tidak bersiul, berteriak, menatap, membuntuti, atau berkomentar yang tidak pantas tentang tubuh atau penampilan perempuan.", "<b>Tidak ada perilaku yang tidak diinginkan</b> dalam bentuk apa pun: tidak ada isyarat, pesan, foto, atau sentuhan yang tidak pantas.", "<b>Laporkan.</b> Jika Anda mengalami atau melihatnya, segera beri tahu atasan, HSSE, atau petugas keamanan."], "box_t": "Jika seorang perempuan melaporkan hal ini", "box": "Orang yang bersangkutan akan <strong>segera diamankan untuk diselidiki</strong> dan tindakan disiplin akan dimulai. Hasilnya dapat berupa <strong>peringatan hingga pemutusan hubungan kerja</strong>."}, "ms": {"tag": "Menghormati Wanita", "title": "Menghormati Wanita", "pill": "Menghormati wanita ialah keutamaan kami", "intro": "Setiap orang di projek ini, sama ada pekerja, kontraktor, pemandu, vendor atau pelawat, mesti melayan wanita dengan hormat pada setiap masa.", "items": ["<b>Tiada cat-calling.</b> Tiada bersiul, menjerit, merenung, mengekori atau komen tidak wajar tentang tubuh atau penampilan wanita.", "<b>Tiada tingkah laku yang tidak diingini</b> dalam apa jua bentuk: tiada isyarat, mesej, gambar atau sentuhan yang tidak wajar.", "<b>Laporkan.</b> Jika anda mengalami atau melihatnya, beritahu penyelia, HSSE atau pengawal keselamatan dengan segera."], "box_t": "Jika seorang wanita melaporkan perkara ini", "box": "Individu berkenaan akan <strong>segera diselamatkan (diasingkan) untuk disiasat</strong> dan tindakan tatatertib akan dimulakan. Keputusannya boleh daripada <strong>amaran sehingga penamatan perkhidmatan</strong>."}}; const w=W[lang]||W.en;
+    return `<div class="rule-pill p1" style="margin-bottom:12px;"><b>${w.pill}</b></div><p class="desc">${w.intro}</p>
+    <ul class="rules">${w.items.map(x=>`<li>${x}</li>`).join('')}</ul>
+    <div class="lesson-box" style="border-left-color:#b3261e;background:#FBEAE9;border-color:#f0c4c0;color:#5a1a14;"><b style="color:#b3261e;">${w.box_t}</b>${w.box}</div>`; },
+  check:null
+});
 sections.push({
   tag:{en:"Life Saving Rules Video",id:"Video Life Saving Rules",ms:"Video Life Saving Rules"},
   title:{en:"Life Saving Rules — Induction Video",id:"Video Induksi — Life Saving Rules",ms:"Life Saving Rules — Video Induksi"},
@@ -2503,7 +2511,7 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-document.getElementById('verTag').textContent = 'v28';
+document.getElementById('verTag').textContent = 'v29';
 /* ---------- HSSE statistics view: Ctrl+Alt+M (laptop) or tap the version number 5 times (phone). Officer name + PIN, same as the sign-off. ---------- */
 (function(){
   const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -2584,7 +2592,7 @@ document.getElementById('verTag').textContent = 'v28';
   document.addEventListener('fullscreenchange',soon);
   soon();
 })();
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-11-v28-ms', SAVE_MAX_AGE = 6*3600*1000;
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-11-v29-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
