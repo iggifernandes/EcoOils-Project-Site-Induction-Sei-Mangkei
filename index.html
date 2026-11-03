@@ -1447,8 +1447,8 @@ function viewDetails(L,lang){
     <p class="required-note">${L.requiredNote}</p>
     <div class="field"><label>${L.fName}<span class="req">*</span></label><input id="f_name" value="${v.name}"></div>
     <div class="field"><label>${L.fCompany}<span class="req">*</span></label><input id="f_company" value="${v.company}"></div>
-    <div class="field"><label>${L.fId}<span class="req">*</span></label><input id="f_id" value="${v.idnum}" placeholder="KTP / passport" maxlength="24" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" style="letter-spacing:1.5px;font-weight:700;"><div id="idErr" style="display:none;margin-top:6px;color:#b00;font-size:13px;">${L.fIdErr}</div><div id="idNote" style="margin-top:8px;padding:9px 11px;border-left:4px solid #D9A900;background:#FFF8E1;color:#3B2F00;border-radius:6px;font-size:13px;line-height:1.45;">🔒 ${L.privShort}</div>
-      <label class="confirm-gate" style="margin-top:10px;"><input type="checkbox" id="f_privacy" ${v.privacy?'checked':''}><span>${L.privAgree} <a href="#" id="privLinkBtn" style="color:#0A5C9E;text-decoration:underline;font-weight:600;">${L.privLink}</a>.<span class="req"> *</span></span></label></div>
+    <div class="field"><label>${L.fId}<span class="req">*</span></label><input id="f_id" value="${v.idnum}" placeholder="KTP / passport" maxlength="24" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" style="letter-spacing:1.5px;font-weight:700;"><div id="idErr" style="display:none;margin-top:6px;color:#b00;font-size:13px;">${L.fIdErr}</div><div id="idNote" style="margin-top:8px;padding:9px 11px;border-left:4px solid #D9A900;background:#FFF8E1;color:#3B2F00;border-radius:6px;font-size:13px;line-height:1.45;">🔒 ${L.privShort}</div></div>
+      <label class="confirm-gate" style="margin-top:0;margin-bottom:14px;"><input type="checkbox" id="f_privacy" ${v.privacy?'checked':''}><span>${L.privAgree} <a href="#" id="privLinkBtn" style="color:#0A5C9E;text-decoration:underline;font-weight:600;">${L.privLink}</a>.<span class="req"> *</span></span></label>
     <div class="field"><label>${L.fHost}<span class="req">*</span></label><select id="f_host"><option value="">${L.selectOpt}</option>${["GSB","WEN","KKS","PBS","MPE","EcoOils","Other"].map(o=>`<option value="${o}" ${v.host===o?'selected':''}>${o}</option>`).join('')}</select></div>
     <div class="field"><label>${L.fHostName}<span class="req">*</span></label><input id="f_hostname" value="${v.hostName}"></div>
     <div class="field"><label>${L.fHostPhone}<span class="req">*</span></label>
@@ -2500,7 +2500,7 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-document.getElementById('verTag').textContent = 'v26';
+document.getElementById('verTag').textContent = 'v27';
 /* ---------- HSSE statistics view: Ctrl+Alt+M (laptop) or tap the version number 5 times (phone). Officer name + PIN, same as the sign-off. ---------- */
 (function(){
   const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -2581,7 +2581,7 @@ document.getElementById('verTag').textContent = 'v26';
   document.addEventListener('fullscreenchange',soon);
   soon();
 })();
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-11-v26-ms', SAVE_MAX_AGE = 6*3600*1000;
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-11-v27-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
