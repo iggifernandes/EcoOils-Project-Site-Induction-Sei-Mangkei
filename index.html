@@ -173,6 +173,9 @@ ul.rules li::before{color:#44a276;} ul.rules li.warn::before{color:#231f20;}
 .field input,.field select{border:1px solid #aaa;border-radius:8px;background:#fff;min-height:44px;}
 .field input:focus,.field select:focus,button:focus-visible,.opt:focus-visible{outline:3px solid #ffc600;outline-offset:1px;border-color:#44a276;}
 .required-note,.field label .req,.safety-notice p{color:#c0392b;}
+.field .confirm-gate{text-transform:none;letter-spacing:0;font-weight:400;font-size:13px;color:#231f20;margin:0;align-items:center;}
+.field .confirm-gate{gap:9px;}
+.field .confirm-gate input{width:16px;height:16px;min-height:0;padding:0;border:0;margin:0;flex:0 0 auto;accent-color:#44a276;}
 .checkbadge{background:#fff;border:1px solid #dcdcdc;color:#231f20;}
 .opt{border:1px solid #dcdcdc;font-size:15px;min-height:44px;}
 .opt:hover{border-color:#44a276;}
@@ -2500,7 +2503,7 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-document.getElementById('verTag').textContent = 'v27';
+document.getElementById('verTag').textContent = 'v28';
 /* ---------- HSSE statistics view: Ctrl+Alt+M (laptop) or tap the version number 5 times (phone). Officer name + PIN, same as the sign-off. ---------- */
 (function(){
   const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -2581,7 +2584,7 @@ document.getElementById('verTag').textContent = 'v27';
   document.addEventListener('fullscreenchange',soon);
   soon();
 })();
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-11-v27-ms', SAVE_MAX_AGE = 6*3600*1000;
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-11-v28-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
