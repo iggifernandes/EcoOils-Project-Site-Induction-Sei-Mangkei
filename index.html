@@ -1013,6 +1013,7 @@ const EN_POPTS = ["Construction & installation work", "Maintenance / repair", "C
 const state = { lang:"en", pos: START_PARAM ? 1 : 0, visitor:{name:"",company:"",host:"",hostName:"",hostPhone:"",cc:"+62",idnum:"",purpose:"",purposeSel:"",purposeOther:"",privacy:false,certify:false,healthCert:""}, secAnswers:{}, qIndex:0, qAnswers:{}, score:0, attempts:0, lsrConfirmed:{}, lsrWatch:{}, lsrPick:{}, lsrCurIdx:-1, paperBuilt:false, seenIds:[], startTime: START_PARAM ? Date.now() : 0, recorded:false, certAutoDownloaded:false, selfieDataUrl:null, selfieConsent:false, mcuDataUrl:null, mcuName:"" };
 let certNumber = "";
 let isAdminMode = (location.hash === '#admin');
+let previewMode = false;   // officer preview (Shift+Ctrl+Alt+M): videos count as watched, nothing is recorded or saved
 let adminAuthed = false;
 let autoRestartTimer = null;
 
@@ -1135,6 +1136,7 @@ function formatDuration(ms){
   return `${m}m ${String(s).padStart(2,'0')}s`;
 }
 async function recordSubmission(){
+  if(previewMode) return;     // preview never records anything
   if(state.recorded) return; // avoid duplicate rows if user re-renders the result screen
   state.recorded = true;
   const v = state.visitor;
@@ -1503,7 +1505,7 @@ function vidId(url){ const m = String(url).match(/youtu\.be\/([\w-]{6,})/) || St
 function watchRec(id){ state.lsrWatch = state.lsrWatch || {}; return state.lsrWatch[id] || (state.lsrWatch[id] = {sec:0, dur:0, mode:'', clicked:false, t0:0}); }
 function recDone(w){ return !!w && ((w.dur>0 && w.sec >= w.dur*WATCH_PCT) || (w.mode==='fallback' && w.clicked && w.t0 && (Date.now()-w.t0)/1000 >= FALLBACK_SECS)); }
 function watchDone(key){
-  if(typeof isAdminMode!=='undefined' && isAdminMode) return true;
+  if((typeof isAdminMode!=='undefined' && isAdminMode) || previewMode) return true;
   const L = LSR_VIDEO_LINKS[key]; if(!L) return true;
   const ws = state.lsrWatch || {};
   return [vidId(L.en), vidId(L.id)].some(id => recDone(ws[id]));
@@ -1578,6 +1580,7 @@ function initVideoGate(key, onUnlock){
   const playBtn = document.getElementById('vidPlay'), wait = document.getElementById('vidWait'), fb = document.getElementById('vidFallback');
   let last = null, tick = 0, fell = false;
   const refresh = ()=>{
+    if(!document.getElementById('vidLangEn')){ stopVideoGate(); return; }   // the page was left (fast navigation in preview): nothing to update
     const done = watchDone(key);
     const w = watchRec(ids[cur]);
     if(w.mode==='fallback' && !done){
@@ -2517,7 +2520,7 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-document.getElementById('verTag').textContent = 'v31';
+document.getElementById('verTag').textContent = 'v32';
 /* ---------- HSSE statistics view: Ctrl+Alt+M (laptop) or tap the version number 5 times (phone). Officer name + PIN, same as the sign-off. ---------- */
 (function(){
   const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -2528,17 +2531,19 @@ document.getElementById('verTag').textContent = 'v31';
   function shell(inner){ if(!box){ box=document.createElement('div'); box.id='statsBox'; box.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(35,31,32,.55);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:16px;font-family:Jost,Arial,sans-serif;'; document.body.appendChild(box); document.body.style.overflow='hidden'; box.addEventListener('click',e=>{ if(e.target===box) close(); }); }
     box.innerHTML='<div style="background:#fff;color:#231f20;width:100%;max-width:980px;margin:auto;padding:20px 20px 24px;border-top:4px solid #dd1d21;">'+inner+'</div>'; }
   const H=t=>'<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><h2 style="margin:0;font-weight:300;letter-spacing:.14em;text-transform:uppercase;font-size:18px;color:#6e6b6c;">'+t+'</h2><button id="stClose" style="border:1px solid #aaa;background:#fff;padding:6px 12px;cursor:pointer;">Close</button></div>';
-  async function login(){
+  let want='stats';
+  async function login(mode){
+    want = mode==='preview' ? 'preview' : 'stats';
     shell(H('HSSE statistics')+'<p style="color:#6e6b6c;font-size:14px;">Loading officers…</p>'); document.getElementById('stClose').onclick=close;
     let names=[], sv='unknown'; try{ const r=await fetch(GOOGLE_SHEET_WEBHOOK_URL+'?f=officers'); const j=await r.json(); names=(j&&j.officers)||[]; }catch(e){}
     try{ const r2=await fetch(GOOGLE_SHEET_WEBHOOK_URL); const j2=await r2.json(); sv=(j2&&j2.version)||'older than v7.3'; }catch(e){}
     const svOk=/v7\.(9|[1-9]\d)/.test(sv); const verLine='<p style="font-size:12px;color:'+(svOk?'#6e6b6c':'#b00')+';margin:14px 0 0;">App '+document.getElementById('verTag').textContent+' · Register script: <b>'+esc(sv)+'</b>'+(svOk?'':' — OLD: deploy a New version of the script')+'</p>';
     if(!names.length){ shell(H('HSSE statistics')+'<p style="color:#b00;">Could not reach the register. Try again in a moment.</p>'); document.getElementById('stClose').onclick=close; return; }
-    shell(H('HSSE statistics')+'<p style="font-size:14px;color:#6e6b6c;">Officer name and PIN (the same PIN as the site sign-off).</p>'+
+    shell(H(want==='preview'?'Induction preview':'HSSE statistics')+'<p style="font-size:14px;color:#6e6b6c;">Officer name and PIN (the same PIN as the site sign-off).'+(want==='preview'?' Preview lets you read every page without watching the videos. Nothing is recorded.':'')+'</p>'+
       '<div style="max-width:360px;"><select id="stOff" style="width:100%;padding:10px;margin:6px 0;font:inherit;"><option value="">Select your name…</option>'+names.map(n=>'<option>'+esc(n)+'</option>').join('')+'</select>'+
       '<input id="stPin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" style="width:100%;padding:10px;margin:6px 0;font:inherit;box-sizing:border-box;">'+
       '<p id="stErr" style="color:#b00;min-height:20px;margin:4px 0;font-size:14px;"></p>'+
-      '<button id="stGo" style="background:#dd1d21;color:#fff;border:0;padding:11px 18px;cursor:pointer;font:inherit;">Open statistics</button> '+
+      '<button id="stGo" style="background:#dd1d21;color:#fff;border:0;padding:11px 18px;cursor:pointer;font:inherit;">'+(want==='preview'?'Open preview':'Open statistics')+'</button> '+
       '<a href="#" id="stMail" style="margin-left:12px;font-size:14px;color:#6e6b6c;">Forgot PIN? Email me my PIN</a></div>'+verLine);
     document.getElementById('stClose').onclick=close;
     const err=document.getElementById('stErr'), pin=document.getElementById('stPin');
@@ -2550,9 +2555,9 @@ document.getElementById('verTag').textContent = 'v31';
       if(!o||!p){ err.textContent='Pick your name and enter the PIN.'; return; }
       const b=document.getElementById('stGo'); b.disabled=true; b.textContent='Checking…';
       const j=await post({action:'admin',officer:o,pin:p});
-      if(j&&j.ok){ show(j); return; }
+      if(j&&j.ok){ if(want==='preview'){ close(); startPreview(); } else show(j); return; }
       err.textContent=(j&&j.error==='PIN')?'Wrong name or PIN.':(j&&j.error==='LOCKED')?'Too many wrong attempts. Try again in 15 minutes.':(j?('The register answered: '+String(j.error||'unknown')+(j.error==='Invalid record'?' — the script on the web address is older than v7.8: deploy a New version.':'')):'No answer from the register. Check your connection and try again.');
-      b.disabled=false; b.textContent='Open statistics'; pin.value=''; };
+      b.disabled=false; b.textContent=(want==='preview'?'Open preview':'Open statistics'); pin.value=''; };
   }
   function show(d){
     const cos=d.companies, S=d.summary, tot=cos.reduce((a,c)=>{ const s=S[c]; ['attempts','pass','fail','people','done'].forEach(k=>a[k]+=s[k]); return a; },{attempts:0,pass:0,fail:0,people:0,done:0});
@@ -2570,7 +2575,30 @@ document.getElementById('verTag').textContent = 'v31';
       '<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:14px;width:100%;"><tr><th '+th+'>Date</th><th '+th+'>Name</th><th '+th+'>Contractor</th><th '+th+'>Score</th></tr>'+rec+'</table></div>'+(d.archive&&d.archive.inductions?'<p style="margin:20px 0 0;color:#6e6b6c;font-size:14px;border-top:1px solid #e5e5e5;padding-top:12px;">2025 data archived: <b>'+d.archive.inductions+'</b> inductions conducted in 2025'+(d.scope==='ALL'?'':' ('+esc(d.scope)+')')+'.</p>':''));
     document.getElementById('stClose').onclick=close;
   }
-  document.addEventListener('keydown',e=>{ if(e.ctrlKey&&e.altKey&&e.code==='KeyM'){ e.preventDefault(); login(); } else if(e.key==='Escape') close(); });
+
+  /* ---- officer preview: read every page up to the final assessment, videos count as watched, nothing is recorded ---- */
+  function startPreview(){
+    if(previewMode) return; previewMode = true;
+    try{ sessionStorage.removeItem(SAVE_KEY); localStorage.removeItem(LOCAL_SAVE_KEY); }catch(e){}
+    document.body.style.paddingBottom = '78px';
+    const top=document.createElement('div'); top.id='pvTop';
+    top.style.cssText='position:fixed;top:0;left:0;right:0;z-index:9998;background:#FFC600;color:#231f20;text-align:center;font:600 12px Jost,Arial,sans-serif;letter-spacing:.06em;padding:4px 8px;';
+    top.textContent='PREVIEW MODE — nothing is recorded'; document.body.appendChild(top);
+    const bar=document.createElement('div'); bar.id='pvBar';
+    bar.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:10px;z-index:9998;background:#231f20;color:#fff;border-radius:30px;padding:8px 10px;display:flex;align-items:center;gap:8px;font:500 14px Jost,Arial,sans-serif;box-shadow:0 4px 18px rgba(0,0,0,.3);max-width:96vw;';
+    const btn='background:#44a276;color:#fff;border:0;border-radius:20px;padding:8px 14px;font:inherit;cursor:pointer;';
+    bar.innerHTML='<button id="pvBack" style="'+btn+'">◀ Back</button><span id="pvTxt" style="min-width:86px;text-align:center;"></span><button id="pvNext" style="'+btn+'">Next ▶</button><button id="pvExit" style="background:transparent;color:#fff;border:1px solid #888;border-radius:20px;padding:8px 12px;font:inherit;cursor:pointer;">Exit</button>';
+    document.body.appendChild(bar);
+    const last=()=>flow.findIndex(f=>f.type==='assessment-intro');
+    const upd=()=>{ const l=last(); document.getElementById('pvTxt').textContent='Page '+(state.pos+1)+' / '+(l+1); document.getElementById('pvBack').disabled=state.pos<=0; document.getElementById('pvNext').disabled=state.pos>=l; document.getElementById('pvBack').style.opacity=state.pos<=0?.4:1; document.getElementById('pvNext').style.opacity=state.pos>=l?.4:1; };
+    document.getElementById('pvBack').onclick=()=>{ if(state.pos>0){ state.pos--; render(); window.scrollTo(0,0); upd(); } };
+    document.getElementById('pvNext').onclick=()=>{ if(state.pos<last()){ state.pos++; render(); window.scrollTo(0,0); upd(); } };
+    document.getElementById('pvExit').onclick=()=>{ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} location.reload(); };
+    setInterval(upd,400); upd(); render();
+  }
+  window.startPreview = startPreview;
+  document.addEventListener('keydown',e=>{ if(e.ctrlKey&&e.altKey&&e.code==='KeyM'){ e.preventDefault(); login(e.shiftKey?'preview':'stats'); } else if(e.key==='Escape') close(); });
+  if(location.hash==='#preview') login('preview');   // phones: open the page with #preview on the end
   let taps=0, tt=null; const vt=document.getElementById('verTag');
   if(vt){ vt.style.cursor='default'; vt.addEventListener('click',()=>{ taps++; clearTimeout(tt); tt=setTimeout(()=>taps=0,2500); if(taps>=5){ taps=0; login(); } }); }
 })();
@@ -2598,11 +2626,11 @@ document.getElementById('verTag').textContent = 'v31';
   document.addEventListener('fullscreenchange',soon);
   soon();
 })();
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-11-v31-ms', SAVE_MAX_AGE = 6*3600*1000;
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-11-v32-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
-  if(isAdminMode || resumeOffer || VERIFY_MODE) return;
+  if(isAdminMode || resumeOffer || VERIFY_MODE || previewMode) return;
   const snap = (withSelfie)=>JSON.stringify({ build:BUILD_ID, t:Date.now(), certNumber, verifyCode, PASS_MARK, finalQuestions,
     state:Object.assign({}, state, withSelfie ? {} : {selfieDataUrl:null}, {mcuDataUrl:null, mcuName:''}) });
   try{ sessionStorage.setItem(SAVE_KEY, snap(true)); }
@@ -2628,7 +2656,7 @@ function viewResumeOffer(snap){
     <div class="foot"><button class="btn btn-ghost" id="resumeNewBtn">Start new / Mulai baru</button><button class="btn btn-primary" id="resumeContinueBtn">Continue / Lanjutkan</button></div>`;
 }
 function loadProgress(){
-  if(isAdminMode || VERIFY_MODE) return;
+  if(isAdminMode || VERIFY_MODE || previewMode) return;
   try{                                                   // 1) same tab reloaded: restore silently
     const raw = sessionStorage.getItem(SAVE_KEY);
     if(raw){ const snap = JSON.parse(raw); if(validSnap(snap) && Date.now()-snap.t <= SAVE_MAX_AGE){ applySnap(snap); return; } sessionStorage.removeItem(SAVE_KEY); }
