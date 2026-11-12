@@ -1,4 +1,4 @@
-// CODE.GS VERSION 8.1 - 2026-11-02 (built on live v7.10 FINAL; adds ?f=counts for the HSSE Tracker)
+// CODE.GS VERSION 8.2 - 2026-11-12 (v8.1 + safety: a copy with no Sheet/folder ID now stops with a clear error instead of silently creating a blank Sheet)
 /**
  * Mentari HSSE Induction – receiver v7
  * 1) The sheet ROW is written first (small, fast, safe)
@@ -16,7 +16,7 @@ const ROOT_FOLDER_ID = '';   // live copy has the real folder ID; kept out of th
 const SHEET_ID = '';   // live copy has the real Sheet ID; kept out of the public repo
 const SHEET_NAME = 'Induction Records';
 const TZ = 'Asia/Jakarta';
-const SCRIPT_VERSION = 'v7.10 FINAL (2026-10-26)';   // shown by the plain address, so you can see which code the live address runs
+const SCRIPT_VERSION = 'v8.2 (2026-11-12)';   // shown by the plain address, so you can see which code the live address runs
 const MAX_IMAGE_CHARS = 4000000;
 const MAX_MCU_CHARS = 3200000;                 // ~2.3 MB file limit for the MCU               // ~3 MB image limit
 
@@ -438,13 +438,7 @@ function sheetId_() {
   if (SHEET_ID) return SHEET_ID;
   const pr = PropertiesService.getScriptProperties();
   let id = pr.getProperty('SHEET_ID');
-  if (!id) {
-    const ss = SpreadsheetApp.create('Mentari Induction Records');
-    id = ss.getId(); pr.setProperty('SHEET_ID', id);
-    const sh = ss.getSheets()[0];
-    sh.setName(SHEET_NAME); sh.appendRow(HEADERS); sh.setFrozenRows(1); sh.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
-    Logger.log('Created the Sheet: ' + ss.getUrl());
-  }
+  if (!id) throw new Error('SHEET_ID is empty in this copy of Code.gs. Paste the file that has the real Sheet ID (apps-script-receiver-v8-2-final), not the repo copy.');
   return id;
 }
 
@@ -452,11 +446,7 @@ function rootId_() {
   if (ROOT_FOLDER_ID) return ROOT_FOLDER_ID;
   const pr = PropertiesService.getScriptProperties();
   let id = pr.getProperty('ROOT_FOLDER_ID');
-  if (!id) {
-    const f = DriveApp.createFolder('Mentari Induction Certificates');
-    id = f.getId(); pr.setProperty('ROOT_FOLDER_ID', id);
-    Logger.log('Created the Drive folder: ' + f.getUrl());
-  }
+  if (!id) throw new Error('ROOT_FOLDER_ID is empty in this copy of Code.gs. Paste the file that has the real folder ID (apps-script-receiver-v8-2-final), not the repo copy.');
   return id;
 }
 

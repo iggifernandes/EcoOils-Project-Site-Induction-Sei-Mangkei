@@ -2520,7 +2520,7 @@ function bind(){
 }
 
 /* ============ KEEP PROGRESS WHEN THE PAGE IS REFRESHED (pull-down, reload, tab restored) ============ */
-document.getElementById('verTag').textContent = 'v32';
+document.getElementById('verTag').textContent = 'v33';
 /* ---------- HSSE statistics view: Ctrl+Alt+M (laptop) or tap the version number 5 times (phone). Officer name + PIN, same as the sign-off. ---------- */
 (function(){
   const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -2537,7 +2537,7 @@ document.getElementById('verTag').textContent = 'v32';
     shell(H('HSSE statistics')+'<p style="color:#6e6b6c;font-size:14px;">Loading officers…</p>'); document.getElementById('stClose').onclick=close;
     let names=[], sv='unknown'; try{ const r=await fetch(GOOGLE_SHEET_WEBHOOK_URL+'?f=officers'); const j=await r.json(); names=(j&&j.officers)||[]; }catch(e){}
     try{ const r2=await fetch(GOOGLE_SHEET_WEBHOOK_URL); const j2=await r2.json(); sv=(j2&&j2.version)||'older than v7.3'; }catch(e){}
-    const svOk=/v7\.(9|[1-9]\d)/.test(sv); const verLine='<p style="font-size:12px;color:'+(svOk?'#6e6b6c':'#b00')+';margin:14px 0 0;">App '+document.getElementById('verTag').textContent+' · Register script: <b>'+esc(sv)+'</b>'+(svOk?'':' — OLD: deploy a New version of the script')+'</p>';
+    const svOk=/v(7\.(9|[1-9]\d)|[89]\.\d|[1-9]\d\.\d)/.test(sv); const verLine='<p style="font-size:12px;color:'+(svOk?'#6e6b6c':'#b00')+';margin:14px 0 0;">App '+document.getElementById('verTag').textContent+' · Register script: <b>'+esc(sv)+'</b>'+(svOk?'':' — OLD: deploy a New version of the script')+'</p>';
     if(!names.length){ shell(H('HSSE statistics')+'<p style="color:#b00;">Could not reach the register. Try again in a moment.</p>'); document.getElementById('stClose').onclick=close; return; }
     shell(H(want==='preview'?'Induction preview':'HSSE statistics')+'<p style="font-size:14px;color:#6e6b6c;">Officer name and PIN (the same PIN as the site sign-off).'+(want==='preview'?' Preview lets you read every page without watching the videos. Nothing is recorded.':'')+'</p>'+
       '<div style="max-width:360px;"><select id="stOff" style="width:100%;padding:10px;margin:6px 0;font:inherit;"><option value="">Select your name…</option>'+names.map(n=>'<option>'+esc(n)+'</option>').join('')+'</select>'+
@@ -2626,7 +2626,7 @@ document.getElementById('verTag').textContent = 'v32';
   document.addEventListener('fullscreenchange',soon);
   soon();
 })();
-const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-11-v32-ms', SAVE_MAX_AGE = 6*3600*1000;
+const SAVE_KEY = 'mhi_progress_v1', BUILD_ID = '2026-11-v33-ms', SAVE_MAX_AGE = 6*3600*1000;
 const LOCAL_SAVE_KEY = 'mhi_progress_local_v1', LOCAL_MAX_AGE = 3*3600*1000;
 let resumeOffer = null;
 function saveProgress(){
